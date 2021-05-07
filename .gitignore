@@ -41,3 +41,6 @@ yarn-error.log*
 ### vscode ###
 .vscode/*
 *.code-workspace
+
+### firebase API key - Khoa ###
+/src/Component/FirebaseConfig.js

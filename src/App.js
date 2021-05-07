@@ -34,6 +34,7 @@
 import React from "react";
 import { Link, Route, Switch } from "react-router-dom";
 import UserHome from "./Component/UserHome";
+import FirebaseTest from "./Component/FirebaseTest";
 import PrivateRoute from "./API/PrivateRouteHelper"
 import Login from "./API/LoginHelper"
 import {Logout} from "./API/LoginHelper"
@@ -58,6 +59,9 @@ export default function App() {
           <li>
             <Link to="/logout">Logout</Link>
           </li>
+          <li>
+            <Link to="/firebase_test"> Firebase test </Link>
+          </li>
         </ul>
       </nav>
 
@@ -65,6 +69,7 @@ export default function App() {
         <Route exact path="/"><Home /></Route>
         <Route path="/login"><Login /></Route>
         <PrivateRoute path="/user_home" component={UserHome} />
+        <PrivateRoute path="/firebase_test" component={FirebaseTest} />
         <Route path = "/logout"><Logout /></Route>
       </Switch>
     </div>
