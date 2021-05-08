@@ -44,3 +44,7 @@ yarn-error.log*
 
 ### firebase API key - Khoa ###
 /src/Component/FirebaseConfig.js
+
+
+### ignore this so others can install what they want 
+package-lock.json
