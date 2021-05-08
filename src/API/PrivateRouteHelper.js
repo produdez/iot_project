@@ -1,22 +1,22 @@
-import React from "react";
-import { Redirect, Route, useLocation } from "react-router-dom";
-import { fakeAuth} from "./LoginHelper";
-/*
-    This is used for routing around private areas !
-    If not authenticated, view will be shown is login button.
-*/
+import React from "react"
+import { Route, Redirect } from "react-router-dom"
+import { useAuth } from "../Context/AuthContext"
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
-  const location = useLocation();
+export default function PrivateRoute({ component: Component, ...rest }) {
+  const { currentUser } = useAuth()
 
   return (
-    <Route {...rest}>
-      {fakeAuth.isAuthenticated === true ? (
-        <Component />
-      ) : (
-        <Redirect to={{ pathname: "/login", state: { from: location } }} />      )}
-    </Route>
-  );
-};
-
-export default PrivateRoute;
+    <Route
+      {...rest}
+      render={props => {
+        // console.log('Current user: ',currentUser);
+        if (currentUser){
+          // console.log('Passed auth test!');
+          return <Component {...props} />
+        }
+        // console.log('Redirected to Login!');
+        return <Redirect to="/login" />
+      }}
+    ></Route>
+  )
+}

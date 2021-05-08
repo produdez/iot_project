@@ -61,8 +61,8 @@ class FirebaseTest extends React.Component {
   render() {
     return (
       <div>
-        <h1> A simple firebase test (f12 -> console)</h1>
-        <h1> Cannot run ? -> ask Khoa to get firebase config file</h1>
+        <h1> A simple firebase test (f12 in console)</h1>
+        <h1> Cannot run ?  ask Khoa to get firebase config file</h1>
         <button onClick={this.onClickConnect}>Connect database </button>
         <br></br>
         <button onClick={this.onClickDisconnect}>Disconnect database </button>

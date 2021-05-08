@@ -1,48 +1,30 @@
-// import logo from './logo.svg';
-// import './App.css';
-
-// import {
-//   Route,
-//   Link
-// } from "react-router-dom";
-
-// function App() {
-//   return (
-//     <div>
-//     <h1>Application Routing Menu</h1>
-//     <ul role="navigation">
-//       <li><Link to="/client">Client Side</Link></li>
-//       <li><Link to="/server">Server Side</Link></li>
-//     </ul>
-     
-//     <div>
-//       <Route path='/client' component={Client} />
-//       <Route path='/server' component={Server} />
-//     </div>
-//   </div>
-//   );
-// }
-
-// export default App;
-
-// const Client= () => <h3>What is client side?<body><li>Browser</li><li>Runs on local machine</li><li>React renders user interface</li><li>React Router adds clickable links</li></body></h3>
-
-// const Server= () => <h3>What is server side?<li>node.js - JavaScript everywhere!</li></h3>
-
-
-
 import React from "react";
 import { Link, Route, Switch } from "react-router-dom";
-import UserHome from "./Component/UserHome";
+import Dashboard from "./Component/Dashboard";
 import FirebaseTest from "./Component/FirebaseTest";
 import PrivateRoute from "./API/PrivateRouteHelper"
-import Login from "./API/LoginHelper"
-import {Logout} from "./API/LoginHelper"
-const Home = () => (
-  <div>
-    <h2>Welcome to our app</h2>
-  </div>
-);
+import Login from "./Component/Authentication/Login"
+import Signup from "./Component/Authentication/Signup"
+import { AuthProvider } from "./Context/AuthContext";
+import { useAuth } from "./Context/AuthContext"
+
+
+function Home(){
+  const { currentUser } = useAuth()
+  const promtLogin = () => {
+    if (currentUser) {
+      return "Login or Signup";
+    } else {
+      return "Go to Dashboard for your garden!";
+    }
+  }
+  return (
+    <div>
+      <h1> Welcome to our Website</h1>
+      {promtLogin()}
+    </div>
+  );
+} 
 
 
 export default function App() {
@@ -51,27 +33,28 @@ export default function App() {
       <nav className="navbar navbar-light">
         <ul className="nav navbar-nav">
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/">Welcome</Link>
           </li>
           <li>
-            <Link to="/user_home">User Login</Link>
-          </li>
-          <li>
-            <Link to="/logout">Logout</Link>
+            <Link to="/dashboard">Dashboard</Link>
           </li>
           <li>
             <Link to="/firebase_test"> Firebase test </Link>
           </li>
+          <li>
+            <Link to="/signup"> Sign Up </Link>
+          </li>
         </ul>
       </nav>
-
+    <AuthProvider>  
       <Switch>
         <Route exact path="/"><Home /></Route>
         <Route path="/login"><Login /></Route>
-        <PrivateRoute path="/user_home" component={UserHome} />
+        <Route path="/signup"><Signup /></Route>
+        <PrivateRoute exact path="/dashboard" component={Dashboard} />
         <PrivateRoute path="/firebase_test" component={FirebaseTest} />
-        <Route path = "/logout"><Logout /></Route>
       </Switch>
+    </AuthProvider>
     </div>
   );
 }
