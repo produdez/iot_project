@@ -1,50 +1,6 @@
-// // src/Category.js
-
-// import React from "react";
-// import { Link, Route, useParams, useRouteMatch } from "react-router-dom";
-
-// //! ITEM IS JUST DUMMY PAGE
-// const Item = () => {
-//   const { name } = useParams();
-
-//   return (
-//     <div>
-//       <h3>{name}</h3>
-//     </div>
-//   );
-// }
-
-// const UserHome = () => {
-//   const { url, path } = useRouteMatch();
-
-//   return (
-//     <div>
-//     <h2>{'User Menu'}</h2>
-//       <ul>
-//         <li>
-//           <Link to={`${url}/plants`}>Plants</Link>
-//         </li>
-//         <li>
-//           <Link to={`${url}/notification`}>Notification</Link>
-//         </li>
-//         <li>
-//           <Link to={`${url}/history`}>History</Link>
-//         </li>
-//       </ul>
-//       <Route path={`${path}/:name`}>
-//         <Item />
-//       </Route>
-//     </div>
-//   );
-// };
-
-// export default UserHome;
-
-
-
 
 import React, { useState } from "react"
-import { Card, Button, Alert } from "react-bootstrap"
+import { Card, Button, Alert, ListGroup } from "react-bootstrap"
 import { useAuth } from "../Context/AuthContext"
 import { Link, useHistory } from "react-router-dom"
 
@@ -72,6 +28,17 @@ export default function Dashboard() {
           {error && <Alert variant="danger">{error}</Alert>}
           <strong>User:</strong> {currentUser.email}
           <h3> This is your garden!</h3>
+        </Card.Body>
+      </Card>
+
+      <Card>
+        <Card.Body>
+          <h3 className="text-center mb-4">User Menu</h3>
+          <ListGroup>
+            <ListGroup.Item><Link to="/dashboard/notification">Notification</Link></ListGroup.Item>
+            <ListGroup.Item><Link to="/dashboard/plants">Plants</Link></ListGroup.Item>
+            <ListGroup.Item><Link to="/dashboard/activation-history">Usage History</Link></ListGroup.Item>
+          </ListGroup>
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">
