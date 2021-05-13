@@ -11,5 +11,15 @@ class Notification{
     get noti_type() { return this._noti_type;}
     get message() { return this._message;}
     //setter
+<<<<<<< Updated upstream
     
 }
+=======
+    set user_id(value) { this._user_id = value;}
+    set plant_id(value) { this._plant_id = value;}
+    set noti_type(value) { this._noti_type = value;}
+    set message(value) { this._message = value;}
+}
+
+module.exports = Notification;
+>>>>>>> Stashed changes
