@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600&display=swap');
 .Plant{
-    cursor: pointer;
+        cursor: pointer;
         font-family: 'Poppins', sans-serif;
         font-size: 15px;
         border: none;
@@ -13,4 +13,13 @@
         font-weight: 400;
         font-weight: bold;
         background-color: #E9FFE1;
+}
+.Plant:active{
+    background-color: #FFF;
+}
+.Plant:visited{
+    background-color: #FFF;
+}
+.Plant:focus{
+    background-color: #FFF;
 }
