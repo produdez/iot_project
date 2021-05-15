@@ -1,4 +1,5 @@
 import React from "react";
+
 import { Link, Route, Switch } from "react-router-dom";
 import Dashboard from "./Component/Dashboard";
 import FirebaseTest from "./Component/FirebaseTest";
@@ -8,7 +9,8 @@ import Signup from "./Component/Authentication/Signup"
 import { AuthProvider } from "./Context/AuthContext";
 import { useAuth } from "./Context/AuthContext"
 import Notification from "./Component/Notification"
-import Homepage from "./Component/Homepage"
+import Homepage from "./Component/Pages/Homepage"
+import PlantList from "./Component/Pages/PlantList";
 
 // function Home(){
 //   const { currentUser } = useAuth()
@@ -50,6 +52,7 @@ export default function App() {
     <AuthProvider>  
       <Switch>
         <Route exact path="/"><Homepage /></Route>
+        <Route exact path ="/plant"><PlantList /></Route>
         <Route path="/login"><Login /></Route>
         <Route path="/signup"><Signup /></Route>
         <PrivateRoute exact path="/dashboard" component={Dashboard} />

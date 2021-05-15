@@ -2,9 +2,9 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600&display=swap');
 /* HEADER */
 .header {
-    padding: 0 3rem;
+    padding: 0 15rem;
     /* height: 10vh; */
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
