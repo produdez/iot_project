@@ -38,6 +38,7 @@ export default function Dashboard() {
             <ListGroup.Item><Link to="/dashboard/notification">Notification</Link></ListGroup.Item>
             <ListGroup.Item><Link to="/dashboard/plants">Plants</Link></ListGroup.Item>
             <ListGroup.Item><Link to="/dashboard/activation-history">Usage History</Link></ListGroup.Item>
+            <ListGroup.Item><Link to="/EnvCond">Environment Condition</Link></ListGroup.Item>
           </ListGroup>
         </Card.Body>
       </Card>

@@ -8,7 +8,7 @@ import Signup from "./Component/Authentication/Signup"
 import { AuthProvider } from "./Context/AuthContext";
 import { useAuth } from "./Context/AuthContext"
 import Notification from "./Component/Notification"
-
+import EnvCond from "./Component/EnvCond"
 
 function Home(){
   const { currentUser } = useAuth()
@@ -47,7 +47,7 @@ export default function App() {
           </li>
         </ul>
       </nav>
-    <AuthProvider>  
+    <AuthProvider>
       <Switch>
         <Route exact path="/"><Home /></Route>
         <Route path="/login"><Login /></Route>
@@ -55,6 +55,7 @@ export default function App() {
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
         <PrivateRoute path = "/dashboard/notification" component = {Notification}/>
         <PrivateRoute path="/firebase_test" component={FirebaseTest} />
+        <PrivateRoute path="/envcond" component={EnvCond} />
       </Switch>
     </AuthProvider>
     </div>

@@ -4,6 +4,15 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
+To use this app, you will need some installing:
+### 'npm install all'
+### 'npm install react-scripts --save'
+###  'npm i bootstrap react-bootstrap'
+### 'npm install firebase'
+### 'npm install --save react-chartjs-2 chart.js'
+
+*If you can't install these package, try deleting ./package-lock.json file.
+
 In the project directory, you can run:
 
 ### `npm start`
