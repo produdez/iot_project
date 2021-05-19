@@ -1,4 +1,5 @@
 import React from "react";
+
 import { Link, Route, Switch } from "react-router-dom";
 import Dashboard from "./Component/Dashboard";
 import FirebaseTest from "./Component/FirebaseTest";
@@ -8,30 +9,31 @@ import Signup from "./Component/Authentication/Signup"
 import { AuthProvider } from "./Context/AuthContext";
 import { useAuth } from "./Context/AuthContext"
 import Notification from "./Component/Notification"
-import EnvCond from "./Component/EnvCond"
+import Homepage from "./Component/Pages/Homepage"
+import PlantList from "./Component/Pages/PlantList";
 
-function Home(){
-  const { currentUser } = useAuth()
-  const promtLogin = () => {
-    if (currentUser) {
-      return "Login or Signup";
-    } else {
-      return "Go to Dashboard for your garden!";
-    }
-  }
-  return (
-    <div>
-      <h1> Welcome to our Website</h1>
-      {promtLogin()}
-    </div>
-  );
-} 
+// function Home(){
+//   const { currentUser } = useAuth()
+//   const promtLogin = () => {
+//     if (currentUser) {
+//       return "Login or Signup";
+//     } else {
+//       return "Go to Dashboard for your garden!";
+//     }
+//   }
+//   return (
+//     <div>
+//       <h1> Welcome to our Website</h1>
+//       {promtLogin()}
+//     </div>
+//   );
+// } 
 
 
 export default function App() {
   return (
     <div>
-      <nav className="navbar navbar-light">
+      {/* <nav className="navbar navbar-light">
         <ul className="nav navbar-nav">
           <li>
             <Link to="/">Welcome</Link>
@@ -46,10 +48,11 @@ export default function App() {
             <Link to="/signup"> Sign Up </Link>
           </li>
         </ul>
-      </nav>
-    <AuthProvider>
+      </nav> */}
+    <AuthProvider>  
       <Switch>
-        <Route exact path="/"><Home /></Route>
+        <Route exact path="/"><Homepage /></Route>
+        <Route exact path ="/plant"><PlantList /></Route>
         <Route path="/login"><Login /></Route>
         <Route path="/signup"><Signup /></Route>
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
