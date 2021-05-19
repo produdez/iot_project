@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 
 import classes from './PlantSetting.module.css'
 
-
 export default class PlantSetting extends Component {
     constructor(props){
         super(props)
@@ -11,6 +10,7 @@ export default class PlantSetting extends Component {
             inputWaterAmount:'',
             inputMinimumMoisture:'',
             inputTimeInterval:'',
+            waterOn: false,
         };
     }
     waterAmountHandler = (event) =>{
@@ -29,6 +29,23 @@ export default class PlantSetting extends Component {
         console.log(this.props.plant);
         this.setState(this.props.plant);
     }
+
+    manualPumpHandler = () => {
+      console.log('manual pump clicked')
+
+      let publishValue = this.state.waterOn?0:1; // if water is on: turn off, else turn on
+      window.mqttClient.publish('zymeth/feeds/bk-iot-relay', JSON.stringify(publishValue));
+      this.setState((state) => ({...state, waterOn: !state.waterOn}))
+    }
+
+    componentDidMount() {
+      // subscribe to 'bk-iot-soil' or sth
+      
+      window.mqttClient.on('message', (topic, msg) => {
+        console.log('in PlantSettings')
+        console.log('from server: ' + topic + " " + msg.toString())
+      })
+    }
     render(){
         return(<div>
                 <h2 className={classes.modal__header} >{this.props.plant.name}</h2>
@@ -46,6 +63,7 @@ export default class PlantSetting extends Component {
                 <div>{this.props.plant.waterAmount},{this.props.plant.minimumMoisture},{this.props.plant.waterMode ? "Auto" : "Manual"} 
                 </div>
                 <button className={classes.btn} onClick={this.saveHandler}>Save</button>
+                <button className={classes.btn} onClick={this.manualPumpHandler}>Pump: {this.state.waterOn?"ON":"OFF"}</button>
                 </div>
             </div>
         );
