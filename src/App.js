@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import mqtt from "mqtt";
+
 import { Link, Route, Switch } from "react-router-dom";
 import Dashboard from "./Component/Dashboard";
 import FirebaseTest from "./Component/FirebaseTest";
@@ -34,24 +34,7 @@ import Navbar from './Component/Navbars/Navbar'
 
 
 export default function App() {
-    useEffect(() => {
-    const options = {
-      username: process.env.REACT_APP_ZYMETH_ADA_ID,
-      password: process.env.REACT_APP_ZYMETH_ADA_KEY
-    };
-    const url = 'tcp://io.adafruit.com:443';
 
-    window.mqttClient = mqtt.connect(url, options);
-    window.mqttClient.on('connect', (connack)=>{
-      window.mqttClient.subscribe('tuhuynh/feeds/iot-temp', (err, granted) => {if (err) console.log(err)})
-      console.log('connect to adafruit successfully')
-    })
-    window.mqttClient.on('message', function(topic, message){
-      console.log(message.toString())
-    })
-
-
-  })
   return (
     <div>
       {/* <nav className="navbar navbar-light">
@@ -81,7 +64,7 @@ export default function App() {
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
         <PrivateRoute path = "/notification" component = {Notification}/>
         <PrivateRoute path="/firebase_test" component={FirebaseTest} />
-        {/* <PrivateRoute path="/envcond" component={EnvCond} /> */}
+        <PrivateRoute path="/envcond" component={EnvCond} /> 
       </Switch>
     </AuthProvider>
     </div>
