@@ -2,8 +2,11 @@ import React, {Component} from 'react';
 import NavButton from '../Buttons/NavButton.js';
 import styles from './Navbar.module.css'
 import {Link} from 'react-router-dom';
-export default function Navbar(){
+import { useAuth } from "../../Context/AuthContext"
 
+
+export default function Navbar(){
+        const currentUser = { useAuth}
    
         return(
             <header className={styles.header}>
@@ -21,13 +24,29 @@ export default function Navbar(){
                         <li className={styles.nav__item}>
                             <NavButton >Environment Condition</NavButton>
                         </li>
+
+                        <li className={styles.nav__item}>
+                            <Link to="/notification" style={{ textDecoration: 'none' }}><NavButton >Notifications</NavButton></Link> 
+                        </li> 
                         
-                        <li className={styles.nav__item}>
-                        <Link  to="/login" style={{ textDecoration: 'none' }}><NavButton>Login</NavButton></Link>
-                        </li>
-                        <li className={styles.nav__item}>
-                            <Link to="signup" style={{ textDecoration: 'none' }}><NavButton >Register</NavButton></Link> 
-                        </li>    
+                        { !currentUser &&
+                        <>
+                            <li className={styles.nav__item}>
+                            <Link  to="/login" style={{ textDecoration: 'none' }}><NavButton>Login</NavButton></Link>
+                            </li>
+                            <li className={styles.nav__item}>
+                                <Link to="signup" style={{ textDecoration: 'none' }}><NavButton >Register</NavButton></Link> 
+                            </li>
+                        </>
+                        }
+                        {
+                            currentUser &&
+                            <li className={styles.nav__item}>
+                            <Link to = "/logout" style={{ textDecoration: 'none' }}><NavButton > Logout </NavButton></Link>
+                            </li>
+                        }
+                        
+   
                   
                 
                   

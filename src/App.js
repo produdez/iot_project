@@ -6,6 +6,7 @@ import FirebaseTest from "./Component/FirebaseTest";
 import PrivateRoute from "./API/PrivateRouteHelper"
 import Login from "./Component/Authentication/Login"
 import Signup from "./Component/Authentication/Signup"
+import Logout from "./Component/Authentication/Logout"
 import { AuthProvider } from "./Context/AuthContext";
 import { useAuth } from "./Context/AuthContext"
 import Notification from "./Component/Notification"
@@ -75,9 +76,10 @@ export default function App() {
         <Route exact path="/"><Homepage /></Route>
         <Route path="/login"><Login /></Route>
         <Route path="/signup"><Signup /></Route>
+        <Route path="/logout"><Logout /></Route>
         <PrivateRoute path ="/plant" component={PlantList}/>
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
-        <PrivateRoute path = "/dashboard/notification" component = {Notification}/>
+        <PrivateRoute path = "/notification" component = {Notification}/>
         <PrivateRoute path="/firebase_test" component={FirebaseTest} />
         {/* <PrivateRoute path="/envcond" component={EnvCond} /> */}
       </Switch>
