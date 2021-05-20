@@ -6,8 +6,8 @@ import {Line} from "react-chartjs-2"
         constructor(props) {
             super(props);
             this.state = {
-                data: null,
-                keys: []
+                values: [],
+                date_time: []
             }
             }
 
