@@ -1,5 +1,5 @@
 import React from "react"
-import firebase from "firebase/app"
+// import firebase from "firebase/app"
 import {Line} from "react-chartjs-2"
 import mqtt from "mqtt";
 
@@ -25,15 +25,27 @@ import mqtt from "mqtt";
                   password: process.env.REACT_APP_ZYMETH_ADA_KEY
                 };
                 const url = 'tcp://io.adafruit.com:443';
-                window.mqttClient = mqtt.connect(url, options);
-                window.mqttClient.on('connect', (connack)=>{
-                  window.mqttClient.subscribe('bkiot/feeds/captured_temp', (err, granted) => {if (err) console.log(err)})
+                this.mqttClient = mqtt.connect(url, options);
+                this.mqttClient.on('connect', (connack)=>{
+                  console.log('Info:', connack)
+                  this.mqttClient.subscribe('bkiot/feeds/captured_temp', (err, granted) => {if (err) console.log(err)})
                   console.log('connect to adafruit successfully')
                 })
-                window.mqttClient.on('message', function(topic, message){
+                this.mqttClient.on('message', (topic,message)=>{
                     console.log(parseFloat(message.toString()))
-                    console.log(Date().toLocaleString())
+                    const date = new Date();
+                    const options = {
+                        weekday: 'short',
+                        dateStyle: 'short',
+                        era: 'short',
+                        second: 'null'
+                      }
+                    this.setState({
+                        values: this.state.values.concat(parseFloat(message.toString())),
+                        date_time: this.state.date_time.concat(date.toLocaleString(options))
+                    })
                     console.log(this.state.values)
+                    console.log(this.state.date_time)
                     })
         }
 
@@ -55,13 +67,13 @@ import mqtt from "mqtt";
             <div>
                 <Line
                     data= {{
-                        labels: [],
+                        labels: this.state.date_time,
                         datasets: [
                             {
                                 label: 'Environment Condition Chart',
-                                data: this.state.data,
+                                data: this.state.values,
                             }
-                        ]
+                        ],
                     }}
                     height = {1}
                     width = {5}
