@@ -22,7 +22,7 @@ export default function Navbar(){
                             </Link>
                         </li>
                         <li className={styles.nav__item}>
-                            <NavButton >Environment Condition</NavButton>
+                           <Link to="/envcond" style={{ textDecoration: 'none' }}><NavButton >Environment Condition</NavButton></Link>
                         </li>
 
                         <li className={styles.nav__item}>
