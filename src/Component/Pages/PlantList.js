@@ -4,23 +4,23 @@ import classes from './PlantList.module.css'
 import Plant from '../Plant.js';
 import PlantSetting from './PlantSetting'
 
-
+const Plants = [
+    {id:1 ,name: 'Plant 1', waterMode:true, waterAmount:10, minimumMoisture: 50, timeInterval: '1 day'},
+    {id:2 ,name: 'Plant 2', waterMode:true, waterAmount:5, minimumMoisture: 20, timeInterval: '1 day'},   // True: Auto, False: Manually
+    {id:3 ,name: 'Plant 3', waterMode:false, waterAmount:7, minimumMoisture: 8, timeInterval: '1 day'},
+];
 const PlantList = props => {
-    const Plants = [
-        {id:1 ,name: 'Plant 1', waterMode:true, waterAmount:10, minimumMoisture: 50, timeInterval: '1 day'},
-        {id:2 ,name: 'Plant 2', waterMode:true, waterAmount:5, minimumMoisture: 20, timeInterval: '1 day'},   // True: Auto, False: Manually
-        {id:3 ,name: 'Plant 3', waterMode:false, waterAmount:7, minimumMoisture: 8, timeInterval: '1 day'},
-    ];
+   
     const isCorrect = (plant) => {
         return plant.id === currentPlant;
     }
     const [currentPlant, setCurrentPlant] = useState(1);
     const choosePlant = (plantID) => {
         setCurrentPlant(plantID);
+        console.log(Plants)
     }
         return(
         <div>
-            <Navbar/>
             <div className={classes.row}>
                 <div className={classes.columnList}>
                    {Plants.map(plant=>
@@ -28,7 +28,7 @@ const PlantList = props => {
                    )}
                 </div>
                 <div className={classes.columnSetting}>
-                    <PlantSetting plant={Plants.find(isCorrect)}/>
+                    <PlantSetting plant={Plants[currentPlant-1]} /*{Plants.find(isCorrect)}*/ />
                 </div>
             </div>
         </div>

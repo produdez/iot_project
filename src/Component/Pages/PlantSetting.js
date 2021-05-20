@@ -7,7 +7,7 @@ export default class PlantSetting extends Component {
     constructor(props){
         super(props)
         this.state = {
-            inputWaterMode:'',
+            inputWaterMode:this.props.plant.waterMode,
             inputWaterAmount:'',
             inputMinimumMoisture:'',
             inputTimeInterval:'',

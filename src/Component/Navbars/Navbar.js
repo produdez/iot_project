@@ -1,37 +1,36 @@
 import React, {Component} from 'react';
 import NavButton from '../Buttons/NavButton.js';
 import styles from './Navbar.module.css'
-export default class Navbar extends Component{
-    constructor(props){
-        super(props)
-        this.state = {
-            id: '',
-            userName: '',
-            isLogin:'',
-        };
-    }
-    render(){
+import {Link} from 'react-router-dom';
+export default function Navbar(){
+
+   
         return(
             <header className={styles.header}>
                 <nav className={styles.nav}>
+                <Link to="/" style={{ textDecoration: 'none', color:'black' }}>
                     <div className={styles.nav__logo}>Irrigation System</div>
+                    </Link>
 
                     <ul className={styles.nav__links}>
+                    
                         <li className={styles.nav__item}>
-                            <NavButton >Overview</NavButton>
-                        </li>
-                        <li className={styles.nav__item}>
-                            <NavButton >History</NavButton>
+                            <Link to="/plant" style={{ textDecoration: 'none' }}><NavButton >Plant Settings</NavButton>
+                            </Link>
                         </li>
                         <li className={styles.nav__item}>
                             <NavButton >Environment Condition</NavButton>
                         </li>
+                        
                         <li className={styles.nav__item}>
-                            <NavButton >Login</NavButton>
+                        <Link  to="/login" style={{ textDecoration: 'none' }}><NavButton>Login</NavButton></Link>
                         </li>
                         <li className={styles.nav__item}>
-                            <NavButton >Register</NavButton>
-                        </li>      
+                            <Link to="signup" style={{ textDecoration: 'none' }}><NavButton >Register</NavButton></Link> 
+                        </li>    
+                  
+                
+                  
                         {/* {!this.state.isLogin ?
                         [
                         <li className="nav__item">
@@ -49,5 +48,6 @@ export default class Navbar extends Component{
                     </ul>
                 </nav>
             </header>)
+           
     }
-}
+

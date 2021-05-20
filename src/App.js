@@ -11,7 +11,7 @@ import { useAuth } from "./Context/AuthContext"
 import Notification from "./Component/Notification"
 import Homepage from "./Component/Pages/Homepage"
 import PlantList from "./Component/Pages/PlantList";
-
+import Navbar from './Component/Navbars/Navbar'
 // function Home(){
 //   const { currentUser } = useAuth()
 //   const promtLogin = () => {
@@ -49,16 +49,17 @@ export default function App() {
           </li>
         </ul>
       </nav> */}
+      <Navbar></Navbar>
     <AuthProvider>  
       <Switch>
         <Route exact path="/"><Homepage /></Route>
-        <Route exact path ="/plant"><PlantList /></Route>
         <Route path="/login"><Login /></Route>
         <Route path="/signup"><Signup /></Route>
+        <PrivateRoute path ="/plant" component={PlantList}/>
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
         <PrivateRoute path = "/dashboard/notification" component = {Notification}/>
         <PrivateRoute path="/firebase_test" component={FirebaseTest} />
-        <PrivateRoute path="/envcond" component={EnvCond} />
+        {/* <PrivateRoute path="/envcond" component={EnvCond} /> */}
       </Switch>
     </AuthProvider>
     </div>
