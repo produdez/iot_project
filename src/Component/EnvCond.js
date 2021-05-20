@@ -6,7 +6,8 @@ import {Line} from "react-chartjs-2"
         constructor(props) {
             super(props);
             this.state = {
-                data: null
+                data: null,
+                keys: []
             }
             }
 
@@ -14,20 +15,32 @@ import {Line} from "react-chartjs-2"
             var ref = firebase.database().ref('EnvironmentData');
             ref.on('value', (snapshot)=>{
                 this.setState({...this.state, data: snapshot.val()})
+                this.setState({
+                    keys: this.state.data?Object.keys(this.state.data):this.state.keys
+                 })
             });
+            
         }
 
         render() {
-            console.log(this.state.data)
+            if (this.state.keys) {
+            console.log(this.state.keys)
+            var value = []
+            for (var i = 0; i < this.state.keys.length; i++) {
+                var k = this.state.keys[i];
+                var plantId = this.state.data[k].plantId;
+                value = value.concat(this.state.data[k].value);
+                console.log(plantId,value)
+            }
             return(
             <div>
                 <Line
                     data= {{
-                        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                        labels: this.state.keys,
                         datasets: [
                             {
-                                label: '# of Votes',
-                                data: this.state.data?[this.state.data.ed1.value, this.state.data.ed2.value]:[],
+                                label: 'Environment Condition Chart',
+                                data: value,
                             }
                         ]
                     }}
@@ -43,6 +56,8 @@ import {Line} from "react-chartjs-2"
                 />
             </div>
             )
+    }
+    return <div>Loading </div>
     }
 }
 

@@ -11,6 +11,7 @@
     "bootstrap": "^5.0.0",
     "chart.js": "^3.2.1",
     "firebase": "^8.6.1",
+    "mqtt": "^4.2.6",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.0",
     "react-chartjs-2": "^3.0.3",

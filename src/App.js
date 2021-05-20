@@ -1,5 +1,5 @@
-import React from "react";
-
+import React, {useEffect} from "react";
+import mqtt from "mqtt";
 import { Link, Route, Switch } from "react-router-dom";
 import Dashboard from "./Component/Dashboard";
 import FirebaseTest from "./Component/FirebaseTest";
@@ -11,6 +11,7 @@ import { useAuth } from "./Context/AuthContext"
 import Notification from "./Component/Notification"
 import Homepage from "./Component/Pages/Homepage"
 import PlantList from "./Component/Pages/PlantList";
+import EnvCond from "./Component/EnvCond";
 
 // function Home(){
 //   const { currentUser } = useAuth()
@@ -31,6 +32,24 @@ import PlantList from "./Component/Pages/PlantList";
 
 
 export default function App() {
+    useEffect(() => {
+    const options = {
+      username: process.env.REACT_APP_ZYMETH_ADA_ID,
+      password: process.env.REACT_APP_ZYMETH_ADA_KEY
+    };
+    const url = 'tcp://io.adafruit.com:443';
+
+    window.mqttClient = mqtt.connect(url, options);
+    window.mqttClient.on('connect', (connack)=>{
+      window.mqttClient.subscribe('tuhuynh/feeds/iot-temp', (err, granted) => {if (err) console.log(err)})
+      console.log('connect to adafruit successfully')
+    })
+    window.mqttClient.on('message', function(topic, message){
+      console.log(message.toString())
+    })
+
+
+  })
   return (
     <div>
       {/* <nav className="navbar navbar-light">
