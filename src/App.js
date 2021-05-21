@@ -1,5 +1,5 @@
-import React, {useEffect} from "react";
-
+import React, { useEffect } from "react";
+import mqtt from "mqtt";
 import { Link, Route, Switch } from "react-router-dom";
 import Dashboard from "./Component/Dashboard";
 import FirebaseTest from "./Component/FirebaseTest";
@@ -32,9 +32,21 @@ import Navbar from './Component/Navbars/Navbar'
 //   );
 // } 
 
-
 export default function App() {
+  useEffect(() => {
+    const options = {
+      username: process.env.REACT_APP_ZYMETH_ADA_ID,
+      password: process.env.REACT_APP_ZYMETH_ADA_KEY
+    };
+    const url = 'tcp://io.adafruit.com:443';
 
+    window.mqttClient = mqtt.connect(url, options);
+    window.mqttClient.on('connect', (connack)=>{
+      window.mqttClient.subscribe('bkiot/feeds/bk-iot-relay', (err, granted) => {if (err) console.log(err)})
+      console.log('connect to adafruit successfully')
+    })
+    
+  })
   return (
     <div>
       {/* <nav className="navbar navbar-light">
