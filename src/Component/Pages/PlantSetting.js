@@ -34,7 +34,7 @@ export default class PlantSetting extends Component {
       console.log('manual pump clicked')
 
       let publishValue = this.state.waterOn?0:1; // if water is on: turn off, else turn on
-      window.mqttClient.publish('zymeth/feeds/bk-iot-relay', JSON.stringify(publishValue));
+      window.mqttClient.publish('bkiot/feeds/bk-iot-relay', JSON.stringify(publishValue));
       this.setState((state) => ({...state, waterOn: !state.waterOn}))
     }
 

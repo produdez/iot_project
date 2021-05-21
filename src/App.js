@@ -39,7 +39,7 @@ export default function App() {
 
     window.mqttClient = mqtt.connect(url, options);
     window.mqttClient.on('connect', (connack)=>{
-      window.mqttClient.subscribe('zymeth/feeds/bk-iot-relay', (err, granted) => {if (err) console.log(err)})
+      window.mqttClient.subscribe('bkiot/feeds/bk-iot-relay', (err, granted) => {if (err) console.log(err)})
       console.log('connect to adafruit successfully')
     })
     
