@@ -16,13 +16,14 @@ export default function Navbar(){
                     </Link>
 
                     <ul className={styles.nav__links}>
-                    
+
                         <li className={styles.nav__item}>
                             <Link to="/plant" style={{ textDecoration: 'none' }}><NavButton >Plant Settings</NavButton>
                             </Link>
                         </li>
                         <li className={styles.nav__item}>
-                           <Link to="/envcond" style={{ textDecoration: 'none' }}><NavButton >Environment Condition</NavButton></Link>
+                            <Link to="/envcond" style={{ textDecoration: 'none' }}><NavButton >Environment Condition</NavButton>
+                            </Link>
                         </li>
 
                         <li className={styles.nav__item}>
