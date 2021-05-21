@@ -7,7 +7,7 @@ import mqtt from "mqtt";
         constructor(props) {
             super(props);
             this.state = {
-                values: [1,3],
+                values: [],
                 date_time: []
             }
             }
