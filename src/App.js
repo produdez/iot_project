@@ -64,7 +64,7 @@ export default function App() {
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
         <PrivateRoute path = "/notification" component = {Notification}/>
         <PrivateRoute path="/firebase_test" component={FirebaseTest} />
-        <PrivateRoute path="/envcond" component={EnvCond} /> 
+        <PrivateRoute path="/envcond" component={EnvCond} />
       </Switch>
     </AuthProvider>
     </div>
