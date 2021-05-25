@@ -15,6 +15,8 @@ import PlantList from "./Component/Pages/PlantList";
 import EnvCond from "./Component/EnvCond";
 
 import Navbar from './Component/Navbars/Navbar'
+import NotificationService from './API/NotificationService'
+
 // function Home(){
 //   const { currentUser } = useAuth()
 //   const promtLogin = () => {
@@ -33,6 +35,7 @@ import Navbar from './Component/Navbars/Navbar'
 // } 
 
 export default function App() {
+  NotificationService(); //setup notification service
   useEffect(() => {
     const options = {
       username: process.env.REACT_APP_ZYMETH_ADA_ID,

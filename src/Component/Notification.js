@@ -17,12 +17,18 @@ var NTYPE = {
     8: ['Error', 'Fkin Error Mate']
 }
 
-const DUMMY_NOTIFICATION = [
+export const DUMMY_NOTIFICATION = [
     {plant_id: 1, plant_name: 'Plant 1', notification_type: NTYPE[1][0]},
     {plant_id: 2, plant_name: 'Plant 2', notification_type: NTYPE[2][0]},
     {plant_id: 3, plant_name: 'Plant 3', notification_type: NTYPE[3][0]},
     {plant_id: 4, plant_name: 'Plant 4', notification_type: NTYPE[4][0]},
-    { plant_id: 5, plant_name: 'Plant 5', notification_type: NTYPE[5][0]},
+    {plant_id: 5, plant_name: 'Plant 5', notification_type: NTYPE[5][0]},
+    {plant_id: 6, plant_name: 'Plant 6', notification_type: NTYPE[6][0]},
+    {plant_id: 7, plant_name: 'Plant 7', notification_type: NTYPE[7][0]},
+    {plant_id: 8, plant_name: 'Plant 8', notification_type: NTYPE[8][0]},
+    {plant_id: 9, plant_name: 'Plant 9', notification_type: NTYPE[1][0]},
+    {plant_id: 10, plant_name: 'Plant 10', notification_type: NTYPE[2][0]},
+    {plant_id: 11, plant_name: 'Plant 11', notification_type: NTYPE[3][0]}
 ];
 
 
@@ -70,8 +76,13 @@ export default class Notification extends React.Component {
     }
 
     notidiv(){
-        if (Object.keys(this.state.data).length === 0){
-            return 'No notifications for now, looking goood!';
+        if (this.state.data == null){
+            return(
+            <>
+                'No notifications for now, looking goood!'
+                <button onClick={this.add_dummy_notification.bind(this)}>Populate Dummy notifications</button>
+            </>);
+            
         }
         return (
             <>
@@ -124,7 +135,7 @@ export default class Notification extends React.Component {
         console.log('Routing to', val.plant_name);
         
         //TODO: route to appropriate plant
-        this.props.history.push('/plant')
+        // this.props.history.push('/plant')
 
         //del noti from db
         var ref = firebase.database().ref('Notification/' + key);
