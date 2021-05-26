@@ -13,7 +13,7 @@ import Notification from "./Component/Notification"
 import Homepage from "./Component/Pages/Homepage"
 import PlantList from "./Component/Pages/PlantList";
 import EnvCond from "./Component/EnvCond";
-
+import History from "./Component/Pages/HistoryPage"
 import Navbar from './Component/Navbars/Navbar'
 import NotificationService from './API/NotificationService'
 
@@ -33,6 +33,20 @@ import NotificationService from './API/NotificationService'
 //     </div>
 //   );
 // } 
+const historyData = [
+  {id: 1,
+  date: new Date(2021, 2,28),
+  description:'PUMP!'
+  },
+  {id: 2,
+  date: new Date(2021, 6,28),
+  description:'PUMP!'
+  },
+  {id: 3,
+  date: new Date(2021, 7,28),
+  description:'PUMP!'
+  },
+]
 
 export default function App() {
   NotificationService(); //setup notification service
@@ -75,6 +89,7 @@ export default function App() {
         <Route path="/login"><Login /></Route>
         <Route path="/signup"><Signup /></Route>
         <Route path="/logout"><Logout /></Route>
+        <Route path="/history"><History items={historyData}/></Route>
         <PrivateRoute path ="/plant" component={PlantList}/>
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
         <PrivateRoute path = "/notification" component = {Notification}/>
