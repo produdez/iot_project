@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import mqtt from "mqtt";
 import { Link, Route, Switch } from "react-router-dom";
 import Dashboard from "./Component/Dashboard";
@@ -15,6 +15,8 @@ import PlantList from "./Component/Pages/PlantList";
 import EnvCond from "./Component/EnvCond";
 
 import Navbar from './Component/Navbars/Navbar'
+import NotificationService from './API/NotificationService'
+
 // function Home(){
 //   const { currentUser } = useAuth()
 //   const promtLogin = () => {
@@ -32,9 +34,9 @@ import Navbar from './Component/Navbars/Navbar'
 //   );
 // } 
 
-
 export default function App() {
-    useEffect(() => {
+  NotificationService(); //setup notification service
+  useEffect(() => {
     const options = {
       username: process.env.REACT_APP_ZYMETH_ADA_ID,
       password: process.env.REACT_APP_ZYMETH_ADA_KEY
@@ -43,14 +45,10 @@ export default function App() {
 
     window.mqttClient = mqtt.connect(url, options);
     window.mqttClient.on('connect', (connack)=>{
-      window.mqttClient.subscribe('tuhuynh/feeds/iot-temp', (err, granted) => {if (err) console.log(err)})
+      window.mqttClient.subscribe('bkiot/feeds/bk-iot-relay', (err, granted) => {if (err) console.log(err)})
       console.log('connect to adafruit successfully')
     })
-    window.mqttClient.on('message', function(topic, message){
-      console.log(message.toString())
-    })
-
-
+    
   })
   return (
     <div>
@@ -81,7 +79,7 @@ export default function App() {
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
         <PrivateRoute path = "/notification" component = {Notification}/>
         <PrivateRoute path="/firebase_test" component={FirebaseTest} />
-        {/* <PrivateRoute path="/envcond" component={EnvCond} /> */}
+        <PrivateRoute path="/envcond" component={EnvCond} />
       </Switch>
     </AuthProvider>
     </div>
