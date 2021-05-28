@@ -48,7 +48,7 @@ export default function App() {
       window.mqttClient.subscribe('bkiot/feeds/bk-iot-relay', (err, granted) => {if (err) console.log(err)})
       console.log('connect to adafruit successfully')
     })
-    
+
   })
   return (
     <div>

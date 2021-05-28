@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import Navbar from '../Navbars/Navbar'
+// import Navbar from '../Navbars/Navbar'
 import classes from './PlantList.module.css'
 import Plant from '../Plant.js';
 import PlantSetting from './PlantSetting'
