@@ -25,7 +25,7 @@ import mqtt from "mqtt";
             // });
             // var AIO = require('adafruit-io');
             // // replace xxxxxxxxxxxx with your AIO Key
-            // AIO('bkiot', 'aio_pKqF05Ewv10zCgJyBGg8WNi2bjHN').feeds(function(err, feeds) {
+            // AIO('bkiot', '').feeds(function(err, feeds) {
 
             //         if(err) {
             //           return console.error(err);
