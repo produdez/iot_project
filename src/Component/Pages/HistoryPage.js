@@ -7,25 +7,26 @@ import HistoryList from './HistoryList'
 import './HistoryPage.css';
 
 const History = (props) => {
-  const [filteredYear, setFilteredYear] = useState('2020');
 
-  const filterChangeHandler = (selectedYear) => {
-    setFilteredYear(selectedYear);
+  const [filteredMonth, setFilteredMonth] = useState('Aug');
+  console.log(props.items[0].date.toLocaleString('en-US', { month: 'long' }));
+  const filterChangeHandler = (selectedMonth) => {
+    setFilteredMonth(selectedMonth);
   };
-
-  const filteredExpenses = props.items.filter((expense) => {
-    return expense.date.getFullYear().toString() === filteredYear;
-    // console.log(expense);
+  console.log(filteredMonth);
+  const filteredHistory = props.items.filter((expense) => {
+    return expense.date.toLocaleString('en-US', { month: 'long' }).slice(0,3) === filteredMonth;
+  
   });
 
   return (
     <div>
-      <Card className='expenses'>
+      <Card className='history'>
         <HistoryFilter
-          selected={filteredYear}
+          selected={filteredMonth}
           onChangeFilter={filterChangeHandler}
         />
-        <HistoryList items={filteredExpenses} />
+        <HistoryList items={filteredHistory} />
       </Card>
     </div>
   );

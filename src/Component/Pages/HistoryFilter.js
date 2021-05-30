@@ -2,32 +2,32 @@ import React from 'react';
 
 import './HistoryFilter.css';
 
-const ExpensesFilter = (props) => {
+const HistoryFilter = (props) => {
   const dropdownChangeHandler = (event) => {
-    // props.onChangeFilter(event.target.value);
+    props.onChangeFilter(event.target.value);
   };
 
   return (
     <div className='expenses-filter'>
       <div className='expenses-filter__control'>
-        <label>Filter by year</label>
+        <label>Filter by month</label>
         <select value={props.selected} onChange={dropdownChangeHandler}>
-          <option value='2022'>Jan</option>
-          <option value='2021'>Feb</option>
-          <option value='2019'>Apr</option>
-          <option value='2019'>Mar</option>
-          <option value='2020'>May</option>
-          <option value='2020'>Jun</option>
-          <option value='2020'>Jul</option>
-          <option value='2020'>Aug</option>
-          <option value='2020'>Sep</option>
-          <option value='2020'>Oct</option>
-          <option value='2020'>Nov</option>
-          <option value='2020'>Dec</option>
+          <option value='Jan'>Jan</option>
+          <option value='Feb'>Feb</option>
+          <option value='Apr'>Apr</option>
+          <option value='Mar'>Mar</option>
+          <option value='May'>May</option>
+          <option value='Jun'>Jun</option>
+          <option value='Jul'>Jul</option>
+          <option value='Aug'>Aug</option>
+          <option value='Sep'>Sep</option>
+          <option value='Oct'>Oct</option>
+          <option value='Nov'>Nov</option>
+          <option value='Dec'>Dec</option>
         </select>
       </div>
     </div>
   );
 };
 
-export default ExpensesFilter;
+export default HistoryFilter;
