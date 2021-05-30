@@ -35,7 +35,6 @@ import NotificationService from './API/NotificationService'
 // } 
 
 export default function App() {
-  NotificationService(); //setup notification service
   useEffect(() => {
     const options = {
       username: process.env.REACT_APP_ZYMETH_ADA_ID,
@@ -45,11 +44,14 @@ export default function App() {
 
     window.mqttClient = mqtt.connect(url, options);
     window.mqttClient.on('connect', (connack)=>{
+      //! subscribe to needed ada servers
+      window.mqttClient.subscribe('bkiot/feeds/notification', (err, granted) => {if (err) console.log(err)})
       window.mqttClient.subscribe('bkiot/feeds/bk-iot-relay', (err, granted) => {if (err) console.log(err)})
       console.log('connect to adafruit successfully')
     })
 
   })
+  NotificationService(); 
   return (
     <div>
       {/* <nav className="navbar navbar-light">
