@@ -7,8 +7,10 @@ import mqtt from "mqtt";
         constructor(props) {
             super(props);
             this.state = {
-                values: [],
-                date_time: []
+                temp_values: [],
+                temp_date_time: [],
+                humid_values: [],
+                humid_date_time: []
             }
             }
 
@@ -21,19 +23,30 @@ import mqtt from "mqtt";
             //         keys: this.state.data?Object.keys(this.state.data):this.state.keys
             //      })
             // });
+            // var AIO = require('adafruit-io');
+            // // replace xxxxxxxxxxxx with your AIO Key
+            // AIO('bkiot', '').feeds(function(err, feeds) {
+
+            //         if(err) {
+            //           return console.error(err);
+            //         }
+
+            //         // log feeds array
+            //         console.log(feeds);
+
+            //       });
                 const options = {
                   username: process.env.REACT_APP_ZYMETH_ADA_ID,
                   password: process.env.REACT_APP_ZYMETH_ADA_KEY
                 };
                 const url = 'tcp://io.adafruit.com:443';
                 this.mqttClient = mqtt.connect(url, options);
+                this.mqttClient2 = mqtt.connect(url,options);
                 this.mqttClient.on('connect', (connack)=>{
-                  console.log('Info:', connack)
                   this.mqttClient.subscribe('bkiot/feeds/captured_temp', (err, granted) => {if (err) console.log(err)})
-                  console.log('connect to adafruit successfully')
-                })
+                  console.log('connect to temp successfully')
+                });
                 this.mqttClient.on('message', (topic,message)=>{
-                    console.log(parseFloat(message.toString()))
                     const date = new Date();
                     const options = {
                         weekday: 'short',
@@ -42,12 +55,27 @@ import mqtt from "mqtt";
                         second: 'null'
                       }
                     this.setState({
-                        values: this.state.values.concat(parseFloat(message.toString())),
-                        date_time: this.state.date_time.concat(date.toLocaleString(options))
+                        temp_values: this.state.temp_values.concat(parseFloat(message.toString())),
+                        temp_date_time: this.state.temp_date_time.concat(date.toLocaleString(options))
                     })
-                    console.log(this.state.values)
-                    console.log(this.state.date_time)
+                });
+                this.mqttClient2.on('connect', (connack)=>{
+                    this.mqttClient2.subscribe('bkiot/feeds/captured_humidity', (err, granted) => {if (err) console.log(err)})
+                    console.log('connect to humidity successfully')
+                });
+                this.mqttClient2.on('message', (topic,message)=>{
+                    const date = new Date();
+                    const options = {
+                        weekday: 'short',
+                        dateStyle: 'short',
+                        era: 'short',
+                        second: 'null'
+                      }
+                    this.setState({
+                        humid_values: this.state.humid_values.concat(parseFloat(message.toString())),
+                        humid_date_time: this.state.humid_date_time.concat(date.toLocaleString(options))
                     })
+                });
         }
 
         componentWillUnmount(){
@@ -68,11 +96,31 @@ import mqtt from "mqtt";
             <div>
                 <Line
                     data= {{
-                        labels: this.state.date_time,
+                        labels: this.state.temp_date_time,
                         datasets: [
                             {
-                                label: 'Environment Condition Chart',
-                                data: this.state.values,
+                                label: 'Environment Temperature Chart',
+                                data: this.state.temp_values,
+                            }
+                        ],
+                    }}
+                    height = {1}
+                    width = {5}
+                    options= {{
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }}
+                />
+                <Line
+                    data= {{
+                        labels: this.state.humid_date_time,
+                        datasets: [
+                            {
+                                label: 'Environment Humidity Chart',
+                                data: this.state.humid_values,
                             }
                         ],
                     }}

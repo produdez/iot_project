@@ -1,7 +1,7 @@
 import React , {useState } from "react"
 import { Card, Button, ListGroup } from "react-bootstrap"
-import { useAuth } from "../Context/AuthContext"
-import { useHistory } from "react-router-dom";
+// import { useAuth } from "../Context/AuthContext"
+// import { useHistory } from "react-router-dom";
 import firebase from "firebase/app"
 
 //! data type definition
