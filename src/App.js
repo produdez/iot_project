@@ -15,8 +15,6 @@ import PlantList from "./Component/Pages/PlantList";
 import EnvCond from "./Component/EnvCond";
 import History from "./Component/Pages/HistoryPage"
 import Navbar from './Component/Navbars/Navbar'
-import NotificationService from './API/NotificationService'
-
 // function Home(){
 //   const { currentUser } = useAuth()
 //   const promtLogin = () => {
@@ -72,7 +70,7 @@ export default function App() {
     })
 
   })
-  NotificationService(); 
+  // NotificationService(); 
   return (
     <div>
       {/* <nav className="navbar navbar-light">
