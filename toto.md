@@ -4,5 +4,8 @@
 - Connect to school's ada account
 - Fix noti ui,login-out ui
 - Add introduction and instruction on how to use app!
-- Use uploaded plant settings on server side to generate notifications!
 - Fix login/logout bug
+
+Update 31/5
+- Connect the relay to school's Relay
+- Also plant list is buged (does not re render when change plants)

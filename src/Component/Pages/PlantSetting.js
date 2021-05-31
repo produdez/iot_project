@@ -30,14 +30,16 @@ export default class PlantSetting extends Component {
         this.state.plant_id = this.props.plant.id;
         this.ref = firebase.database().ref(DB_NAME).child(this.state.plant_id);
         // this.ref = firebase.database().ref(DB_NAME).orderByChild("plant_id").equalTo(this.state.plant_id);
-        this.state.inputWaterMode = this.props.plant.waterMode;
+        this.state.water_mode = this.props.plant.waterMode;
         
         //check firebase settings data
         this.ref.once("value",snapshot => {
+            console.log('once this: ',this)
             if (snapshot.exists()){
-              const settings_data = snapshot.val();
-              console.log("Loading Settings From FB", settings_data);
-              this.setState(settings_data);
+              let settings_data = snapshot.val();
+              console.log("Loading Settings From FB-once", settings_data);
+                this.setState(settings_data);
+                console.log('State: ',this.state)
             }else{
                 console.log('PlantSettings Not Up on server! Pushing defaultSettings to server!')
                 // this.state = DEFAULT_SETTINGS;
@@ -45,7 +47,8 @@ export default class PlantSetting extends Component {
                 // this.state.plant_id = this.props.plant.id;
                 this.saveHandler(); // push empty settings on server
             }
-        });
+        },{context : this});
+
     }
     waterAmountHandler = (event) =>{
         this.setState({water_amount: event.target.value});
@@ -113,15 +116,12 @@ export default class PlantSetting extends Component {
     }
 
     componentDidMount() {
-
         //onfunction
         this.ref.on("value",snapshot => {
             var settings_data = snapshot.val();
-            if(!settings_data === undefined){
-                console.log("Loading Settings From FB", settings_data);
-                this.setState(settings_data)
-            }
-        })
+            console.log("Loading Settings From FB-on", settings_data);
+            this.setState(settings_data)
+        },{context : this})
 
         // subscribe to ada relay
         window.mqttClient.on('message', (topic, msg) => {
@@ -130,7 +130,8 @@ export default class PlantSetting extends Component {
                 console.log('from server:', msg.toString())
                 this.setState((state) => ({...state, waterOn: msg.toString() === '1'}))
             }
-      })
+        })
+        
     }
     render(){
         return(<div>
