@@ -111,7 +111,7 @@ export default class PlantSetting extends Component {
       console.log('manual pump clicked')
 
       let publishValue = this.state.waterOn?0:1; // if water is on: turn off, else turn on
-      window.mqttClient.publish('bkiot/feeds/bk-iot-relay', JSON.stringify(publishValue));
+      window.mqttClient2.publish('CSE_BBC1/feeds/bk-iot-relay', JSON.stringify(publishValue));
       this.setState((state) => ({...state, waterOn: !state.waterOn}))
     }
 
@@ -124,8 +124,8 @@ export default class PlantSetting extends Component {
         },{context : this})
 
         // subscribe to ada relay
-        window.mqttClient.on('message', (topic, msg) => {
-            if (topic === 'bkiot/feeds/bk-iot-relay'){
+        window.mqttClient2.on('message', (topic, msg) => {
+            if (topic === 'CSE_BBC1/feeds/bk-iot-relay'){
                 console.log('Received Relay Data from Ada')
                 console.log('from server:', msg.toString())
                 this.setState((state) => ({...state, waterOn: msg.toString() === '1'}))

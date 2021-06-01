@@ -35,47 +35,59 @@ import mqtt from "mqtt";
             //         console.log(feeds);
 
             //       });
-                const options = {
-                  username: process.env.REACT_APP_ZYMETH_ADA_ID,
-                  password: process.env.REACT_APP_ZYMETH_ADA_KEY
-                };
-                const url = 'tcp://io.adafruit.com:443';
-                this.mqttClient = mqtt.connect(url, options);
-                this.mqttClient2 = mqtt.connect(url,options);
-                this.mqttClient.on('connect', (connack)=>{
-                  this.mqttClient.subscribe('bkiot/feeds/captured_temp', (err, granted) => {if (err) console.log(err)})
-                  console.log('connect to temp successfully')
-                });
-                this.mqttClient.on('message', (topic,message)=>{
-                    const date = new Date();
-                    const options = {
-                        weekday: 'short',
-                        dateStyle: 'short',
-                        era: 'short',
-                        second: 'null'
-                      }
-                    this.setState({
-                        temp_values: this.state.temp_values.concat(parseFloat(message.toString())),
-                        temp_date_time: this.state.temp_date_time.concat(date.toLocaleString(options))
-                    })
-                });
-                this.mqttClient2.on('connect', (connack)=>{
-                    this.mqttClient2.subscribe('bkiot/feeds/captured_humidity', (err, granted) => {if (err) console.log(err)})
-                    console.log('connect to humidity successfully')
-                });
-                this.mqttClient2.on('message', (topic,message)=>{
-                    const date = new Date();
-                    const options = {
-                        weekday: 'short',
-                        dateStyle: 'short',
-                        era: 'short',
-                        second: 'null'
-                      }
-                    this.setState({
-                        humid_values: this.state.humid_values.concat(parseFloat(message.toString())),
-                        humid_date_time: this.state.humid_date_time.concat(date.toLocaleString(options))
-                    })
-                });
+                // const options = {
+                //   username: process.env.REACT_APP_ZYMETH_ADA_ID,
+                //   password: process.env.REACT_APP_ZYMETH_ADA_KEY
+                // };
+                // const url = 'tcp://io.adafruit.com:443';
+                // this.mqttClient = mqtt.connect(url, options);
+                // this.mqttClient2 = mqtt.connect(url,options);
+                // this.mqttClient.on('connect', (connack)=>{
+                //   this.mqttClient.subscribe('bkiot/feeds/captured_temp', (err, granted) => {if (err) console.log(err)})
+                //   console.log('connect to temp successfully')
+                // });
+                window.mqttClient1.on('message', (topic,message)=>{
+                    if (topic === 'CSE_BBC/feeds/bk-iot-soil'){
+                        //! process moisture
+                        console.log('Received soil data')
+                        console.log(JSON.parse(message))
+                    }
+                    if (topic === 'CSE_BBC/feeds/bk-iot-temp-humid'){
+                        //! process temp humid stuffs
+                        console.log('Received temp-humid data')
+                        console.log(JSON.parse(message))
+                        // const date = new Date();
+                        // const options = {
+                        //     weekday: 'short',
+                        //     dateStyle: 'short',
+                        //     era: 'short',
+                        //     second: 'null'
+                        // }
+                        // this.setState({
+                        //     temp_values: this.state.temp_values.concat(parseFloat(message.toString())),
+                        //     temp_date_time: this.state.temp_date_time.concat(date.toLocaleString(options))
+                        // })
+                    }
+                }, {context:this});
+                window.mqttClient2.on('message', (topic,message)=>{
+                    if (topic === 'CSE_BBC1/feeds/bk-iot-light'){
+                        //! process light
+                        console.log('Received light data')
+                        console.log(JSON.parse(message))
+                        // const date = new Date();
+                        // const options = {
+                        //     weekday: 'short',
+                        //     dateStyle: 'short',
+                        //     era: 'short',
+                        //     second: 'null'
+                        //   }
+                        // this.setState({
+                        //     humid_values: this.state.humid_values.concat(parseFloat(message.toString())),
+                        //     humid_date_time: this.state.humid_date_time.concat(date.toLocaleString(options))
+                        // })
+                    }
+                    
+                },{context : this});
         }
 
         componentWillUnmount(){
@@ -92,6 +104,9 @@ import mqtt from "mqtt";
             //     value = value.concat(this.state.data[k].value);
             //     console.log(plantId,value)
             // }
+
+
+
             return(
             <div>
                 <Line
@@ -136,9 +151,9 @@ import mqtt from "mqtt";
                 />
             </div>
             )
-    // }
-    // return <div>Loading </div>
     }
+    // return <div>Loading </div>
+    // }
 }
 
 export default EnvCond

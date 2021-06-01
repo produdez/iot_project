@@ -15,22 +15,7 @@ import PlantList from "./Component/Pages/PlantList";
 import EnvCond from "./Component/EnvCond";
 import History from "./Component/Pages/HistoryPage"
 import Navbar from './Component/Navbars/Navbar'
-// function Home(){
-//   const { currentUser } = useAuth()
-//   const promtLogin = () => {
-//     if (currentUser) {
-//       return "Login or Signup";
-//     } else {
-//       return "Go to Dashboard for your garden!";
-//     }
-//   }
-//   return (
-//     <div>
-//       <h1> Welcome to our Website</h1>
-//       {promtLogin()}
-//     </div>
-//   );
-// } 
+import setupAdaMqttClient from "./API/adafruit";
 const historyData = [
   {
     id: 'e1',
@@ -54,41 +39,9 @@ const historyData = [
 ];
 
 export default function App() {
-  useEffect(() => {
-    const options = {
-      username: process.env.REACT_APP_ZYMETH_ADA_ID,
-      password: process.env.REACT_APP_ZYMETH_ADA_KEY
-    };
-    const url = 'tcp://io.adafruit.com:443';
-
-    window.mqttClient = mqtt.connect(url, options);
-    window.mqttClient.on('connect', (connack)=>{
-      //! subscribe to needed ada servers
-      window.mqttClient.subscribe('bkiot/feeds/notification', (err, granted) => {if (err) console.log(err)})
-      window.mqttClient.subscribe('bkiot/feeds/bk-iot-relay', (err, granted) => {if (err) console.log(err)})
-      console.log('connect to adafruit successfully')
-    })
-
-  })
-  // NotificationService(); 
+  setupAdaMqttClient();
   return (
     <div>
-      {/* <nav className="navbar navbar-light">
-        <ul className="nav navbar-nav">
-          <li>
-            <Link to="/">Welcome</Link>
-          </li>
-          <li>
-            <Link to="/dashboard">Dashboard</Link>
-          </li>
-          <li>
-            <Link to="/firebase_test"> Firebase test </Link>
-          </li>
-          <li>
-            <Link to="/signup"> Sign Up </Link>
-          </li>
-        </ul>
-      </nav> */}
       <Navbar></Navbar>
     <AuthProvider>  
       <Switch>
