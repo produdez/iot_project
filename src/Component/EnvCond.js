@@ -101,7 +101,7 @@ import {Card} from "react-bootstrap"
                     <Card>
                         <center>Temperature</center>
                         <div className={style.column}>
-                            <p className={style.description}>{this.state.temp_value?<center>{this.state.temp_value+' Celsius'}</center>:'Loading...'}</p>
+                            <p className={style.description}>{this.state.temp_value?this.state.temp_value+' Celsius':'Loading...'}</p>
                         </div>
                     </Card>
                     <Card>
