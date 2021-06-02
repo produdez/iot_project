@@ -14,6 +14,7 @@ const HistoryList = (props) => {
         <HistoryItem
           key={history.id}
           title={history.title}
+          description={history.description}
           date={history.date}
         />
       ))}

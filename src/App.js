@@ -16,6 +16,7 @@ import EnvCond from "./Component/EnvCond";
 import History from "./Component/Pages/HistoryPage"
 import Navbar from './Component/Navbars/Navbar'
 import NotificationService from './API/NotificationService'
+import seperatedHistory from "./Component/Pages/seperateHistory";
 
 // function Home(){
 //   const { currentUser } = useAuth()
@@ -37,20 +38,25 @@ const historyData = [
   {
     id: 'e1',
     title: 'Toilet Paper',
-    amount: 94.12,
+    description:'Actived bump',
     date: new Date(2020, 7, 14),
   },
-  { id: 'e2', title: 'New TV', amount: 799.49, date: new Date(2021, 2, 12) },
+  { 
+    id: 'e2',
+    title: 'New TV',
+    description:'Actived bump',
+     date: new Date(2021, 2, 12),
+},
   {
     id: 'e3',
     title: 'Car Insurance',
-    amount: 294.67,
+    description:'Actived bump',
     date: new Date(2021, 2, 28),
   },
   {
     id: 'e4',
     title: 'New Desk (Wooden)',
-    amount: 450,
+    description:'Actived bump',
     date: new Date(2021, 5, 12),
   },
 ];
@@ -97,6 +103,7 @@ export default function App() {
         <Route path="/signup"><Signup /></Route>
         <Route path="/logout"><Logout /></Route>
         <Route path="/history"><History items={historyData}/></Route>
+        <Route path="/seperateHistory"><seperatedHistory/></Route>
         <PrivateRoute path ="/plant" component={PlantList}/>
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
         <PrivateRoute path = "/notification" component = {Notification}/>
