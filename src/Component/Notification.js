@@ -1,46 +1,12 @@
 import React , {useState } from "react"
 import { Card, Button, ListGroup } from "react-bootstrap"
+import { Link } from "react-router-dom";
+
 // import { useAuth } from "../Context/AuthContext"
 // import { useHistory } from "react-router-dom";
 import firebase from "firebase/app"
 
-//! data type definition
 
-var NTYPE = {
-    1: ['Hot', 'Fkin Hot Mate'],
-    2: ['Cold', 'Fkin Cold Mate'],
-    3: ['Dark', 'Fkin Dark Mate'],
-    4: ['Bright', 'Fkin Bright Mate'],
-    5: ['Soggy', 'Fkin Soggy Mate'],
-    6: ['Dry', 'Fkin Dry Mate'],
-    7: ['WaterTime', 'Fkin WaterTime Mate'],
-    8: ['Error', 'Fkin Error Mate']
-}
-
-export const DUMMY_NOTIFICATION = [
-    {plant_id: 1, plant_name: 'Plant 1', notification_type: NTYPE[1][0]},
-    {plant_id: 2, plant_name: 'Plant 2', notification_type: NTYPE[2][0]},
-    {plant_id: 3, plant_name: 'Plant 3', notification_type: NTYPE[3][0]},
-    {plant_id: 4, plant_name: 'Plant 4', notification_type: NTYPE[4][0]},
-    {plant_id: 5, plant_name: 'Plant 5', notification_type: NTYPE[5][0]},
-    {plant_id: 6, plant_name: 'Plant 6', notification_type: NTYPE[6][0]},
-    {plant_id: 7, plant_name: 'Plant 7', notification_type: NTYPE[7][0]},
-    {plant_id: 8, plant_name: 'Plant 8', notification_type: NTYPE[8][0]},
-    {plant_id: 9, plant_name: 'Plant 9', notification_type: NTYPE[1][0]},
-    {plant_id: 10, plant_name: 'Plant 10', notification_type: NTYPE[2][0]},
-    {plant_id: 11, plant_name: 'Plant 11', notification_type: NTYPE[3][0]}
-];
-
-
-
-const get_noti_message = (noti_type) => {
-    for(let [key,value] of Object.entries(NTYPE)){
-        if( value[0] === noti_type) return value[1]
-    }
-    return noti_type
-}
-
-//! front end code
 
 export default class Notification extends React.Component { 
     constructor(props) {
@@ -68,30 +34,28 @@ export default class Notification extends React.Component {
         return(
             <div>
                 <Card>
-                    {/* <h2> Notifications </h2> */}
+                    <h2> Notifications </h2>
                     {this.state.loading && <div>Loading ...</div>}
-                    {!this.state.loading && this.notidiv()}
+                    {!this.state.loading && this.notificationSection()}
                 </Card>
             </div>);
     }
 
-    notidiv(){
+    notificationSection(){
         if (this.state.data == null){
             return(
             <>
                 'No notifications for now, looking goood!'
-                <button onClick={this.add_dummy_notification.bind(this)}>Populate Dummy notifications</button>
             </>);
             
         }
         return (
             <>
-            <h3>Go to corresponding plant using the GO button</h3>
-            <button onClick={this.add_dummy_notification.bind(this)}>Populate Dummy notifications</button>
+            {/* <h3>Go to corresponding plant using the GO button</h3> */}
             {/* <button onClick={this.delete_noti_data.bind(this)}>Delete Data</button> */}
             <Card.Body>
                 <ListGroup>
-                    {this.getListItem(this.state.data)}
+                    {this.notificationList(this.state.data)}
                 </ListGroup>
             </Card.Body>
             </>
@@ -102,49 +66,62 @@ export default class Notification extends React.Component {
         console.log('Active delete_noti_data!');
         // this.state.ref.remove()
     }
-    add_dummy_notification(){
-
-        const ref = this.state.ref
-        DUMMY_NOTIFICATION.forEach(function(currentValue, index, arr){
-            console.log(currentValue);
-            var newRef = ref.push();
-            newRef.set(currentValue);
-        }, null);
-
-    }
 
 
-    getListItem(noti_list){
+    notificationList(noti_list){
         // return [];
         return Object.entries(noti_list).map((noti_json) => 
         {
-            let [key,val] = noti_json;
+            let [key,json] = noti_json;
             return (
             <ListGroup.Item key = {key} variant="info">
-                {val.plant_name}
-                <span className='p-3'>{get_noti_message(val.notification_type)}</span>
-                <Button  value = {noti_json} variant="dark" onClick={() => this.OnClickNotification(noti_json)}>Go</Button>{' '}
+                {/* {JSON.stringify(json)} */}
+                <Button value = {noti_json} variant="dark" onClick={() => this.OnClickNotification(noti_json,true)} >{json.plant_name}</Button>
+
+                <span className='p-3'>
+                    {translateType(json.name)}: {}
+                    {json.data}{json.unit} {}
+                    {translateSign(json.sign)[0]} compared to {}
+                    {translateSign(json.sign)[1]} Threshold of: {json.threshold}{json.unit}
+                </span>
+                <Link onClick={() => this.OnClickNotification(noti_json)}>Delete</Link>
+                {/* <span className='p-3'>{json.data}</span> */}
             </ListGroup.Item>
             );
         });
     }
 
-    OnClickNotification(noti_json){
+    OnClickNotification(noti_json,route = false){
         let [key,val] = noti_json
         console.log('Deling noti:',key);
         console.log('Routing to', val.plant_name);
         
         //TODO: route to appropriate plant
-        // this.props.history.push('/plant')
+        if(route) this.props.history.push('/plant')
 
         //del noti from db
         var ref = firebase.database().ref('Notification/' + key);
         ref.remove();
     }
 }
- 
 
-    
+const SOIL = 'SOIL';
+const TEMP = 'TEMP';
+const HUMID = 'HUMID';
+const LIGHT = 'LIGHT'
+function translateType(type){
+    if (type === SOIL) return 'Soil Moisture';
+    if (type === TEMP) return 'Temperature';
+    if (type === HUMID) return 'Air Humidity';
+    if (type === LIGHT) return 'Lighting Condition';
+}
+const HIGHER = '>';
+const LOWER = '<'
+function translateSign(sign){
+    if(sign === HIGHER) return ['Too High','Max'];
+    if(sign === LOWER) return ['Too Low','Min'];
+}
+  
 
 
 
