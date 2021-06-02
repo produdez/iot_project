@@ -10,12 +10,11 @@ const HistoryList = (props) => {
 
   return (
     <ul className='expenses-list'>
-      {props.items.map((expense) => (
+      {props.items.map((history) => (
         <HistoryItem
-          key={expense.id}
-          title={expense.title}
-          amount={expense.amount}
-          date={expense.date}
+          key={history.id}
+          title={history.title}
+          date={history.date}
         />
       ))}
     </ul>
