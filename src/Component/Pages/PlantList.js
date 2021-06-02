@@ -17,8 +17,7 @@ const PlantList = props => {
     const [currentPlant, setCurrentPlant] = useState(1);
     const choosePlant = (plantID) => {
         setCurrentPlant(plantID);
-        console.log('Switching Plant View!')
-        console.log(plantID)
+        console.log(Plants)
     }
         return(
         <div>
