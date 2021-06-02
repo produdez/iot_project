@@ -8,16 +8,20 @@ import './HistoryPage.css';
 
 const History = (props) => {
 
-  const [filteredMonth, setFilteredMonth] = useState('Aug');
+  const [filteredMonth, setFilteredMonth] = useState('All');
   console.log(props.items[0].date.toLocaleString('en-US', { month: 'long' }));
   const filterChangeHandler = (selectedMonth) => {
     setFilteredMonth(selectedMonth);
   };
   console.log(filteredMonth);
-  const filteredHistory = props.items.filter((expense) => {
-    return expense.date.toLocaleString('en-US', { month: 'long' }).slice(0,3) === filteredMonth;
-  
+  let filteredHistory = props.items.filter((history) => {
+    return history.date.toLocaleString('en-US', { month: 'long' }).slice(0,3) === filteredMonth;
   });
+  if(filteredMonth ==='All'){
+    filteredHistory = props.items;
+  }
+  
+  
 
   return (
     <div>
