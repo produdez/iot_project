@@ -26,18 +26,18 @@ import {Card} from "react-bootstrap"
             // if the key exists in localStorage
             if (localStorage.hasOwnProperty(key)) {
             // get the key's value from localStorage
-            let value = localStorage.getItem(key);
+                let value = localStorage.getItem(key);
 
             // parse the localStorage string and setState
-            try {
-                value = JSON.parse(value);
-                this.setState({ [key]: value });
-                } catch (e) {
-                // handle empty string
-                this.setState({ [key]: value });
+                try {
+                    value = JSON.parse(value);
+                    this.setState({ [key]: value });
+                    } catch (e) {
+                    // handle empty string
+                    this.setState({ [key]: value });
+                    }
                 }
             }
-        }
         }
         componentDidMount(){
             this.hydrateStateWithLocalStorage();
@@ -94,33 +94,43 @@ import {Card} from "react-bootstrap"
             );
               // saves if component has a chance to unmount
             this.saveStateToLocalStorage();
+            if (this.client)
+                this.client.end()
         }
         render() {
             return(
                 <div className={style.row}>
-                    <Card>
+                    <Card className="text-center" >
                         <center>Temperature</center>
-                        <div className={style.column}>
+                        <Card.Body className="d-flex align-items-center justify-content-center">
+                        <div >
                             <p className={style.description}>{this.state.temp_value?this.state.temp_value+' Celsius':'Loading...'}</p>
                         </div>
+                        </Card.Body>
                     </Card>
-                    <Card>
+                    <Card className="text-center">
                         <center>Air Humidity</center>
+                        <Card.Body className="d-flex align-items-center justify-content-center">
                         <div className={style.column}>
                             <p className={style.description}>{this.state.humid_value?this.state.humid_value+' %':'Loading...'}</p>
                         </div>
+                        </Card.Body>
                     </Card>
-                    <Card>
+                    <Card className="text-center">
                         <center>Brightness</center>
+                        <Card.Body className="d-flex align-items-center justify-content-center">
                         <div className={style.column}>
                             <p className={style.description}>{this.state.light_value?this.state.light_value:'Loading...'}</p>
                         </div>
+                        </Card.Body>
                     </Card>
-                    <Card>
+                    <Card className="text-center">
                         <center>Soil's Moisture</center>
+                        <Card.Body className="d-flex align-items-center justify-content-center">
                         <div className={style.column}>
                             <p className={style.description}>{this.state.humid_value?this.state.moisture_value+' %':'Loading...'}</p>
                         </div>
+                        </Card.Body>
                     </Card>
                 </div>
                 )
