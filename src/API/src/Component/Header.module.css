@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600&display=swap');
+.row {
+  margin-top: 155px;
+
+    display: flex;
+  }
+  
+  .column {
+    flex: 50%;
+  }
+.title{
+margin: 0 0 0 135px;
+width:570px;
+font-family: 'Poppins', sans-serif;
+font-style: normal;
+font-weight: 600;
+font-size: 64px;
+line-height: 120%;
+/* or 77px */
+
+letter-spacing: -0.03em;
+
+color: #32a0c2;
+}
+.description{
+    width: 467px;
+font-family: 'Poppins', sans-serif;
+font-style: normal;
+font-weight: normal;
+font-size: 24px;
+line-height: 160%;
+/* or 38px */
+
+letter-spacing: -0.03em;
+}
+.buttonTrial{
+align-items: center;
+padding: 20px;
+
+font-family:'Poppins', sans-serif;
+color: #fff;
+/* Color/Primary */
+
+background: #2945FF;
+border-radius: 100px;
+}
