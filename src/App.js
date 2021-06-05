@@ -15,7 +15,7 @@ import EnvCond from "./Component/EnvCond";
 import History from "./Component/Pages/HistoryPage"
 import Navbar from './Component/Navbars/Navbar'
 import NotificationService from './API/NotificationService'
-import SeperateHistory from './Component/Pages/SeperateHistory'
+import SeperateHistory from './Component/Pages/seperateHistory'
 
 // function Home(){
 //   const { currentUser } = useAuth()
