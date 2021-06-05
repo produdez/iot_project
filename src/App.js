@@ -14,27 +14,9 @@ import PlantList from "./Component/Pages/PlantList";
 import EnvCond from "./Component/EnvCond";
 import History from "./Component/Pages/HistoryPage"
 import Navbar from './Component/Navbars/Navbar'
-import NotificationService from './API/NotificationService'
-import SeperateHistory from './Component/Pages/SeperateHistory'
 import setupAdaMqttClient from "./API/adafruit";
 import  { useState , useEffect} from "react"
 
-// function Home(){
-//   const { currentUser } = useAuth()
-//   const promtLogin = () => {
-//     if (currentUser) {
-//       return "Login or Signup";
-//     } else {
-//       return "Go to Dashboard for your garden!";
-//     }
-//   }
-//   return (
-//     <div>
-//       <h1> Welcome to our Website</h1>
-//       {promtLogin()}
-//     </div>
-//   );
-// } 
 const historyData = [
   {
     id: 'e1',
@@ -42,12 +24,7 @@ const historyData = [
     amount: 94.12,
     date: new Date(2020, 7, 14),
   },
-  { 
-    id: 'e2',
-    title: 'New TV',
-    description:'Actived bump',
-     date: new Date(2021, 2, 12),
-},
+  { id: 'e2', title: 'New TV', amount: 799.49, date: new Date(2021, 2, 12) },
   {
     id: 'e3',
     title: 'Car Insurance',
@@ -63,39 +40,20 @@ const historyData = [
 ];
 
 export default function App() {
-  NotificationService(); //setup notification service
-  useEffect(() => {
-    const options = {
-      username: process.env.REACT_APP_ZYMETH_ADA_ID,
-      password: process.env.REACT_APP_ZYMETH_ADA_KEY
-    };
-    const url = 'tcp://io.adafruit.com:443';
+  const [loading, setLoading] = useState(true);
 
-    window.mqttClient = mqtt.connect(url, options);
-    window.mqttClient.on('connect', (connack)=>{
-      window.mqttClient.subscribe('bkiot/feeds/bk-iot-relay', (err, granted) => {if (err) console.log(err)})
-      console.log('connect to adafruit successfully')
+  useEffect(()=>{
+    setupAdaMqttClient().then(()=>{
+      setLoading(false)
     })
+  }, []) // <-- empty dependency array
+  
 
-  })
+  if (loading){
+    return <h1>Loading Server Authentication Data!</h1>
+  }
   return (
     <div>
-      {/* <nav className="navbar navbar-light">
-        <ul className="nav navbar-nav">
-          <li>
-            <Link to="/">Welcome</Link>
-          </li>
-          <li>
-            <Link to="/dashboard">Dashboard</Link>
-          </li>
-          <li>
-            <Link to="/firebase_test"> Firebase test </Link>
-          </li>
-          <li>
-            <Link to="/signup"> Sign Up </Link>
-          </li>
-        </ul>
-      </nav> */}
       <Navbar></Navbar>
     <AuthProvider>  
       <Switch>
