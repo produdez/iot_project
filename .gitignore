@@ -48,3 +48,4 @@ yarn-error.log*
 
 ### ignore this so others can install what they want 
 package-lock.json
+.env

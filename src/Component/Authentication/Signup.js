@@ -32,13 +32,13 @@ export default function Signup() {
     setLoading(false)
   }
 
-  if (currentUser) {
+  if (localStorage.getItem("user-info")) {
     return "You're already logged in"
   }
 
   return (
     <>
-      <Card>
+      <Card className="card border-dark mb-10 text-black p-3" style={{width : "28rem", margin: "0 auto"}}>
         <Card.Body>
           <h2 className="text-center mb-4">Sign Up</h2>
           {error && <Alert variant="danger">{error}</Alert>}
@@ -55,15 +55,17 @@ export default function Signup() {
               <Form.Label>Password Confirmation</Form.Label>
               <Form.Control type="password" ref={passwordConfirmRef} required />
             </Form.Group>
-            <Button disabled={loading} className="w-100" type="submit">
+            <div className="w-100 text-center mt-2">
+            <Button disabled={loading} className="btn btn-green btn-lg btn-block " type="submit">
               Sign Up
             </Button>
+            </div>
           </Form>
-        </Card.Body>
-      </Card>
       <div className="w-100 text-center mt-2">
         Already have an account? <Link to="/login">Log In</Link>
       </div>
+      </Card.Body>
+      </Card>
     </>
   )
 }

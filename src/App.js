@@ -1,14 +1,13 @@
-import React, { useEffect } from "react";
-import mqtt from "mqtt";
-import { Link, Route, Switch } from "react-router-dom";
+import React from "react";
+//import mqtt from "mqtt";
+import { Route, Switch } from "react-router-dom";
 import Dashboard from "./Component/Dashboard";
 import FirebaseTest from "./Component/FirebaseTest";
 import PrivateRoute from "./API/PrivateRouteHelper"
 import Login from "./Component/Authentication/Login"
 import Signup from "./Component/Authentication/Signup"
-import Logout from "./Component/Authentication/Logout"
 import { AuthProvider } from "./Context/AuthContext";
-import { useAuth } from "./Context/AuthContext"
+//import { useAuth } from "./Context/AuthContext"
 import Notification from "./Component/Notification"
 import Homepage from "./Component/Pages/Homepage"
 import PlantList from "./Component/Pages/PlantList";
@@ -101,7 +100,6 @@ export default function App() {
         <Route exact path="/"><Homepage /></Route>
         <Route path="/login"><Login /></Route>
         <Route path="/signup"><Signup /></Route>
-        <Route path="/logout"><Logout /></Route>
         <Route path="/history"><History items={historyData}/></Route>
         <Route path="/sehistory"><SeperateHistory/></Route>
         <PrivateRoute path ="/plant" component={PlantList}/>
