@@ -1,6 +1,6 @@
 import React , {Component} from 'react'
 
-export default class seperatedHistory extends Component {
+export default class SeperateHistory extends Component {
     constructor(props){
         super(props)
         this.state = {
@@ -10,7 +10,7 @@ export default class seperatedHistory extends Component {
     render(){
         return(
             <div>
-               
+                <p>asdasda</p>
             </div>
         );
     }

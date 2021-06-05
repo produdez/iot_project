@@ -16,7 +16,7 @@ import EnvCond from "./Component/EnvCond";
 import History from "./Component/Pages/HistoryPage"
 import Navbar from './Component/Navbars/Navbar'
 import NotificationService from './API/NotificationService'
-import seperatedHistory from "./Component/Pages/seperateHistory";
+import SeperateHistory from './Component/Pages/SeperateHistory'
 
 // function Home(){
 //   const { currentUser } = useAuth()
@@ -103,7 +103,7 @@ export default function App() {
         <Route path="/signup"><Signup /></Route>
         <Route path="/logout"><Logout /></Route>
         <Route path="/history"><History items={historyData}/></Route>
-        <Route path="/seperateHistory"><seperatedHistory/></Route>
+        <Route path="/sehistory"><SeperateHistory/></Route>
         <PrivateRoute path ="/plant" component={PlantList}/>
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
         <PrivateRoute path = "/notification" component = {Notification}/>
