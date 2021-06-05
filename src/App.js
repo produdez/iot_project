@@ -16,6 +16,7 @@ import History from "./Component/Pages/HistoryPage"
 import Navbar from './Component/Navbars/Navbar'
 import setupAdaMqttClient from "./API/adafruit";
 import  { useState , useEffect} from "react"
+import SeperateHistory from "./Component/Pages/seperateHistory";
 
 const historyData = [
   {
@@ -58,6 +59,7 @@ export default function App() {
         <Route path="/login"><Login /></Route>
         <Route path="/signup"><Signup /></Route>
         <Route path="/history"><History items={historyData}/></Route>
+        <Route path="/sehistory"><SeperateHistory/></Route>
         <PrivateRoute path ="/plant" component={PlantList}/>
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
         <PrivateRoute path = "/notification" component = {Notification}/>

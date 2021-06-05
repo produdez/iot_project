@@ -1,17 +1,16 @@
 import React , {Component} from 'react'
-
-export default class SeperateHistory extends Component {
-    constructor(props){
-        super(props)
-        this.state = {
-
-        }
-    }
-    render(){
+import classes from './seperateHistory.module.css'
+import {Link} from 'react-router-dom';
+export default function SeperateHistory() {
         return(
-            <div>
-                <p>asdasda</p>
+            <div className={classes.container}>
+                    <Link to="/nohistory" style={{ textDecoration: 'none' }}>
+                    <button className={classes.btn}>Notification history</button>
+                    </Link>
+                    <Link to="/history" style={{ textDecoration: 'none' }}>
+                    <button className={classes.btn}>Activity history</button>
+                    </Link>
             </div>
         );
-    }
-}
+
+}   
