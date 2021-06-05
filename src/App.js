@@ -15,7 +15,7 @@ import EnvCond from "./Component/EnvCond";
 import History from "./Component/Pages/HistoryPage"
 import Navbar from './Component/Navbars/Navbar'
 import setupAdaMqttClient from "./API/adafruit";
-import  { useState } from "react"
+import  { useState , useEffect} from "react"
 
 const historyData = [
   {
