@@ -29,7 +29,21 @@ export default function Navbar(){
                             <li className={styles.nav__item}>
                             <Link to="/plant" style={{ textDecoration: 'none' }}><NavButton >Plant Settings</NavButton>
                             </Link>
-                            </li>
+                        </li>
+                        <li className={styles.nav__item}>
+                            <Link to="/sehistory" style={{ textDecoration: 'none' }}><NavButton >History</NavButton></Link> 
+                        </li> 
+                        <li className={styles.nav__item}>
+                            <Link to="/envcond" style={{ textDecoration: 'none' }}><NavButton >Environment Condition</NavButton>
+                            </Link>
+                        </li>
+
+                        <li className={styles.nav__item}>
+                            <Link to="/notification" style={{ textDecoration: 'none' }}><NavButton >Notifications</NavButton></Link> 
+                        </li> 
+                        
+                        { !currentUser &&
+                        <>
                             <li className={styles.nav__item}>
                                 <Link to="/envcond" style={{ textDecoration: 'none' }}><NavButton >Environment Condition</NavButton>
                                 </Link>
