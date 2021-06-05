@@ -16,6 +16,8 @@ import History from "./Component/Pages/HistoryPage"
 import Navbar from './Component/Navbars/Navbar'
 import NotificationService from './API/NotificationService'
 import SeperateHistory from './Component/Pages/SeperateHistory'
+import setupAdaMqttClient from "./API/adafruit";
+import  { useState } from "react"
 
 // function Home(){
 //   const { currentUser } = useAuth()
