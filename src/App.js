@@ -15,6 +15,8 @@ import EnvCond from "./Component/EnvCond";
 import History from "./Component/Pages/HistoryPage"
 import Navbar from './Component/Navbars/Navbar'
 import setupAdaMqttClient from "./API/adafruit";
+import  { useState } from "react"
+
 const historyData = [
   {
     id: 'e1',
@@ -38,7 +40,18 @@ const historyData = [
 ];
 
 export default function App() {
-  setupAdaMqttClient();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(()=>{
+    setupAdaMqttClient().then(()=>{
+      setLoading(false)
+    })
+  }, []) // <-- empty dependency array
+  
+
+  if (loading){
+    return <h1>Loading Server Authentication Data!</h1>
+  }
   return (
     <div>
       <Navbar></Navbar>
