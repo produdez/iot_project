@@ -1,144 +1,140 @@
 import React from "react"
-// import firebase from "firebase/app"
-import {Line} from "react-chartjs-2"
-import mqtt from "mqtt";
+import style from './Header.module.css';
+import {Card} from "react-bootstrap"
 
     class EnvCond extends React.Component{
         constructor(props) {
             super(props);
             this.state = {
-                temp_values: [],
-                temp_date_time: [],
-                humid_values: [],
-                humid_date_time: []
+                temp_value: null,
+                humid_value: null,
+                light_value: null,
+                moisture_value: null
             }
+        }
+
+        saveStateToLocalStorage() {
+            // for every item in React state
+            for (let key in this.state) {
+                // save to localStorage
+                localStorage.setItem(key, JSON.stringify(this.state[key]));
             }
+        }
+        hydrateStateWithLocalStorage() {
+            // for all items in state
+            for (let key in this.state) {
+            // if the key exists in localStorage
+            if (localStorage.hasOwnProperty(key)) {
+            // get the key's value from localStorage
+                let value = localStorage.getItem(key);
 
-
+            // parse the localStorage string and setState
+                try {
+                    value = JSON.parse(value);
+                    this.setState({ [key]: value });
+                    } catch (e) {
+                    // handle empty string
+                    this.setState({ [key]: value });
+                    }
+                }
+            }
+        }
         componentDidMount(){
-            // var ref = firebase.database().ref('EnvironmentData');
-            // ref.on('value', (snapshot)=>{
-            //     this.setState({...this.state, data: snapshot.val()})
-            //     this.setState({
-            //         keys: this.state.data?Object.keys(this.state.data):this.state.keys
-            //      })
-            // });
-            // var AIO = require('adafruit-io');
-            // // replace xxxxxxxxxxxx with your AIO Key
-            // AIO('bkiot', '').feeds(function(err, feeds) {
-
-            //         if(err) {
-            //           return console.error(err);
-            //         }
-
-            //         // log feeds array
-            //         console.log(feeds);
-
-            //       });
-                const options = {
-                  username: process.env.REACT_APP_ZYMETH_ADA_ID,
-                  password: process.env.REACT_APP_ZYMETH_ADA_KEY
-                };
-                const url = 'tcp://io.adafruit.com:443';
-                this.mqttClient = mqtt.connect(url, options);
-                this.mqttClient2 = mqtt.connect(url,options);
-                this.mqttClient.on('connect', (connack)=>{
-                  this.mqttClient.subscribe('bkiot/feeds/captured_temp', (err, granted) => {if (err) console.log(err)})
-                  console.log('connect to temp successfully')
-                });
-                this.mqttClient.on('message', (topic,message)=>{
-                    const date = new Date();
-                    const options = {
-                        weekday: 'short',
-                        dateStyle: 'short',
-                        era: 'short',
-                        second: 'null'
-                      }
+            this.hydrateStateWithLocalStorage();
+            //
+            window.addEventListener(
+                "beforeunload",
+                this.saveStateToLocalStorage.bind(this)
+            );
+            //Start Captureing
+            var mqttClient =  window.mqttClient1
+            mqttClient.on('message', (topic,message)=>{
+                if (topic === 'CSE_BBC/feeds/bk-iot-soil'){
+                    console.log('-----------------------------------------------------')
+                    console.log('Received moisture data from ada:')
+                    console.log(message.toString())
+                    var moisture_data = JSON.parse(message.toString())
                     this.setState({
-                        temp_values: this.state.temp_values.concat(parseFloat(message.toString())),
-                        temp_date_time: this.state.temp_date_time.concat(date.toLocaleString(options))
+                        moisture_value: parseFloat(moisture_data.data)
                     })
-                });
-                this.mqttClient2.on('connect', (connack)=>{
-                    this.mqttClient2.subscribe('bkiot/feeds/captured_humidity', (err, granted) => {if (err) console.log(err)})
-                    console.log('connect to humidity successfully')
-                });
-                this.mqttClient2.on('message', (topic,message)=>{
-                    const date = new Date();
-                    const options = {
-                        weekday: 'short',
-                        dateStyle: 'short',
-                        era: 'short',
-                        second: 'null'
-                      }
+                }
+                if(topic === 'CSE_BBC/feeds/bk-iot-temp-humid'){
+                    console.log('-----------------------------------------------------')
+                    console.log('Received temp-humid data from ada:')
+                    console.log(message.toString())
+                    //todo: split temp-humid and check notification seperately
+                    var sensor_json_data = JSON.parse(message.toString())
+                    //split json 
+                    let [temp, humi] = sensor_json_data.data.split('-')
                     this.setState({
-                        humid_values: this.state.humid_values.concat(parseFloat(message.toString())),
-                        humid_date_time: this.state.humid_date_time.concat(date.toLocaleString(options))
+                    temp_value: parseFloat(temp),
+                    humid_value: parseFloat(humi)
                     })
-                });
+                }
+            });
+
+            var mqttClient2 = global.mqttClient2;
+            mqttClient2.on('message', (topic,message)=>{
+            if(topic === 'CSE_BBC1/feeds/bk-iot-light'){
+                console.log('-----------------------------------------------------')
+                console.log('Received light data from ada:')
+                console.log(message.toString())
+                var light_data = JSON.parse(message.toString())
+                this.setState({
+                    light_value: parseFloat(light_data.data),
+                })
+            }
+            })
         }
 
         componentWillUnmount(){
+            window.removeEventListener(
+                "beforeunload",
+                this.saveStateToLocalStorage.bind(this)
+            );
+              // saves if component has a chance to unmount
+            this.saveStateToLocalStorage();
             if (this.client)
                 this.client.end()
         }
         render() {
-            // if (this.state.keys) {
-            // console.log(this.state.keys)
-            // var value = []
-            // for (var i = 0; i < this.state.keys.length; i++) {
-            //     var k = this.state.keys[i];
-            //     var plantId = this.state.data[k].plantId;
-            //     value = value.concat(this.state.data[k].value);
-            //     console.log(plantId,value)
-            // }
             return(
-            <div>
-                <Line
-                    data= {{
-                        labels: this.state.temp_date_time,
-                        datasets: [
-                            {
-                                label: 'Environment Temperature Chart',
-                                data: this.state.temp_values,
-                            }
-                        ],
-                    }}
-                    height = {1}
-                    width = {5}
-                    options= {{
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }}
-                />
-                <Line
-                    data= {{
-                        labels: this.state.humid_date_time,
-                        datasets: [
-                            {
-                                label: 'Environment Humidity Chart',
-                                data: this.state.humid_values,
-                            }
-                        ],
-                    }}
-                    height = {1}
-                    width = {5}
-                    options= {{
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }}
-                />
-            </div>
-            )
-    // }
-    // return <div>Loading </div>
+                <div className={style.row}>
+                    <Card className="text-center" >
+                        <center>Temperature</center>
+                        <Card.Body className="d-flex align-items-center justify-content-center">
+                        <div >
+                            <p className={style.description}>{this.state.temp_value?this.state.temp_value+' Celsius':'Loading...'}</p>
+                        </div>
+                        </Card.Body>
+                    </Card>
+                    <Card className="text-center">
+                        <center>Air Humidity</center>
+                        <Card.Body className="d-flex align-items-center justify-content-center">
+                        <div className={style.column}>
+                            <p className={style.description}>{this.state.humid_value?this.state.humid_value+' %':'Loading...'}</p>
+                        </div>
+                        </Card.Body>
+                    </Card>
+                    <Card className="text-center">
+                        <center>Brightness</center>
+                        <Card.Body className="d-flex align-items-center justify-content-center">
+                        <div className={style.column}>
+                            <p className={style.description}>{this.state.light_value?this.state.light_value:'Loading...'}</p>
+                        </div>
+                        </Card.Body>
+                    </Card>
+                    <Card className="text-center">
+                        <center>Soil's Moisture</center>
+                        <Card.Body className="d-flex align-items-center justify-content-center">
+                        <div className={style.column}>
+                            <p className={style.description}>{this.state.humid_value?this.state.moisture_value+' %':'Loading...'}</p>
+                        </div>
+                        </Card.Body>
+                    </Card>
+                </div>
+                )
+            }
     }
-}
 
 export default EnvCond
