@@ -23,11 +23,11 @@ const PlantList = props => {
         return(
         <div>
             <div className={classes.row}>
-                <div className={classes.columnList}>
+                {/* <div className={classes.columnList}>
                    {Plants.map(plant=>
                    <Plant key={plant.id} plant={plant} choosePlant={choosePlant}/>
                    )}
-                </div>
+                </div> */}
                 <div className={classes.columnSetting}>
                     <PlantSetting plant={Plants[currentPlant-1]} /*{Plants.find(isCorrect)}*/ />
                 </div>

@@ -3,6 +3,14 @@ import firebase from "firebase/app"
 
 import classes from './PlantSetting.module.css'
 import { TimeSeriesScale } from 'chart.js';
+import { sizing } from '@material-ui/system';
+import Switch from '@material-ui/core/Switch';
+import Slider from '@material-ui/core/Slider';
+import Input from '@material-ui/core/Input';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { makeStyles } from '@material-ui/core/styles';
+import MinMaxInputSlider from '../Sliders/MinMaxInputSlider';
 
 const EMPTY = ''
 const DEFAULT_SETTINGS = {
@@ -15,22 +23,35 @@ const DEFAULT_SETTINGS = {
     max_humi:EMPTY,
     min_light:EMPTY,
     max_light:EMPTY,
-    water_mode : true,
+    water_mode: true,
     waterOn: false,
 }
 const DB_NAME = 'PlantSettings';
-
+const styles = {
+    inputBox: {
+        width:70,
+        backgroundColor:'#ffffff',
+    },
+    slider: {
+        width:'50%', 
+        color:'#5eed97',
+    },
+    
+}
 
 export default class PlantSetting extends Component {
     constructor(props){
         super(props)
-
         // let plant_id = this.props.plant.id;
+        // this.classes = useStyles();     
         this.state = DEFAULT_SETTINGS;
-        this.state.plant_id = this.props.plant.id;
+        this.state = {
+            ...this.state, 
+            plant_id: this.props.plant.id, 
+            water_mode: this.props.plant.waterMode,
+            }
         this.ref = firebase.database().ref(DB_NAME).child(this.state.plant_id);
         // this.ref = firebase.database().ref(DB_NAME).orderByChild("plant_id").equalTo(this.state.plant_id);
-        this.state.water_mode = this.props.plant.waterMode;
         
         //check firebase settings data
         this.ref.once("value",snapshot => {
@@ -49,36 +70,43 @@ export default class PlantSetting extends Component {
             }
         },{context : this});
 
+        // this.ref.on("value",snapshot => {
+        //     var settings_data = snapshot.val();
+        //     console.log("Loading Settings From FB-on", settings_data);
+        //     this.setState(settings_data)
+        // },{context : this})
+
     }
-    waterAmountHandler = (event) =>{
-        this.setState({water_amount: event.target.value});
-    }
-    minimumMoistureHandler = (event) => {
-        this.setState({min_moist: event.target.value});
-    }
-    maximumMoistureHandler = (event) => {
-        this.setState({max_moist: event.target.value});
-    }
-    minimumTemperatureHandler = (event) => {
-        this.setState({min_temp: event.target.value});
-    }
-    maximumTemperatureHandler = (event) => {
-        this.setState({max_temp: event.target.value});
-    }
-    minimumHumidityHandler = (event) => {
-        this.setState({min_humi: event.target.value});
-    }
-    maximumHumidityHandler = (event) => {
-        this.setState({max_humi: event.target.value});
-    }
-    minimumLightingHandler = (event) => {
-        this.setState({min_light: event.target.value});
-    }
-    maximumLightingHandler = (event) => {
-        this.setState({max_light: event.target.value});
-    }
+
+    // waterAmountHandler = (event) =>{
+    //     this.setState({water_amount: event.target.value});
+    // }
+    // minimumMoistureHandler = (event) => {
+    //     this.setState({min_moist: event.target.value});
+    // }
+    // maximumMoistureHandler = (event) => {
+    //     this.setState({max_moist: event.target.value});
+    // }
+    // minimumTemperatureHandler = (event) => {
+    //     this.setState({min_temp: event.target.value});
+    // }
+    // maximumTemperatureHandler = (event) => {
+    //     this.setState({max_temp: event.target.value});
+    // }
+    // minimumHumidityHandler = (event) => {
+    //     this.setState({min_humi: event.target.value});
+    // }
+    // maximumHumidityHandler = (event) => {
+    //     this.setState({max_humi: event.target.value});
+    // }
+    // minimumLightingHandler = (event) => {
+    //     this.setState({min_light: event.target.value});
+    // }
+    // maximumLightingHandler = (event) => {
+    //     this.setState({max_light: event.target.value});
+    // }
     waterModeHandler = (event) => {
-        this.setState({inputWaterMode: event.target.value});
+        this.setState((state)=>({...state, water_mode:!state.water_mode}))
     }
 
     generate_settings_json(){
@@ -108,77 +136,215 @@ export default class PlantSetting extends Component {
     }
 
     manualPumpHandler = () => {
-      console.log('manual pump clicked')
+        console.log('manual pump clicked')
 
-      let publishValue = this.state.waterOn?0:1; // if water is on: turn off, else turn on
-      window.mqttClient2.publish('CSE_BBC1/feeds/bk-iot-relay', JSON.stringify(publishValue));
-      this.setState((state) => ({...state, waterOn: !state.waterOn}))
+        if (this.state.water_mode) // is in auto state
+            return;
+
+        let publishValue = this.state.waterOn?0:1; // if water is on: turn off, else turn on
+        window.mqttClient2.publish('CSE_BBC1/feeds/bk-iot-relay', JSON.stringify(publishValue));
+        this.setState((state) => ({...state, waterOn: !state.waterOn}))
     }
 
-    componentDidMount() {
-        //onfunction
-        this.ref.on("value",snapshot => {
-            var settings_data = snapshot.val();
-            console.log("Loading Settings From FB-on", settings_data);
-            this.setState(settings_data)
-        },{context : this})
+    handleWaterSliderChange = (event, newValue) => {
+        this.setState((state) => ({...state, water_amount:newValue}));
+    }
+    handleWaterAmountInputChange = (event) => {
+        let newVal = event.target.value===''?0:Number(event.target.value);
+        if (newVal <= 100)
+            this.setState((state)=>({...state, water_amount:event.target.value===''?'':Number(event.target.value)}))
+        // this.handleWaterSliderChange(null,this.state.water_amount)
+    }
+    handleWaterAmountBlur = () => {
+        if (this.state.water_amount < 0) {
+            this.setState((state)=>({...state, water_amount:0}))
+        }
+        if (this.state.water_amount > 100) {
+            this.setState((state)=>({...state, water_amount:100}))
+        }
+    }
 
-        // subscribe to ada relay
-        window.mqttClient2.on('message', (topic, msg) => {
-            if (topic === 'CSE_BBC1/feeds/bk-iot-relay'){
-                console.log('Received Relay Data from Ada')
-                console.log('from server:', msg.toString())
-                this.setState((state) => ({...state, waterOn: msg.toString() === '1'}))
-            }
-        })
-        
+    handleMoistSliderChange = (event, newValue) => {
+        this.setState((state) => ({...state, min_moist:newValue[0], max_moist:newValue[1]}));
+    }
+    handleMinMoistInputChange = (event) => {
+        let newVal = event.target.value===''?0:Number(event.target.value)
+        if (newVal <= this.state.max_moist)
+            this.setState((state)=>({...state, min_moist:event.target.value===''?'':Number(event.target.value)}))
+    }
+    handleMaxMoistInputChange = (event) => {
+        this.setState((state)=>({...state, max_moist:event.target.value===''?'':Number(event.target.value)}))
+    }
+    handleMoistBlur = () => {
+
+    }
+
+
+    handleTempSliderChange = (event, newValue) => {
+        this.setState((state) => ({...state, min_temp:newValue[0], max_temp:newValue[1]}));
+    }
+    handleMinTempInputChange = (event) => {
+        let newVal = event.target.value===''?0:Number(event.target.value)
+        if (newVal <= this.state.max_temp)
+            this.setState((state)=>({...state, min_temp:event.target.value===''?'':Number(event.target.value)}))
+    }
+    handleMaxTempInputChange = (event) => {
+        this.setState((state)=>({...state, max_temp:event.target.value===''?'':Number(event.target.value)}))
+    }
+    handleTempBlur = () => {
+
+    }
+
+    handleHumiSliderChange = (event, newValue) => {
+        this.setState((state) => ({...state, min_humi:newValue[0], max_humi:newValue[1]}));
+    }
+    handleMinHumiInputChange = (event) => {
+        let newVal = event.target.value===''?0:Number(event.target.value)
+        if (newVal <= this.state.max_humi)
+            this.setState((state)=>({...state, min_humi:event.target.value===''?'':Number(event.target.value)}))
+    }
+    handleMaxHumiInputChange = (event) => {
+        this.setState((state)=>({...state, max_humi:event.target.value===''?'':Number(event.target.value)}))
+    }
+    handleHumiBlur = () => {
+
+    }
+
+    handleLightSliderChange = (event, newValue) => {
+        this.setState((state) => ({...state, min_light:newValue[0], max_light:newValue[1]}));
+    }
+    handleMinLightInputChange = (event) => {
+        let newVal = event.target.value===''?0:Number(event.target.value)
+        if (newVal <= this.state.max_light)
+            this.setState((state)=>({...state, min_light:event.target.value===''?'':Number(event.target.value)}))
+    }
+    handleMaxLightInputChange = (event) => {
+        this.setState((state)=>({...state, max_light:event.target.value===''?'':Number(event.target.value)}))
+    }
+    handleLightBlur = () => {
+
+    }
+
+
+    componentDidMount() {
+        // //onfunction
+        // this.ref.on("value",snapshot => {
+        //     var settings_data = snapshot.val();
+        //     console.log("Loading Settings From FB-on", settings_data);
+        //     this.setState(settings_data)
+        // },{context : this})
+
+        // // subscribe to ada relay
+        // window.mqttClient2.on('message', (topic, msg) => {
+        //     if (topic === 'CSE_BBC1/feeds/bk-iot-relay'){
+        //         console.log('Received Relay Data from Ada')
+        //         console.log('from server:', msg.toString())
+        //         this.setState((state) => ({...state, waterOn: msg.toString() === '1'}))
+        //     }
+        // })
     }
     render(){
         return(<div>
                 <h2 className={classes.modal__header} >{this.props.plant.name}</h2>
                 <div className={classes.modal__form}>
-                <label>Water amount (ml)</label>
-                <input type="number" name="water_amount" 
-                value = {this.state.water_amount} onChange={this.waterAmountHandler}/>
+                <label>Water mode</label>
+                <div style={{display: 'flex', justifyContent: 'left'}}>
+                    <div>
+                        <label style={{position: 'relative', top:'6px'}}> Manual </label>
+                        <Switch checked={this.state.water_mode} onChange={this.waterModeHandler} name='waterMode'/>
+                        <label style={{position: 'relative', top:'6px'}}> Auto </label>
+                    </div>
+                    <button style={{position:'relative', top:'-10px', marginLeft:'50px', border: 'none', borderRadius:'20px', fontWeight:'500', padding: '0.25rem 1rem',
+                                    backgroundColor: this.state.water_mode?'rgba(165, 161, 161, 0.747)':'#b3ffd1'}} 
+                            onClick={this.manualPumpHandler}
+                            >
+                        Pump: {this.state.waterOn?"ON":"OFF"}
+                    </button>
+                </div>             
+
+                <label>Water amount </label>
+                <div style={{display:'flex', justifyContent:'left'}}>
+                    <div style={{display:'flex',flexDirection:'row', flexGrow:1}}>
+                        <label style={{width:'2.5rem'}}> 0ml </label>
+                        <Slider 
+                            style={styles.slider}
+                            value={this.state.water_amount}
+                            onChange={this.handleWaterSliderChange}
+                            aria-labelledby="input-slider"
+                        />
+                        <label style={{paddingLeft:'15px'}}> 100ml </label>
+                    </div>
+                    <div style={{justifyContent:'left', flexGrow:1}}>
+                        <Input
+                            // className={this.classes.input}
+                            style={styles.inputBox}
+                            value={this.state.water_amount}
+                            // margin="dense"
+                            onChange={this.handleWaterAmountInputChange}
+                            onBlur={this.handleWaterAmountBlur}
+
+                            inputProps={{
+                                // step: 10,
+                                // min: 0,
+                                // max: 100,
+                                // type: 'number',
+                                'aria-labelledby': 'input-slider',
+                            }}
+                        />
+                    </div>
+                </div>
 
                 {/* Moisture part */}
-                <label>Minimum moisture (%)</label>
-                <input type="number" name="MinimumMoisture" 
-                value = {this.state.min_moist} onChange={this.minimumMoistureHandler}/>
-                <label>Maximum moisture (%)</label>
-                <input type="number" name="MaximumMoisture"
-                value = {this.state.max_moist} onChange={this.maximumMoistureHandler}/>
-                {/* Temperature part */}
-                <label>Minimum Temperature (*C)</label>
-                <input type="number" name="MinimumTemperature" 
-                value = {this.state.min_temp} onChange={this.minimumTemperatureHandler}/>
-                <label>Maximum Temperature (*C)</label>
-                <input type="number" name="MaximumTemperature"
-                value = {this.state.max_temp} onChange={this.maximumTemperatureHandler}/>
-                {/* Humidity part */}
-                <label>Minimum Humidity (%)</label>
-                <input type="number" name="MinimumHumidity"
-                value = {this.state.min_humi}  onChange={this.minimumHumidityHandler}/>
-                <label>Maximum Humidity (%)</label>
-                <input type="number" name="MaximumHumidity"
-                value = {this.state.max_humi}  onChange={this.maximumHumidityHandler}/>
-                {/* Lighting part */}
-                <label>Minimum Lighting (%)</label>
-                <input type="number" name="MinimumLighting"
-                value = {this.state.min_light}  onChange={this.minimumLightingHandler}/>
-                <label>Maximum Lighting (%)</label>
-                <input type="number" name="MaximumLighting"
-                value = {this.state.max_light}  onChange={this.maximumLightingHandler}/>
+                <label> Moisture </label>
+                <MinMaxInputSlider
+                    values={[this.state.min_moist, this.state.max_moist]}
+                    leftLabel='0%'
+                    rightLabel='100%'
+                    handleSlider={this.handleMoistSliderChange}
+                    handleInput0={this.handleMinMoistInputChange}
+                    handleInput1={this.handleMaxMoistInputChange}
+                    handleBlur={this.handleMoistBlur}
+                />    
 
-                <label>Water mode</label>
-                <select name="modes" onChange={this.waterModeHandler}>
-                    <option value={true}>Auto</option>
-                    <option value={false}>Manual</option>
-                </select>
-                <div>Current Settings</div>
-                <div> {JSON.stringify(this.state,null,'\n')}</div>
+                {/* Temperature part */}
+                <label> Temperature </label>
+                <MinMaxInputSlider
+                    values={[this.state.min_temp, this.state.max_temp]}
+                    leftLabel={'0\u2103'}
+                    rightLabel={'100\u2103'}
+                    handleSlider={this.handleTempSliderChange}
+                    handleInput0={this.handleMinTempInputChange}
+                    handleInput1={this.handleMaxTempInputChange}
+                    handleBlur={this.handleTempBlur}
+                />    
+
+                {/* Humidity part */}
+                <label> Humidity </label>
+                <MinMaxInputSlider
+                    values={[this.state.min_humi, this.state.max_humi]}
+                    leftLabel='0%'
+                    rightLabel='100%'
+                    handleSlider={this.handleHumiSliderChange}
+                    handleInput0={this.handleMinHumiInputChange}
+                    handleInput1={this.handleMaxHumiInputChange}
+                    handleBlur={this.handleHumiBlur}
+                />    
+
+                <label> Lighting </label>
+                <MinMaxInputSlider
+                    values={[this.state.min_light, this.state.max_light]}
+                    leftLabel='0%'
+                    rightLabel='100%'
+                    handleSlider={this.handleLightSliderChange}
+                    handleInput0={this.handleMinLightInputChange}
+                    handleInput1={this.handleMaxLightInputChange}
+                    handleBlur={this.handleLightBlur}
+                />    
+                
+                {/* <div>Current Settings</div>
+                <div> {JSON.stringify(this.state,null,'\n')}</div> */}
                 <button className={classes.btn} onClick={this.saveHandler}>Save</button>
-                <button className={classes.btn} onClick={this.manualPumpHandler}>Pump: {this.state.waterOn?"ON":"OFF"}</button>
+                
                 </div>
             </div>
         );
