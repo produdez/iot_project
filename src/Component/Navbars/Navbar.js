@@ -9,32 +9,31 @@ export default function Navbar(){
         console.log(localStorage.getItem('user-info'))
         const currentUser = useAuth()
         const logout = useAuth()
-        const history = useHistory()
         function logOut() {
             if (currentUser) logout()
             localStorage.clear()
             window.location.reload(false)
-            history.push("/")
         }
         const [dropDownValue, setDropDownValue] = useState("Plant 1")
         return(
             <header className={styles.header}>
                 <nav className={styles.nav}>
-                {
-                localStorage.getItem("user-info")?
-                    <NavDropdown className={styles.nav_drop} title={
-                            <span className="color-dark my-auto" style={{color:'black' }}>{dropDownValue}</span>
-                        }>
-                        <NavDropdown.Item ><div onClick={(e)=>setDropDownValue(e.target.textContent)}>Plant 1</div></NavDropdown.Item>
-                        <NavDropdown.Item ><div onClick={(e)=>setDropDownValue(e.target.textContent)}>Plant 2</div></NavDropdown.Item>
-                        <NavDropdown.Item disabled>Plant 3</NavDropdown.Item>
-                    </NavDropdown>
-                    :
-                    <Link to="/" style={{ textDecoration: 'none', color:'black' }}>
+                <Link to="/" style={{ textDecoration: 'none', color:'black' }}>
                     <div className={styles.nav__logo}>Irrigation System</div>
-                    </Link>
-                }
+                </Link>
                     <ul className={styles.nav__links}>
+                        {
+                        localStorage.getItem("user-info")?
+                            <NavDropdown className={styles.nav_drop} title={
+                                    <span className="color-dark my-auto" style={{color:'black' }}>{dropDownValue}</span>
+                                }>
+                                <NavDropdown.Item ><div onClick={(e)=>setDropDownValue(e.target.textContent)}>Plant 1</div></NavDropdown.Item>
+                                <NavDropdown.Item ><div onClick={(e)=>setDropDownValue(e.target.textContent)}>Plant 2</div></NavDropdown.Item>
+                                <NavDropdown.Item disabled>Plant 3</NavDropdown.Item>
+                            </NavDropdown>
+                            :
+                            null
+                        }
                         {
                             localStorage.getItem("user-info")?
                             <>

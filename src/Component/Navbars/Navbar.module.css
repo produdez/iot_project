@@ -10,6 +10,7 @@
     align-items: center;
   }
 /* NAVIGATION */
+
 .nav {
     display: flex;
     justify-content: space-between;
@@ -27,24 +28,27 @@
   }
   
   .nav__logo {
-    height: 4.5rem;
+    height: 6rem;
     transition: all 0.3s;
     font-weight: bold;
     font-size: 40px;
+    position: relative;
+    text-align: center;
   }
-  
+
   .nav_drop {
-    height: 7rem;
+    height: 4rem;
     transition: all 0.3s;
     font-weight: bold;
-    font-size: 60px;
+    /* font-size: 40px; */
     color: #32a0c2;
     text-decoration: none;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     letter-spacing: -0.03em;
     align-self: center;
+    font-size: 1.7rem;
   }
-
+  
   .nav__links {
     display: flex;
     align-items: center;
