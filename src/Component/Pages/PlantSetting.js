@@ -31,23 +31,6 @@ export default class PlantSetting extends Component {
         this.ref = firebase.database().ref(DB_NAME).child(this.state.plant_id);
         // this.ref = firebase.database().ref(DB_NAME).orderByChild("plant_id").equalTo(this.state.plant_id);
         this.state.water_mode = this.props.plant.waterMode;
-        
-        //check firebase settings data
-        this.ref.once("value",snapshot => {
-            console.log('once this: ',this)
-            if (snapshot.exists()){
-              let settings_data = snapshot.val();
-              console.log("Loading Settings From FB-once", settings_data);
-                this.setState(settings_data);
-                console.log('State: ',this.state)
-            }else{
-                console.log('PlantSettings Not Up on server! Pushing defaultSettings to server!')
-                // this.state = DEFAULT_SETTINGS;
-                // // this.state.inputWaterMode = this.props.plant.waterMode;??
-                // this.state.plant_id = this.props.plant.id;
-                this.saveHandler(); // push empty settings on server
-            }
-        },{context : this});
 
     }
     waterAmountHandler = (event) =>{
@@ -118,9 +101,15 @@ export default class PlantSetting extends Component {
     componentDidMount() {
         //onfunction
         this.ref.on("value",snapshot => {
-            var settings_data = snapshot.val();
-            console.log("Loading Settings From FB-on", settings_data);
-            this.setState(settings_data)
+            if (snapshot.exists()){
+                let settings_data = snapshot.val();
+                console.log("Loading Settings From firebase");
+                this.setState(settings_data);
+                console.log('State: ',this.state)
+            }else{
+                console.log('PlantSettings Not Up on server! Pushing defaultSettings to server!')
+                this.saveHandler(); // push empty settings on server
+            }
         },{context : this})
 
         // subscribe to ada relay
