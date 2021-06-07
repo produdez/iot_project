@@ -1,0 +1,76 @@
+.notification {
+    padding: 1rem;
+    background-color: rgb(31, 31, 31);
+    margin: 2rem auto;
+    width: 100rem;
+    max-width: 95%;
+  }
+.notificationItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    margin: 1rem 0;
+    background-color: #4b4b4b;
+  }
+
+  .notificationDescription {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-end;
+    flex-flow: column-reverse;
+    justify-content: flex-start;
+    flex: 1;
+  }
+  .notificationMessage {
+    color: #3a3a3a;
+    font-size: 1rem;
+    flex: 1;
+    margin: 0 1rem;
+    color: white;
+  }
+
+.notificationItem__delete {
+    font-size: 1rem;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.836);
+    background-color: #bbb7bd6b;
+    border: 1px solid white;
+    padding: 0.5rem;
+    border-radius: 12px;
+  }
+
+  .notificationOfPlant {
+    display: flex;
+    flex-direction: column;
+    width: 5.5rem;
+    height: 5.5rem;
+    border: 1px solid #ececec;
+    background-color: #2a2a2a;
+    color: white;
+    border-radius: 12px;
+    align-items: center;
+    justify-content: center;
+  }
+  .notificationList {
+    list-style: none;
+    padding: 0;
+  }
+  @media (min-width: 580px) {
+    .notificationDescription {
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      flex: 1;
+    }
+  
+    .notificationMessage {
+      font-size: 1.25rem;
+    }
+  
+    .notificationItem__delete {
+      font-size: 1.25rem;
+      padding: 0.5rem 1.5rem;
+    }
+  }

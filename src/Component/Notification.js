@@ -1,7 +1,8 @@
 import React , {useState } from "react"
-import { Card, Button, ListGroup } from "react-bootstrap"
+import { Card} from "react-bootstrap"
 import { Link } from "react-router-dom";
-
+import CardFake from './Card';
+import styles from './Notification.module.css'
 // import { useAuth } from "../Context/AuthContext"
 // import { useHistory } from "react-router-dom";
 import firebase from "firebase/app"
@@ -53,11 +54,13 @@ export default class Notification extends React.Component {
             <>
             {/* <h3>Go to corresponding plant using the GO button</h3> */}
             {/* <button onClick={this.delete_noti_data.bind(this)}>Delete Data</button> */}
-            <Card.Body>
-                <ListGroup>
+            <div>
+            <CardFake className={styles.notification}>
+                 <ul className={styles.notificationList}>
                     {this.notificationList(this.state.data)}
-                </ListGroup>
-            </Card.Body>
+                </ul>
+            </CardFake>
+            </div>
             </>
         );
     }
@@ -74,19 +77,24 @@ export default class Notification extends React.Component {
         {
             let [key,json] = noti_json;
             return (
-            <ListGroup.Item key = {key} variant="info">
-                {/* {JSON.stringify(json)} */}
-                <Button value = {noti_json} variant="dark" onClick={() => this.OnClickNotification(noti_json,true)} >{json.plant_name}</Button>
-
-                <span className='p-3'>
-                    {translateType(json.name)}: {}
-                    {json.data}{json.unit} {}
-                    {translateSign(json.sign)[0]} compared to {}
-                    {translateSign(json.sign)[1]} Threshold of: {json.threshold}{json.unit}
-                </span>
-                <Link onClick={() => this.OnClickNotification(noti_json)}>Delete</Link>
-                {/* <span className='p-3'>{json.data}</span> */}
-            </ListGroup.Item>
+                    <li>
+                    {/* <ListGroup.Item key = {key} variant="info"> */}
+                        {/* {JSON.stringify(json)} */}
+                        <CardFake className={styles.notificationItem}>
+                       
+                        {/* <Button variant="dark" value = {noti_json}  onClick={() => this.OnClickNotification(noti_json,true)} >{json.plant_name}</Button> */}
+                    
+                        <div className={styles.notificationDescription}>
+                            <div className={styles.notificationMessage}>{translateType(json.name)}: {}
+                            {json.data}{json.unit} {}
+                            {translateSign(json.sign)[0]} compared to {}
+                            {translateSign(json.sign)[1]} Threshold of: {json.threshold}{json.unit}</div>
+                            <button className={styles.notificationItem__delete} onClick={() => this.OnClickNotification(noti_json)}>Delete</button>
+                        </div>
+                        
+                        </CardFake>
+                    {/* </ListGroup.Item> */}
+                    </li>
             );
         });
     }

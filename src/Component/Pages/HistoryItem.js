@@ -5,7 +5,6 @@ import Card from '../Card';
 import './HistoryItem.css';
 
 const HistoryItem = (props) => {
-  console.log(props);
   return (
     <li>
       <Card className='history-item'>
