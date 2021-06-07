@@ -47,7 +47,6 @@ export default function App() {
       setLoading(false)
     })
   }, []) // <-- empty dependency array
-  
 
   if (loading){
     return <h1>Loading Server Authentication Data!</h1>
@@ -55,7 +54,7 @@ export default function App() {
   return (
     <div>
       <Navbar></Navbar>
-    <AuthProvider>  
+    <AuthProvider>
       <Switch>
         <Route exact path="/"><Homepage /></Route>
         <Route path="/login"><Login /></Route>

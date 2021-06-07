@@ -1,11 +1,6 @@
 import React, {Component} from 'react';
 import style from './Header.module.css';
-import {Link} from 'react-router-dom';
 export default class Header extends Component{
-    constructor(props){
-        super(props)
-    }
-    
     render(){
         return(  
         <div className={style.row}>

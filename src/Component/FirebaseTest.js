@@ -2,10 +2,6 @@ import React from "react";
 import firebase from "firebase/app"
 
 class FirebaseTest extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   onClickConnect = () => {
     console.log('click Connect')
     var ref = firebase.database().ref('sensor');

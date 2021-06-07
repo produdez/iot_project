@@ -1,35 +1,29 @@
 import React, { useRef, useState } from "react"
 import { Form, Button, Card, Alert } from "react-bootstrap"
 import { useAuth } from "../../Context/AuthContext"
-import { Link, useHistory,  Redirect } from "react-router-dom"
-import Navbar from "../Navbars/Navbar"
+import { Link } from "react-router-dom"
 
 export default function Login() {
   const emailRef = useRef()
   const passwordRef = useRef()
   const { login } = useAuth()
-  const { currentUser } = useAuth()
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
-  const history = useHistory()
 
- function handleSubmit(e) {
+async function  handleSubmit(e) {
     e.preventDefault()
     try {
-      localStorage.setItem("user-info",JSON.stringify(emailRef.current.value))
-      window.location.reload(false)
       setError("")
       setLoading(true)
-      login(emailRef.current.value, passwordRef.current.value)
-      localStorage.setItem("user-info",JSON.stringify(emailRef.current.value))
+      if ( await login(emailRef.current.value, passwordRef.current.value)) 
+        {
+          localStorage.setItem("user-info",JSON.stringify(emailRef.current.value))
+          window.location.reload()
+        }
     } catch {
       setError("Failed to log in")
     }
     setLoading(false)
-  }
-
-  if (localStorage.getItem("user-info")) {
-    return <Redirect to="/"/>
   }
 
   return (
@@ -53,9 +47,9 @@ export default function Login() {
             </Button>
             </div>
           </Form>
-          <div className="w-100 text-center mt-3">
+          {/* <div className="w-100 text-center mt-3">
             <Link to="/forgot-password">Forgot Password?</Link>
-          </div>
+          </div> */}
       <div className="w-100 text-center mt-2">
         Need an account? <Link to="/signup">Sign Up</Link>
       </div>
