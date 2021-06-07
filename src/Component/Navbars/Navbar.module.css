@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600&display=swap');
 /* HEADER */
 .header {
-    padding: 0 15rem;
+    padding: 0 7rem;
     /* height: 10vh; */
     margin-bottom: 2rem;
     display: flex;
@@ -27,10 +27,25 @@
   }
   
   .nav__logo {
-    height: 4.5rem;
+    height: 6rem;
     transition: all 0.3s;
     font-weight: bold;
     font-size: 40px;
+    position: relative;
+    text-align: center;
+  }
+
+  .nav_drop {
+    height: 4rem;
+    transition: all 0.3s;
+    font-weight: bold;
+    /* font-size: 40px; */
+    color: #32a0c2;
+    text-decoration: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: -0.03em;
+    align-self: center;
+    font-size: 3rem;
   }
   
   .nav__links {
@@ -43,7 +58,7 @@
   .nav__item {
     margin-left: 1.5rem;
   }
-  
+
   .nav__link:link,
   .nav__link {
     font-size: 1.7rem;
@@ -53,4 +68,3 @@
     display: block;
     transition: all 0.3s;
   }
-  
