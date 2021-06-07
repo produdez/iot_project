@@ -13,8 +13,9 @@ const HistoryList = (props) => {
       {props.items.map((history) => (
         <HistoryItem
           key={history.id}
-          title={history.title}
+          description={history.description}
           date={history.date}
+          time={history.time}
         />
       ))}
     </ul>

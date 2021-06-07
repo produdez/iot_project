@@ -5,12 +5,14 @@ import Card from '../Card';
 import './HistoryItem.css';
 
 const HistoryItem = (props) => {
+  console.log(props);
   return (
     <li>
-      <Card className='expense-item'>
+      <Card className='history-item'>
         <HistoryDate date={props.date} />
-        <div className='expense-item__description'>
+        <div className='history-item__description'>
           <h2>{props.description}</h2>
+          <p className='history-item__time'>time</p>
         </div>
       </Card>
     </li>
