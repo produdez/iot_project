@@ -73,9 +73,12 @@ export default class Notification extends React.Component {
 
     notificationList(noti_list){
         // return [];
+    
         return Object.entries(noti_list).map((noti_json) => 
         {
             let [key,json] = noti_json;
+          
+        
             return (
                     <li>
                     {/* <ListGroup.Item key = {key} variant="info"> */}
