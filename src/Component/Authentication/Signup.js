@@ -32,7 +32,7 @@ export default function Signup() {
     setLoading(false)
   }
 
-  if (localStorage.getItem("user-info")) {
+  if (currentUser) {
     return "You're already logged in"
   }
 

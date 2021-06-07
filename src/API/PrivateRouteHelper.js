@@ -14,7 +14,7 @@ export default function PrivateRoute({ component: Component, ...rest }) {
           // console.log('Passed auth test!');
           return <Component {...props} />
         }
-        // console.log('Redirected to Login!');
+        console.log('Redirected to Login!');
         return <Redirect to="/login" />
       }}
     ></Route>

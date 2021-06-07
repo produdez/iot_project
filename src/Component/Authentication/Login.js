@@ -1,37 +1,33 @@
 import React, { useRef, useState } from "react"
 import { Form, Button, Card, Alert } from "react-bootstrap"
 import { useAuth } from "../../Context/AuthContext"
-import { Link, useHistory,  Redirect } from "react-router-dom"
-import Navbar from "../Navbars/Navbar"
+import { Link, useHistory } from "react-router-dom"
 
 export default function Login() {
   const emailRef = useRef()
   const passwordRef = useRef()
+  const {currentUser} = useAuth()
   const { login } = useAuth()
-  const { currentUser } = useAuth()
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const history = useHistory()
 
- function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
+
     try {
-      localStorage.setItem("user-info",JSON.stringify(emailRef.current.value))
-      window.location.reload(false)
       setError("")
       setLoading(true)
-      login(emailRef.current.value, passwordRef.current.value)
-      localStorage.setItem("user-info",JSON.stringify(emailRef.current.value))
+      await login(emailRef.current.value, passwordRef.current.value)
+      history.push("/")
     } catch {
       setError("Failed to log in")
     }
+
     setLoading(false)
   }
 
-  if (localStorage.getItem("user-info")) {
-    return <Redirect to="/"/>
-  }
-
+  if (currentUser) return "You're already Logged In"
   return (
     <>
     <Card className="card border-dark mb-10 text-black p-3" style={{width : "28rem", margin: "0 auto"}}>
