@@ -57,30 +57,30 @@ export default async function setupAdaMqttClient(){
         console.log('op1:',options1)
         console.log('op2',options2)
     }finally{
-        // console.log(options1)
-        // const url1 = `mqtts://${options1.username}:${options1.password}@io.adafruit.com`;
-        const url1 = 'tcp://io.adafruit.com:443';
-        // console.log(url)
-        const mqttClient1 = mqtt.connect(url1, options1);
-        mqttClient1.on('connect', (connack)=>{
-            // console.log('Info:', connack)
-            mqttClient1.subscribe('CSE_BBC/feeds/bk-iot-soil', (err, granted) => {
-                if (err) console.log('soil feed subscription error: ',err);
-                if (granted) console.log('Subed to soil feed')
-            })
-            mqttClient1.subscribe('CSE_BBC/feeds/bk-iot-temp-humid', (err, granted) => {
-                if (err) console.log('Temp-Humid feed subscription error: ',err);
-                if (granted) console.log('Subed to Temp-Humid feed')
-            })
-            console.log('connect to adafruit CSE_BBC successfully')
-            allowErr1 = true
-        })
-        mqttClient1.on('error', (error)=>{
-            if (allowErr1){
-                console.log('Error connecting to adaFruit CSE_BBC! ', error)
-                allowErr1 = false;
-            }
-        })
+        // //! connect server 1
+        //TODO: uncomment all below to connect to ada-temp-humid-soil
+        // const url1 = 'tcp://io.adafruit.com:443';
+        // // console.log(url)
+        // const mqttClient1 = mqtt.connect(url1, options1);
+        // mqttClient1.on('connect', (connack)=>{
+        //     // console.log('Info:', connack)
+        //     mqttClient1.subscribe('CSE_BBC/feeds/bk-iot-soil', (err, granted) => {
+        //         if (err) console.log('soil feed subscription error: ',err);
+        //         if (granted) console.log('Subed to soil feed')
+        //     })
+        //     mqttClient1.subscribe('CSE_BBC/feeds/bk-iot-temp-humid', (err, granted) => {
+        //         if (err) console.log('Temp-Humid feed subscription error: ',err);
+        //         if (granted) console.log('Subed to Temp-Humid feed')
+        //     })
+        //     console.log('connect to adafruit CSE_BBC successfully')
+        //     allowErr1 = true
+        // })
+        // mqttClient1.on('error', (error)=>{
+        //     if (allowErr1){
+        //         console.log('Error connecting to adaFruit CSE_BBC! ', error)
+        //         allowErr1 = false;
+        //     }
+        // })
 
         //! connect server 2
         // console.log(options2)
@@ -89,11 +89,11 @@ export default async function setupAdaMqttClient(){
         // console.log(url)
         const mqttClient2 = mqtt.connect(url2, options2);
         mqttClient2.on('connect', (connack)=>{
-            // console.log('Info:', connack)
-            mqttClient2.subscribe('CSE_BBC1/feeds/bk-iot-light', (err, granted) => {
-                if (err) console.log('Light feed subscription error: ',err);
-                if (granted) console.log('Subed to light feed')
-            })
+            //TODO: uncomment this if want ada-light
+            // mqttClient2.subscribe('CSE_BBC1/feeds/bk-iot-light', (err, granted) => {
+            //     if (err) console.log('Light feed subscription error: ',err);
+            //     if (granted) console.log('Subed to light feed')
+            // })
             mqttClient2.subscribe('CSE_BBC1/feeds/bk-iot-relay', (err, granted) => {
                 if (err) console.log('Relay feed subscription error: ',err);
                 if (granted) console.log('Subed to relay feed')
@@ -109,14 +109,15 @@ export default async function setupAdaMqttClient(){
         })
 
         //! set global client
-        window.mqttClient1 = mqttClient1;
+        //todo: uncomment below if want global client1
+        // window.mqttClient1 = mqttClient1;
         window.mqttClient2 = mqttClient2;
 
         //! set global status variables
-        window.setupOnLight = false;
-        window.setupOnMoisture = false;
-        window.setupOnHumidity = false;
-        window.setupOnTemperature = false;
-        window.setupOnRelay = false;
+        // window.onLightIsSetup = false;
+        // window.onHumiIsSetup = false;
+        // window.onMoistIsSetup = false;
+        // window.onTempIsSetup = false;
+        window.onRelayIsSetup = false;
     }
 }

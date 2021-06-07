@@ -1,6 +1,7 @@
 import React from "react"
 import style from './Header.module.css';
 import {Card} from "react-bootstrap"
+import firebase from "firebase/app"
 
     class EnvCond extends React.Component{
         constructor(props) {
@@ -11,6 +12,20 @@ import {Card} from "react-bootstrap"
                 light_value: null,
                 moisture_value: null
             }
+            this.temp_ref =  firebase.database().ref('Temperature')
+                .orderByChild("dateAdded")
+                .limitToLast(1);
+            this.moist_ref =  firebase.database().ref('Moisture')
+                .orderByChild("dateAdded")
+                .limitToLast(1);
+            this.humi_ref =  firebase.database().ref('Humidity')
+                .orderByChild("dateAdded")
+                .limitToLast(1);
+            this.light_ref =  firebase.database().ref('Light')
+                .orderByChild("dateAdded")
+                .limitToLast(1);
+            
+
         }
 
         saveStateToLocalStorage() {
@@ -46,45 +61,78 @@ import {Card} from "react-bootstrap"
                 "beforeunload",
                 this.saveStateToLocalStorage.bind(this)
             );
-            //Start Captureing
-            var mqttClient =  window.mqttClient1
-            mqttClient.on('message', (topic,message)=>{
-                if (topic === 'CSE_BBC/feeds/bk-iot-soil'){
-                    console.log('-----------------------------------------------------')
-                    console.log('Received moisture data from ada:')
-                    console.log(message.toString())
-                    var moisture_data = JSON.parse(message.toString())
-                    this.setState({
-                        moisture_value: parseFloat(moisture_data.data)
-                    })
-                }
-                if(topic === 'CSE_BBC/feeds/bk-iot-temp-humid'){
-                    console.log('-----------------------------------------------------')
-                    console.log('Received temp-humid data from ada:')
-                    console.log(message.toString())
-                    //todo: split temp-humid and check notification seperately
-                    var sensor_json_data = JSON.parse(message.toString())
-                    //split json 
-                    let [temp, humi] = sensor_json_data.data.split('-')
-                    this.setState({
-                    temp_value: parseFloat(temp),
-                    humid_value: parseFloat(humi)
-                    })
-                }
-            });
 
-            var mqttClient2 = global.mqttClient2;
-            mqttClient2.on('message', (topic,message)=>{
-            if(topic === 'CSE_BBC1/feeds/bk-iot-light'){
-                console.log('-----------------------------------------------------')
-                console.log('Received light data from ada:')
-                console.log(message.toString())
-                var light_data = JSON.parse(message.toString())
+            //! capture from firebase instead!
+            this.temp_ref.on("child_added", function (snapshot) {
+                let val = snapshot.val()
+                console.log('Received Temp data from fb:')
+                console.log(val)
                 this.setState({
-                    light_value: parseFloat(light_data.data),
+                    temp_value: parseFloat(val.data),
                 })
-            }
-            })
+            }.bind(this));
+            this.light_ref.on("child_added", function (snapshot) {
+                let val = snapshot.val()
+                console.log('Received Light data from fb:')
+                console.log(val)
+                this.setState({
+                    light_value: parseFloat(val.data),
+                })
+            }.bind(this));
+            this.humi_ref.on("child_added", function (snapshot) {
+                let val = snapshot.val()
+                console.log('Received Humid data from fb:')
+                console.log(val)
+                this.setState({
+                    humid_value: parseFloat(val.data),
+                })
+            }.bind(this));
+            this.moist_ref.on("child_added", function (snapshot) {
+                let val = snapshot.val()
+                console.log('Received Moisture data from fb:')
+                console.log(val)
+                this.setState({
+                    moisture_value: parseFloat(val.data),
+                })
+            }.bind(this));
+            // //Start Captureing
+            // var mqttClient =  window.mqttClient1
+            // mqttClient.on('message', (topic,message)=>{
+            //     if (topic === 'CSE_BBC/feeds/bk-iot-soil'){
+            //         console.log('-----------------------------------------------------')
+            //         console.log('Received moisture data from ada:')
+            //         console.log(message.toString())
+            //         var moisture_data = JSON.parse(message.toString())
+            //         this.setState({
+            //             moisture_value: parseFloat(moisture_data.data)
+            //         })
+            //     }
+            //     if(topic === 'CSE_BBC/feeds/bk-iot-temp-humid'){
+            //         console.log('-----------------------------------------------------')
+            //         console.log('Received temp-humid data from ada:')
+            //         console.log(message.toString())
+            //         var sensor_json_data = JSON.parse(message.toString())
+            //         //split json 
+            //         let [temp, humi] = sensor_json_data.data.split('-')
+            //         this.setState({
+            //         temp_value: parseFloat(temp),
+            //         humid_value: parseFloat(humi)
+            //         })
+            //     }
+            // });
+
+            // var mqttClient2 = global.mqttClient2;
+            // mqttClient2.on('message', (topic,message)=>{
+            // if(topic === 'CSE_BBC1/feeds/bk-iot-light'){
+            //     console.log('-----------------------------------------------------')
+            //     console.log('Received light data from ada:')
+            //     console.log(message.toString())
+            //     var light_data = JSON.parse(message.toString())
+            //     this.setState({
+            //         light_value: parseFloat(light_data.data),
+            //     })
+            // }
+            // })
         }
 
         componentWillUnmount(){
