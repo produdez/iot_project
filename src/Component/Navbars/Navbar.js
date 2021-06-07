@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import NavButton from '../Buttons/NavButton.js';
 import styles from './Navbar.module.css'
 import {Link,useHistory,  Redirect} from 'react-router-dom';
 import { useAuth } from "../../Context/AuthContext"
-//import NavDropdown from 'react-bootstrap'
+import {NavDropdown, DropdownButton} from 'react-bootstrap'
 
 export default function Navbar(){
         console.log(localStorage.getItem('user-info'))
@@ -16,12 +16,24 @@ export default function Navbar(){
             window.location.reload(false)
             history.push("/")
         }
+        const [dropDownValue, setDropDownValue] = useState("Plant 1")
         return(
             <header className={styles.header}>
                 <nav className={styles.nav}>
-                <Link to="/" style={{ textDecoration: 'none', color:'black' }}>
+                {
+                localStorage.getItem("user-info")?
+                    <NavDropdown className={styles.nav_drop} title={
+                            <span className="color-dark my-auto" style={{color:'black' }}>{dropDownValue}</span>
+                        }>
+                        <NavDropdown.Item ><div onClick={(e)=>setDropDownValue(e.target.textContent)}>Plant 1</div></NavDropdown.Item>
+                        <NavDropdown.Item ><div onClick={(e)=>setDropDownValue(e.target.textContent)}>Plant 2</div></NavDropdown.Item>
+                        <NavDropdown.Item disabled>Plant 3</NavDropdown.Item>
+                    </NavDropdown>
+                    :
+                    <Link to="/" style={{ textDecoration: 'none', color:'black' }}>
                     <div className={styles.nav__logo}>Irrigation System</div>
                     </Link>
+                }
                     <ul className={styles.nav__links}>
                         {
                             localStorage.getItem("user-info")?
@@ -58,3 +70,4 @@ export default function Navbar(){
                 </nav>
             </header>)
     }
+

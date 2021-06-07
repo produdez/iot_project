@@ -33,6 +33,18 @@
     font-size: 40px;
   }
   
+  .nav_drop {
+    height: 7rem;
+    transition: all 0.3s;
+    font-weight: bold;
+    font-size: 60px;
+    color: #32a0c2;
+    text-decoration: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: -0.03em;
+    align-self: center;
+  }
+
   .nav__links {
     display: flex;
     align-items: center;
