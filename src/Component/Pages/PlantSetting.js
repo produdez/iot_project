@@ -28,10 +28,8 @@ export default class PlantSetting extends Component {
         // let plant_id = this.props.plant.id;
         this.state = DEFAULT_SETTINGS;
         this.state.plant_id = this.props.plant.id;
-        this.ref = firebase.database().ref(DB_NAME).child(this.state.plant_id);
-        // this.ref = firebase.database().ref(DB_NAME).orderByChild("plant_id").equalTo(this.state.plant_id);
+        this.ref = firebase.database().ref(DB_NAME).child(this.props.plant.id);
         this.state.water_mode = this.props.plant.waterMode;
-
     }
     waterAmountHandler = (event) =>{
         this.setState({water_amount: event.target.value});
@@ -91,7 +89,7 @@ export default class PlantSetting extends Component {
     }
 
     manualPumpHandler = () => {
-      console.log('manual pump clicked')
+      console.log('Manual pump clicked, pusing to ada relay!')
 
       let publishValue = this.state.waterOn?0:1; // if water is on: turn off, else turn on
       window.mqttClient2.publish('CSE_BBC1/feeds/bk-iot-relay', JSON.stringify(publishValue));
@@ -105,22 +103,23 @@ export default class PlantSetting extends Component {
                 let settings_data = snapshot.val();
                 console.log("Loading Settings From firebase");
                 this.setState(settings_data);
-                console.log('State: ',this.state)
             }else{
                 console.log('PlantSettings Not Up on server! Pushing defaultSettings to server!')
                 this.saveHandler(); // push empty settings on server
             }
         },{context : this})
 
-        // subscribe to ada relay
-        window.mqttClient2.on('message', (topic, msg) => {
-            if (topic === 'CSE_BBC1/feeds/bk-iot-relay'){
-                console.log('Received Relay Data from Ada')
-                console.log('from server:', msg.toString())
-                this.setState((state) => ({...state, waterOn: msg.toString() === '1'}))
-            }
-        })
-        
+        //subscribe to ada relay
+        if(!window.onRelayIsSetup){
+            window.mqttClient2.on('message', (topic, msg) => {
+                if (topic === 'CSE_BBC1/feeds/bk-iot-relay'){
+                    console.log('Received Relay Data from Ada')
+                    console.log('from server:', msg.toString())
+                    this.setState((state) => ({...state, waterOn: msg.toString() === '1'}))
+                }
+            })
+            window.onRelayIsSetup = true;
+        }
     }
     render(){
         return(<div>
