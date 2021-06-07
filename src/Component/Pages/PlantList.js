@@ -29,7 +29,9 @@ const PlantList = props => {
                    )}
                 </div>
                 <div className={classes.columnSetting}>
-                    <PlantSetting plant={Plants[currentPlant-1]} /*{Plants.find(isCorrect)}*/ />
+                    <PlantSetting 
+                        key = {currentPlant - 1} plant={Plants[currentPlant-1]} 
+                    />
                 </div>
             </div>
         </div>
