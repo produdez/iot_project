@@ -20,6 +20,11 @@ async function get_ada_auth_info_from_firebase(){
     return auth_json
 }
 export default async function setupAdaMqttClient(){
+    console.log('Settingup ada !')
+    // to control error logging
+    var allowErr1 = true;
+    var allowErr2 = true;
+
     var options1 = undefined;
     var options2 = undefined;
     try{
@@ -68,9 +73,13 @@ export default async function setupAdaMqttClient(){
                 if (granted) console.log('Subed to Temp-Humid feed')
             })
             console.log('connect to adafruit CSE_BBC successfully')
+            allowErr1 = true
         })
         mqttClient1.on('error', (error)=>{
-            console.log('Error connecting to adaFruit CSE_BBC! ', error)
+            if (allowErr1){
+                console.log('Error connecting to adaFruit CSE_BBC! ', error)
+                allowErr1 = false;
+            }
         })
 
         //! connect server 2
@@ -90,9 +99,13 @@ export default async function setupAdaMqttClient(){
                 if (granted) console.log('Subed to relay feed')
             })
             console.log('connect to adafruit CSE_BBC1 successfully')
+            allowErr2 = true;
         })
         mqttClient2.on('error', (error)=>{
-            console.log('Error connecting to adaFruit CSE_BBC1! ', error)
+            if (allowErr2){
+                console.log('Error connecting to adaFruit CSE_BBC1! ', error)
+                allowErr2 = false
+            }
         })
 
         //! set global client

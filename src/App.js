@@ -38,26 +38,13 @@ const historyData = [
   },
 ];
 
-// export default function App() {
-  
-
-//   useEffect(()=>{
-//     setupAdaMqttClient().then(()=>{
-//       setLoading(false)
-//     })
-//   }, []) // <-- empty dependency array
-  
-
-  
-// }
-
 export default function App() {
-  const [loading, setLoading] = useState(false);
-  // useEffect(()=>{
-  //   setupAdaMqttClient().then(()=>{
-  //     setLoading(false)
-  //   })
-  // }, []) // <-- empty dependency array
+  const [loading, setLoading] = useState(true);
+  useEffect(()=>{
+    setupAdaMqttClient().then(()=>{
+      setLoading(false)
+    })
+  }, []) // <-- empty dependency array
   
 
   if (loading){
@@ -65,7 +52,7 @@ export default function App() {
   }
   return (
     <div>
-    <AuthProvider>  
+    <AuthProvider>
       <Navbar></Navbar>
       <Switch>
         <Route exact path="/"><Homepage /></Route>
@@ -82,46 +69,3 @@ export default function App() {
     </div>
   );
 }
-
-// class App extends React.Component{
-//   constructor(props) {
-//       super(props);
-//       this.state = {
-//         loading : false,
-//       }
-//       // const {currentUser} = useAuth();
-//       // console.log(currentUser)
-//   }
-//   componentDidMount(){
-//     // setTimeout(function() {
-//     //   setupAdaMqttClient().then(()=>{
-//     //     this.setState({loading : false})
-//     //   })
-//     // }.bind(this), 10000);
-//   }
-//   render() {
-//     if (this.state.loading){
-//       return <h1>Loading Server Authentication Data!</h1>
-//     }
-//     return (
-//       <div>
-//         <Navbar></Navbar>
-//       <AuthProvider>  
-//         <Switch>
-//           <Route exact path="/"><Homepage /></Route>
-//           <Route path="/login"><Login /></Route>
-//           <Route path="/signup"><Signup /></Route>
-//           <PrivateRoute path="/history"><History items={historyData}/></PrivateRoute>
-//           <PrivateRoute path ="/plant" component={PlantList}/>
-//           <PrivateRoute exact path="/dashboard" component={Dashboard} />
-//           <PrivateRoute path = "/notification" component = {Notification}/>
-//           <PrivateRoute path="/firebase_test" component={FirebaseTest} />
-//           <PrivateRoute path="/envcond" component={EnvCond} />
-//         </Switch>
-//       </AuthProvider>
-//       </div>
-//     );
-//   }
-// }
-
-// export default App
