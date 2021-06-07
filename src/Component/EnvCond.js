@@ -9,7 +9,7 @@ import {Card} from "react-bootstrap"
                 temp_value: null,
                 humid_value: null,
                 light_value: null,
-                moisture_value: null,
+                moisture_value: null
             }
         }
 

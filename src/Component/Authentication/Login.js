@@ -1,7 +1,8 @@
 import React, { useRef, useState } from "react"
 import { Form, Button, Card, Alert } from "react-bootstrap"
 import { useAuth } from "../../Context/AuthContext"
-import { Link, useHistory } from "react-router-dom"
+import { Link, useHistory,  Redirect } from "react-router-dom"
+import Navbar from "../Navbars/Navbar"
 
 export default function Login() {
   const emailRef = useRef()
@@ -12,22 +13,23 @@ export default function Login() {
   const [loading, setLoading] = useState(false)
   const history = useHistory()
 
-  async function handleSubmit(e) {
+ function handleSubmit(e) {
     e.preventDefault()
-
     try {
+      localStorage.setItem("user-info",JSON.stringify(emailRef.current.value))
+      window.location.reload(false)
       setError("")
       setLoading(true)
-      await login(emailRef.current.value, passwordRef.current.value)
-      history.push("/")
+      login(emailRef.current.value, passwordRef.current.value)
+      localStorage.setItem("user-info",JSON.stringify(emailRef.current.value))
     } catch {
       setError("Failed to log in")
     }
-
     setLoading(false)
   }
-  if (currentUser) {
-    return "You're already logged in"
+
+  if (localStorage.getItem("user-info")) {
+    return <Redirect to="/"/>
   }
 
   return (
@@ -62,4 +64,3 @@ export default function Login() {
     </>
   )
 }
-
