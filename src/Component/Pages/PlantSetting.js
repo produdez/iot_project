@@ -2,15 +2,11 @@ import React, {Component} from 'react';
 import firebase from "firebase/app"
 
 import classes from './PlantSetting.module.css'
-import { TimeSeriesScale } from 'chart.js';
-import { sizing } from '@material-ui/system';
 import Switch from '@material-ui/core/Switch';
 import Slider from '@material-ui/core/Slider';
 import Input from '@material-ui/core/Input';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { makeStyles } from '@material-ui/core/styles';
 import MinMaxInputSlider from '../Sliders/MinMaxInputSlider';
+import { withStyles } from '@material-ui/core/styles';
 
 const EMPTY = ''
 const DEFAULT_SETTINGS = {
@@ -35,9 +31,22 @@ const styles = {
     slider: {
         width:'50%', 
         color:'#5eed97',
-    },
-    
+    }, 
 }
+
+const GreenSwitch = withStyles({
+    switchBase: {
+      color: '#ffffff',
+      '&$checked': {
+        color: '#5eed97',
+      },
+      '&$checked + $track': {
+        backgroundColor: '#5eed97',
+      },
+    },
+    checked: {},
+    track: {},
+  })(Switch);
 
 export default class PlantSetting extends Component {
     constructor(props){
@@ -49,6 +58,8 @@ export default class PlantSetting extends Component {
             ...this.state, 
             plant_id: this.props.plant.id, 
             water_mode: this.props.plant.waterMode,
+            setAdaListener: false,
+            setFirebaseListener: false,
             }
         this.ref = firebase.database().ref(DB_NAME).child(this.state.plant_id);
         // this.ref = firebase.database().ref(DB_NAME).orderByChild("plant_id").equalTo(this.state.plant_id);
@@ -59,7 +70,8 @@ export default class PlantSetting extends Component {
             if (snapshot.exists()){
               let settings_data = snapshot.val();
               console.log("Loading Settings From FB-once", settings_data);
-                this.setState(settings_data);
+                // this.setState(settings_data);
+                this.state = settings_data;
                 console.log('State: ',this.state)
             }else{
                 console.log('PlantSettings Not Up on server! Pushing defaultSettings to server!')
@@ -168,9 +180,8 @@ export default class PlantSetting extends Component {
         this.setState((state) => ({...state, min_moist:newValue[0], max_moist:newValue[1]}));
     }
     handleMinMoistInputChange = (event) => {
-        let newVal = event.target.value===''?0:Number(event.target.value)
-        if (newVal <= this.state.max_moist)
-            this.setState((state)=>({...state, min_moist:event.target.value===''?'':Number(event.target.value)}))
+        
+        this.setState((state)=>({...state, min_moist:event.target.value===''?'':Number(event.target.value)}))
     }
     handleMaxMoistInputChange = (event) => {
         this.setState((state)=>({...state, max_moist:event.target.value===''?'':Number(event.target.value)}))
@@ -184,9 +195,7 @@ export default class PlantSetting extends Component {
         this.setState((state) => ({...state, min_temp:newValue[0], max_temp:newValue[1]}));
     }
     handleMinTempInputChange = (event) => {
-        let newVal = event.target.value===''?0:Number(event.target.value)
-        if (newVal <= this.state.max_temp)
-            this.setState((state)=>({...state, min_temp:event.target.value===''?'':Number(event.target.value)}))
+        this.setState((state)=>({...state, min_temp:event.target.value===''?'':Number(event.target.value)}))
     }
     handleMaxTempInputChange = (event) => {
         this.setState((state)=>({...state, max_temp:event.target.value===''?'':Number(event.target.value)}))
@@ -199,9 +208,7 @@ export default class PlantSetting extends Component {
         this.setState((state) => ({...state, min_humi:newValue[0], max_humi:newValue[1]}));
     }
     handleMinHumiInputChange = (event) => {
-        let newVal = event.target.value===''?0:Number(event.target.value)
-        if (newVal <= this.state.max_humi)
-            this.setState((state)=>({...state, min_humi:event.target.value===''?'':Number(event.target.value)}))
+        this.setState((state)=>({...state, min_humi:event.target.value===''?'':Number(event.target.value)}))
     }
     handleMaxHumiInputChange = (event) => {
         this.setState((state)=>({...state, max_humi:event.target.value===''?'':Number(event.target.value)}))
@@ -214,9 +221,7 @@ export default class PlantSetting extends Component {
         this.setState((state) => ({...state, min_light:newValue[0], max_light:newValue[1]}));
     }
     handleMinLightInputChange = (event) => {
-        let newVal = event.target.value===''?0:Number(event.target.value)
-        if (newVal <= this.state.max_light)
-            this.setState((state)=>({...state, min_light:event.target.value===''?'':Number(event.target.value)}))
+        this.setState((state)=>({...state, min_light:event.target.value===''?'':Number(event.target.value)}))
     }
     handleMaxLightInputChange = (event) => {
         this.setState((state)=>({...state, max_light:event.target.value===''?'':Number(event.target.value)}))
@@ -228,30 +233,39 @@ export default class PlantSetting extends Component {
 
     componentDidMount() {
         // //onfunction
-        // this.ref.on("value",snapshot => {
-        //     var settings_data = snapshot.val();
-        //     console.log("Loading Settings From FB-on", settings_data);
-        //     this.setState(settings_data)
-        // },{context : this})
+        if (!this.state.setFirebaseListener)
+        {
+            this.setState((state)=>({...state, setFirebaseListener:true}));
+            this.ref.on("value",snapshot => {
+                var settings_data = snapshot.val();
+                console.log("Loading Settings From FB-on", settings_data);
+                this.setState(settings_data)
+            },{context : this})
+        }
 
         // // subscribe to ada relay
-        // window.mqttClient2.on('message', (topic, msg) => {
-        //     if (topic === 'CSE_BBC1/feeds/bk-iot-relay'){
-        //         console.log('Received Relay Data from Ada')
-        //         console.log('from server:', msg.toString())
-        //         this.setState((state) => ({...state, waterOn: msg.toString() === '1'}))
-        //     }
-        // })
+        if (!this.state.setAdaListener)
+        {
+            this.setState((state)=>({...state, setAdaListener:true}));
+            window.mqttClient2.on('message', (topic, msg) => {
+                if (topic === 'CSE_BBC1/feeds/bk-iot-relay'){
+                    console.log('Received Relay Data from Ada')
+                    console.log('from server:', msg.toString())
+                    this.setState((state) => ({...state, waterOn: msg.toString() === '1'}))
+                }
+            })
+        }
     }
     render(){
         return(<div>
-                <h2 className={classes.modal__header} >{this.props.plant.name}</h2>
+                {/* <h2 className={classes.modal__header} >{this.props.plant.name}</h2> */}
                 <div className={classes.modal__form}>
+                
                 <label>Water mode</label>
                 <div style={{display: 'flex', justifyContent: 'left'}}>
                     <div>
                         <label style={{position: 'relative', top:'6px'}}> Manual </label>
-                        <Switch checked={this.state.water_mode} onChange={this.waterModeHandler} name='waterMode'/>
+                        <GreenSwitch checked={this.state.water_mode} onChange={this.waterModeHandler} name='waterMode'/>
                         <label style={{position: 'relative', top:'6px'}}> Auto </label>
                     </div>
                     <button style={{position:'relative', top:'-10px', marginLeft:'50px', border: 'none', borderRadius:'20px', fontWeight:'500', padding: '0.25rem 1rem',

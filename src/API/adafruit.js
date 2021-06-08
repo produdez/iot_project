@@ -73,7 +73,7 @@ export default async function setupAdaMqttClient(){
             console.log('Error connecting to adaFruit CSE_BBC! ', error)
 
             // IMPORTANT: delete when running on real device
-            mqttClient1.end(true)
+            // mqttClient1.end(true)
         })
 
         //! connect server 2
@@ -98,7 +98,7 @@ export default async function setupAdaMqttClient(){
             console.log('Error connecting to adaFruit CSE_BBC1! ', error)
 
             // IMPORTANT: delete when running on real device
-            mqttClient2.end(true)
+            // mqttClient2.end(true)
         })
 
         //! set global client

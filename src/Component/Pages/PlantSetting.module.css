@@ -35,6 +35,7 @@
     display: grid;
     grid-template-columns: 1fr 2fr;
     align-items: center;
+    /* background-color: #acacac; */
     gap: 2.5rem;
   }
   

@@ -13,5 +13,6 @@
   }
   .columnSetting{
       flex: 80%;
-      background-color: #FBFFF8;
+      /* background-color: #FBFFF8; */
+      background-color: #f5fffb; /* *hsl(156, 100, 98) */
   }

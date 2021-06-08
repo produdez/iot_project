@@ -15,8 +15,6 @@ export default class MinMaxInputSlider extends React.Component {
                 color:'#5eed97',
             },
         }
-
-        console.log(this.props)
     }
 
     render() {
