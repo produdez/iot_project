@@ -84,6 +84,7 @@ export default function Navbar(){
                             <li className={styles.nav__item}>
                                 <Link  to="/login" style={{ textDecoration: 'none' }}><NavButton>Login</NavButton></Link>
                             </li>
+
                             <li className={styles.nav__item}>
                                 <Link to="/signup" style={{ textDecoration: 'none' }}><NavButton >Register</NavButton></Link> 
                             </li>
