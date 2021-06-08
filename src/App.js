@@ -35,6 +35,7 @@ const historyData = [
   },
 ];
 
+
 export default function App() {
   const [loading, setLoading] = useState(true);
   useEffect(()=>{
