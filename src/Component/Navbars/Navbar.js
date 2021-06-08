@@ -70,6 +70,10 @@ export default function Navbar(){
                             <Link to="/notification" style={{ textDecoration: 'none' }}><NavButton >Notifications</NavButton></Link> 
                         </li>
                         <li className={styles.nav__item}>
+                            <Link to="/history" style={{ textDecoration: 'none' }}><NavButton >History</NavButton>
+                            </Link>
+                        </li>
+                        <li className={styles.nav__item}>
                             <div onClick={handleLogout} style={{ textDecoration: 'none' }}><NavButton > Logout </NavButton></div>
                         </li>
                         </>
