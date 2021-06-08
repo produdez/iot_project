@@ -95,44 +95,6 @@ import firebase from "firebase/app"
                     moisture_value: parseFloat(val.data),
                 })
             }.bind(this));
-            // //Start Captureing
-            // var mqttClient =  window.mqttClient1
-            // mqttClient.on('message', (topic,message)=>{
-            //     if (topic === 'CSE_BBC/feeds/bk-iot-soil'){
-            //         console.log('-----------------------------------------------------')
-            //         console.log('Received moisture data from ada:')
-            //         console.log(message.toString())
-            //         var moisture_data = JSON.parse(message.toString())
-            //         this.setState({
-            //             moisture_value: parseFloat(moisture_data.data)
-            //         })
-            //     }
-            //     if(topic === 'CSE_BBC/feeds/bk-iot-temp-humid'){
-            //         console.log('-----------------------------------------------------')
-            //         console.log('Received temp-humid data from ada:')
-            //         console.log(message.toString())
-            //         var sensor_json_data = JSON.parse(message.toString())
-            //         //split json 
-            //         let [temp, humi] = sensor_json_data.data.split('-')
-            //         this.setState({
-            //         temp_value: parseFloat(temp),
-            //         humid_value: parseFloat(humi)
-            //         })
-            //     }
-            // });
-
-            // var mqttClient2 = global.mqttClient2;
-            // mqttClient2.on('message', (topic,message)=>{
-            // if(topic === 'CSE_BBC1/feeds/bk-iot-light'){
-            //     console.log('-----------------------------------------------------')
-            //     console.log('Received light data from ada:')
-            //     console.log(message.toString())
-            //     var light_data = JSON.parse(message.toString())
-            //     this.setState({
-            //         light_value: parseFloat(light_data.data),
-            //     })
-            // }
-            // })
         }
 
         componentWillUnmount(){
