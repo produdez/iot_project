@@ -16,6 +16,8 @@ import History from "./Component/Pages/HistoryPage"
 import Navbar from './Component/Navbars/Navbar'
 import setupAdaMqttClient from "./API/adafruit";
 import  { useState , useEffect, useRef} from "react"
+import SelectHistory from "./Component/Pages/selectHistory"
+import WateringHistory from "./Component/Pages/WateringHistory"
 const historyData = [
   {
     id: 'e1',
@@ -31,6 +33,24 @@ const historyData = [
   {
     id: 'e4',
     description:'TEXT(Environment condition)',
+    date: new Date(2021, 5, 12),
+  },
+];
+const wateringData = [
+  {
+    id: 'e1',
+    description:'Description',
+    date: new Date(2020, 7, 14),
+  },
+  { id: 'e2', description: 'Description', date: new Date(2021, 2, 12) },
+  {
+    id: 'e3',
+    description:'Description',
+    date: new Date(2021, 2, 28),
+  },
+  {
+    id: 'e4',
+    description:'Description',
     date: new Date(2021, 5, 12),
   },
 ];
@@ -56,7 +76,9 @@ export default function App() {
         <Route exact path="/"><Homepage /></Route>
         <Route path="/login"><Login /></Route>
         <Route path="/signup"><Signup /></Route>
-        <Route path="/history"><History items={historyData}/></Route>
+        <Route path="/envhistory"><History items={historyData}/></Route>
+        <Route path="/wathistory"><WateringHistory items={wateringData}/></Route>
+        <Route path="/sehistory"><SelectHistory/></Route>
         <PrivateRoute path ="/plant" component={PlantList}/>
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
         <PrivateRoute path = "/notification" component = {Notification}/>
