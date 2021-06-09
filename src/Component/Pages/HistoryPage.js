@@ -6,7 +6,7 @@ import firebase from 'firebase/app';
 import HistoryFilter from './HistoryFilter';
 import HistoryList from './HistoryList'
 import HistoryFilterSubject from './HistoryFilterSubject';
-
+import SelectHistory from "./selectHistory"
 import './HistoryPage.css';
 
 const DB_ENV_NAMES = [
@@ -91,6 +91,7 @@ const History = (props) => {
 
   return (
     <div>
+      <SelectHistory/>
       <Card className='history'>
         <HistoryFilter
           selected={filteredMonth}

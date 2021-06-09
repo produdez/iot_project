@@ -43,7 +43,6 @@ export default function App() {
         <Route path="/signup"><Signup /></Route>
         <PrivateRoute path="/firebase_test" component={FirebaseTest} />
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
-
       </Switch>
     </AuthProvider>
     </div>

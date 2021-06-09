@@ -3,7 +3,7 @@ import Card from '../Card'
 
 import HistoryFilter from './HistoryFilter';
 import HistoryList from './HistoryList'
-
+import SelectHistory from "./selectHistory"
 import './HistoryPage.css';
 
 const WateringHistory = (props) => {
@@ -25,6 +25,7 @@ const WateringHistory = (props) => {
 
   return (
     <div>
+      <SelectHistory/>
       <Card className='history'>
         <HistoryFilter
           selected={filteredMonth}
