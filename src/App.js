@@ -56,12 +56,9 @@ export default function App() {
         <Route exact path="/"><Homepage /></Route>
         <Route path="/login"><Login /></Route>
         <Route path="/signup"><Signup /></Route>
-        <Route path="/history"><History items={historyData}/></Route>
-        <PrivateRoute path ="/plant" component={PlantList}/>
-        <PrivateRoute exact path="/dashboard" component={Dashboard} />
-        <PrivateRoute path = "/notification" component = {Notification}/>
         <PrivateRoute path="/firebase_test" component={FirebaseTest} />
-        <PrivateRoute path="/envcond" component={EnvCond} />
+        <PrivateRoute exact path="/dashboard" component={Dashboard} />
+
       </Switch>
     </AuthProvider>
     </div>
