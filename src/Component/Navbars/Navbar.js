@@ -54,13 +54,13 @@ export default function Navbar(){
     useEffect(()=>{
         ref.on('value', function (snapshot) {
             let json = snapshot.val()
-            console.log('Plant List from fb: ')
+            // console.log('Plant List from fb: ')
             var dict = {};
             Object.entries(json).forEach(([key, value]) => {
                 dict[value.id.toString()] = value
             });
             setPlantDict(dict)
-            console.log('Plant dict: ', plantDict)
+            // console.log('Plant dict: ', plantDict)
         })
     }, []) // <-- empty dependency array
     

@@ -63,7 +63,6 @@ const LOG_ENV_COND = false;
         //     }
         // }
         componentDidMount(){
-            console.log('DidMount EnvCond: ',this.props)
             // this.hydrateStateWithLocalStorage();
             // //
             // window.addEventListener(
@@ -79,7 +78,6 @@ const LOG_ENV_COND = false;
                     console.log(val)
                 }
                 if (val !== null){
-                    console.log('val : ', val)
                     this.setState({
                         temp_value: val.data,
                         last_update_temp : new Date(Date.parse(val.date)).toISOString()
@@ -161,7 +159,6 @@ const LOG_ENV_COND = false;
         //         this.client.end()
         // }
         render() {
-            console.log('Rendering: ' , this.state)
             return(
                 <div className={style.row}>
                     <Card className="text-center" >
