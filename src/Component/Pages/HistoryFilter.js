@@ -11,7 +11,7 @@ const HistoryFilter = (props) => {
     <div className='expenses-filter'>
       <div className='expenses-filter__control'>
         <label>Filter by month</label>
-        <select value={props.selected} onChange={dropdownChangeHandler}>
+        <select className='filterSize' value={props.selected} onChange={dropdownChangeHandler}>
           <option value='All'>All</option>
           <option value='Jan'>Jan</option>
           <option value='Feb'>Feb</option>

@@ -11,7 +11,7 @@ const HistoryFilterSubject = (props) => {
     <div className='expenses-filter'>
       <div className='expenses-filter__control'>
         <label>{props.filterName}</label>
-        <select value={props.selected} onChange={dropdownChangeHandler}>
+        <select className='filterSize' value={props.selected} onChange={dropdownChangeHandler}>
           <option value='All'>All</option>
           {
             props.values.map(item => {
