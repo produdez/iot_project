@@ -99,10 +99,14 @@ export default function Navbar(){
                     {
                         (currentUser)?
                         <>
-                        <li className={styles.nav__item}>
+                        {
+                            (currentUser)? null:
+                            <li className={styles.nav__item}>
                             <Link to="/" style={{ textDecoration: 'none' }}><NavButton >Home</NavButton>
                             </Link>
-                        </li>
+                            </li>
+                        }
+                        
                         <li className={styles.nav__item}>
                         <Link to="/plant_settings" style={{ textDecoration: 'none' }}>
                             <NavButton >Plant Settings</NavButton>
