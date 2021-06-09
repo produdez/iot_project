@@ -5,6 +5,7 @@ import firebase from 'firebase/app';
 
 import HistoryFilter from './HistoryFilter';
 import HistoryList from './HistoryList'
+import HistoryFilterSubject from './HistoryFilterSubject';
 
 import './HistoryPage.css';
 
@@ -13,12 +14,14 @@ const DB_ENV_NAMES = [
   'Light',
   'Moisture',
   'Temperature',
-  'Relay',
 ]
 
 const History = (props) => {
 
   const [filteredMonth, setFilteredMonth] = useState('All');
+  const [filteredSubject, setFilteredSubject] = useState('All');
+  const [filteredLatestItems, setFilteredLatestItems] = useState('All');
+
   const [hasSetListener, setHasSetListener] = useState(false);
   const [firebaseItems, setFirebaseItems] = useState({});
   const ref = firebase.database()
@@ -32,35 +35,57 @@ const History = (props) => {
         {
           let data = snapshot.val(); 
           setFirebaseItems((state) => ({...state, [name]:Object.keys(data).map((idx) => ({
-            id:name+idx,
+            subject:name,
+            id:idx,
             unixTime: Date.parse(data[idx].date),
             date:new Date(Date.parse(data[idx].date)), 
-            description: name+" "+data[idx].data,
+            description: `${name}: ${data[idx].data} ${data[idx].unit!==''?`(${data[idx].unit})`:''}`
           }))}))
         }
       })
     }
   }
 
-  let renderItems = [];
+  // combine all firebaseItems into one array for rendering (yes, it's bad, but still)
+  let fullHistory = [];
   for (const idx in firebaseItems)
   {
-    renderItems = renderItems.concat(firebaseItems[idx])
+    fullHistory = fullHistory.concat(firebaseItems[idx])
   }
-  renderItems = renderItems.sort((a,b) => (b.unixTime-a.unixTime));
-  console.log(renderItems);
+  fullHistory = fullHistory.sort((a,b) => (b.unixTime-a.unixTime));
+  // console.log(fullHistory);
 
-  console.log(props.items[0].date.toLocaleString('en-US', { month: 'long' }));
+  // console.log(props.items[0].date.toLocaleString('en-US', { month: 'long' }));
   const filterChangeHandler = (selectedMonth) => {
     setFilteredMonth(selectedMonth);
   };
-  console.log(filteredMonth);
-  let filteredHistory = renderItems.filter((history) => {
-    return history.date.toLocaleString('en-US', { month: 'long' }).slice(0,3) === filteredMonth;
-  });
-  if(filteredMonth ==='All'){
-    filteredHistory = renderItems;
-    if (filteredHistory === undefined) filteredHistory = [];
+  // console.log(filteredMonth);
+
+  const subjectFilterChangeHandler = (selectedSubject) => {
+    setFilteredSubject(selectedSubject);
+  }
+
+  const latestItemsFilterChangeHandler = (selectedLatestItems) => {
+    setFilteredLatestItems(selectedLatestItems);
+  }
+
+  // filter before rendering
+  let filteredHistory = fullHistory;
+
+  if (filteredMonth !== 'All') {
+    filteredHistory = filteredHistory.filter((history) => {
+      return history.date.toLocaleString('en-US', { month: 'long' }).slice(0,3) === filteredMonth;
+    });
+  }
+  if (filteredSubject !== 'All') {
+    filteredHistory = filteredHistory.filter((history) => {
+      return history.subject === filteredSubject;
+    });
+  }
+  if (filteredLatestItems !== 'All') {
+    filteredHistory = filteredHistory.filter((history, index) => {
+      return index < filteredLatestItems.substr(0, filteredLatestItems.indexOf(' '));
+    });
   }
 
 
@@ -71,6 +96,20 @@ const History = (props) => {
           selected={filteredMonth}
           onChangeFilter={filterChangeHandler}
         />
+        <HistoryFilterSubject
+          filterName={'Filter by subject'}
+          selected={filteredSubject}
+          onChangeFilter={subjectFilterChangeHandler}
+          values={DB_ENV_NAMES}
+        />
+
+        <HistoryFilterSubject
+          filterName={'Filter by lastest'}
+          selected={filteredLatestItems}
+          onChangeFilter={latestItemsFilterChangeHandler}
+          values={[1,5,10,20,50].map((item)=>(`${item} items`))}
+        />
+
         <HistoryList items={filteredHistory} />
       </Card>
     </div>

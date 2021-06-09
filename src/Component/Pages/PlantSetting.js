@@ -2,9 +2,8 @@ import React, {Component} from 'react';
 import firebase from "firebase/app"
 
 import classes from './PlantSetting.module.css'
-import { TimeSeriesScale } from 'chart.js';
 
-const EMPTY = ''
+const EMPTY = 0;
 const DEFAULT_SETTINGS = {
     water_amount: EMPTY,
     min_moist:EMPTY,
