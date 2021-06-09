@@ -25,19 +25,17 @@ export default async function setupAdaMqttClient(){
     var allowErr1 = true;
     var allowErr2 = true;
 
-    var options1 = undefined;
-    var options2 = undefined;
   
     var auth_json = await get_ada_auth_info_from_firebase()
     window.adaAuth = auth_json; //!global
     
     console.log('Acc1: ',auth_json.user1,'---',auth_json.pass1)
     console.log('Acc2: ',auth_json.user2,'---',auth_json.pass2)
-    options1 = {
+    var options1 = {
         username: auth_json.user1,
         password: auth_json.pass1
     }
-    options2 = {
+    var options2 = {
         username: auth_json.user2,
         password: auth_json.pass2
     }

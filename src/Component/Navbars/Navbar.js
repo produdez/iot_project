@@ -70,7 +70,7 @@ export default function Navbar(){
                             <Link to="/notification" style={{ textDecoration: 'none' }}><NavButton >Notifications</NavButton></Link> 
                         </li>
                         <li className={styles.nav__item}>
-                            <Link to="/history" style={{ textDecoration: 'none' }}><NavButton >History</NavButton>
+                            <Link to="/sehistory" style={{ textDecoration: 'none' }}><NavButton >History</NavButton>
                             </Link>
                         </li>
                         <li className={styles.nav__item}>
@@ -84,6 +84,7 @@ export default function Navbar(){
                             <li className={styles.nav__item}>
                                 <Link  to="/login" style={{ textDecoration: 'none' }}><NavButton>Login</NavButton></Link>
                             </li>
+
                             <li className={styles.nav__item}>
                                 <Link to="/signup" style={{ textDecoration: 'none' }}><NavButton >Register</NavButton></Link> 
                             </li>
