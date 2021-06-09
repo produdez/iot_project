@@ -7,14 +7,15 @@ import { auth } from "../../firebase"
 import {NavDropdown, DropdownButton} from 'react-bootstrap'
 import PrivateRoute from "../../API/PrivateRouteHelper"
 
-import PlantList from "../Pages/PlantList";
+import PlantSetting from '../Pages/PlantSetting'
+
 import EnvCond from "../EnvCond";
 import History from "../Pages/HistoryPage"
 import Notification from "../Notification"
 import firebase from "firebase/app"
 
 const DUMMY_PLANT_DICT = {
-    '1' : {id:1 ,name: 'Plant 1', waterMode:true, waterAmount:10, minimumMoisture: 50, timeInterval: '1 day'},
+    '1' : {id:1 ,name: 'Plant 1', waterMode:true, waterAmount:10, minimumMoisture: 50, timeInterval: '1 day', operational: true},
 };
 
 const ref = firebase.database().ref('Plant').orderByChild('plant_id').limitToLast(10);
@@ -101,7 +102,7 @@ export default function Navbar(){
                             </Link>
                         </li>
                         <li className={styles.nav__item}>
-                        <Link to="/plant" style={{ textDecoration: 'none' }}>
+                        <Link to="/plant_settings" style={{ textDecoration: 'none' }}>
                             <NavButton >Plant Settings</NavButton>
                         </Link>
                         </li>
@@ -139,7 +140,7 @@ export default function Navbar(){
             </nav>
         </header>
         <Switch>
-        <PrivateRoute path ="/plant" component={PlantList}/>
+        <PrivateRoute path ="/plant_settings" component={() => <PlantSetting key = {currentPlant.id} plant = {currentPlant} />}/>
         <PrivateRoute path="/history"><History/></PrivateRoute>
         <PrivateRoute path = "/notification" component = {Notification} />
         <PrivateRoute path="/envcond" component={() => <EnvCond key = {currentPlant.id} plant = {currentPlant} />} />

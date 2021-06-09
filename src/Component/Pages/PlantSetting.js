@@ -19,7 +19,7 @@ const DEFAULT_SETTINGS = {
     max_humi:EMPTY,
     min_light:EMPTY,
     max_light:EMPTY,
-    water_mode: true,
+    water_mode: false,
     waterOn: false,
 }
 const DB_NAME = 'PlantSettings';
@@ -56,42 +56,18 @@ export default class PlantSetting extends Component {
         this.state = DEFAULT_SETTINGS;
         this.state = {
             ...this.state, 
+            operational: this.props.plant.operational,
             plant_id: this.props.plant.id, 
             water_mode: this.props.plant.waterMode,
             setAdaListener: false,
             setFirebaseListener: false,
             }
         this.ref = firebase.database().ref(DB_NAME).child(this.state.plant_id);
+        this.relay_ref = firebase.database().ref('Relay').orderByChild('plant_id')
+        .equalTo(this.state.plant_id.toString()).limitToLast(1)
 
     }
 
-    // waterAmountHandler = (event) =>{
-    //     this.setState({water_amount: event.target.value});
-    // }
-    // minimumMoistureHandler = (event) => {
-    //     this.setState({min_moist: event.target.value});
-    // }
-    // maximumMoistureHandler = (event) => {
-    //     this.setState({max_moist: event.target.value});
-    // }
-    // minimumTemperatureHandler = (event) => {
-    //     this.setState({min_temp: event.target.value});
-    // }
-    // maximumTemperatureHandler = (event) => {
-    //     this.setState({max_temp: event.target.value});
-    // }
-    // minimumHumidityHandler = (event) => {
-    //     this.setState({min_humi: event.target.value});
-    // }
-    // maximumHumidityHandler = (event) => {
-    //     this.setState({max_humi: event.target.value});
-    // }
-    // minimumLightingHandler = (event) => {
-    //     this.setState({min_light: event.target.value});
-    // }
-    // maximumLightingHandler = (event) => {
-    //     this.setState({max_light: event.target.value});
-    // }
     waterModeHandler = (event) => {
         this.setState((state)=>({...state, water_mode:!state.water_mode}))
     }
@@ -123,6 +99,10 @@ export default class PlantSetting extends Component {
     }
 
     manualPumpHandler = () => {
+        if (! this.state.operational){
+            window.alert("Hardware has not been setup for this operation!");
+            return
+        }
         console.log('Manual pump clicked!')
         if (this.state.water_mode){
             // is in auto state
@@ -228,18 +208,34 @@ export default class PlantSetting extends Component {
             }
         },{context : this})
 
-        //subscribe to ada relay
-        if(!window.onRelayIsSetup){
-            window.mqttClient2.on('message', (topic, msg) => {
-                if (topic === window.adaAuth.feed_relay){
-                        console.log('Received Relay Data from Ada')
-                        console.log('from server:', msg.toString())
-                        let relay_json = JSON.parse(msg.toString())
-                        this.setState((state) => ({...state, waterOn: relay_json.data === '1'}))
-                    }
-                })
-            window.onRelayIsSetup = true;
-        }
+        
+        this.relay_ref.on("value", snapshot => {
+                let json = JSON.parse(JSON.stringify(snapshot.val()))
+                if (json === null) return
+                json = Object.values(json)[0]
+                console.log('Received Relay Data from Fb')
+                console.log(json)
+                this.setState((state) => ({...state, waterOn: json.data === '1'}))
+            }
+        )
+
+        // //subscribe to ada relay
+        // if(!window.onRelayIsSetup){
+        //     window.mqttClient2.on('message', (topic, msg) => {
+        //         if (topic === window.adaAuth.feed_relay){
+        //                 console.log('Received Relay Data from Ada')
+        //                 console.log('from server:', msg.toString())
+        //                 let relay_json = JSON.parse(msg.toString())
+        //                 this.setState((state) => ({...state, waterOn: relay_json.data === '1'}))
+        //             }
+        //         }, {context : this})
+        //     window.onRelayIsSetup = true;
+        // }
+    }
+
+    componentWillUnmount(){
+        this.ref.off()
+        this.relay_ref.off()
     }
     render(){
         return(<div>
