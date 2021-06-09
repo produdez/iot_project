@@ -90,10 +90,10 @@ export default class Notification extends React.Component {
                         {/* <Button variant="dark" value = {noti_json}  onClick={() => this.OnClickNotification(noti_json,true)} >{json.plant_name}</Button> */}
                     
                         <div className={styles.notificationDescription}>
-                            <div className={styles.notificationMessage}>{translateType(json.name)}: {}
+                            <Link to="/plant_settings" className={styles.notificationMessage} style={{ textDecoration: 'none' }}><div >{translateType(json.name)}: {}
                             {json.data}{json.unit} {}
                             {translateSign(json.sign)[0]} compared to {}
-                            {translateSign(json.sign)[1]} Threshold of: {json.threshold}{json.unit}</div>
+                            {translateSign(json.sign)[1]} Threshold of: {json.threshold}{json.unit}</div></Link>
                             <button className={styles.notificationItem__delete} onClick={() => this.OnClickNotification(noti_json)}>Delete</button>
                         </div>
                         
