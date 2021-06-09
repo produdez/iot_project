@@ -142,7 +142,7 @@ export default function Navbar(){
         <Switch>
         <PrivateRoute path ="/plant_settings" component={() => <PlantSetting key = {currentPlant.id} plant = {currentPlant} />}/>
         <PrivateRoute path="/history"><History/></PrivateRoute>
-        <PrivateRoute path = "/notification" component = {Notification} />
+        <PrivateRoute path="/notification" component={() => <Notification key = {currentPlant.id} plant = {currentPlant} />} />
         <PrivateRoute path="/envcond" component={() => <EnvCond key = {currentPlant.id} plant = {currentPlant} />} />
         </Switch>
         </>)

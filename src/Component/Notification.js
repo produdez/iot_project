@@ -14,9 +14,11 @@ export default class Notification extends React.Component {
         super(props);
      
         this.state = {
-          loading: false,
-          data: {},
-          ref: firebase.database().ref('Notification'),
+            plant_id: this.props.plant.id,
+            loading: false,
+            data: {},
+            ref: firebase.database().ref('Notification').orderByChild('plant_id')
+            .equalTo(this.props.plant.id.toString())
         };
     }
 
