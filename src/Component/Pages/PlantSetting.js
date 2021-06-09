@@ -2,13 +2,14 @@ import React, {Component} from 'react';
 import firebase from "firebase/app"
 
 import classes from './PlantSetting.module.css'
+
 import Switch from '@material-ui/core/Switch';
 import Slider from '@material-ui/core/Slider';
 import Input from '@material-ui/core/Input';
 import MinMaxInputSlider from '../Sliders/MinMaxInputSlider';
 import { withStyles } from '@material-ui/core/styles';
 
-const EMPTY = ''
+const EMPTY = 0;
 const DEFAULT_SETTINGS = {
     water_amount: EMPTY,
     min_moist:EMPTY,
