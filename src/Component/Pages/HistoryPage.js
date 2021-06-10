@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import Card from '../Card'
-
+import {Line} from "react-chartjs-2"
 import firebase from 'firebase/app';
 
 import HistoryFilter from './HistoryFilter';
 import HistoryList from './HistoryList'
 import HistoryFilterSubject from './HistoryFilterSubject';
+import HistoryFilterGraph from './HistoryFilterGraph';
 
 import './HistoryPage.css';
 
@@ -21,7 +22,7 @@ const History = (props) => {
   const [filteredMonth, setFilteredMonth] = useState('All');
   const [filteredSubject, setFilteredSubject] = useState('All');
   const [filteredLatestItems, setFilteredLatestItems] = useState('All');
-
+  const [filteredGraph, setFilteredGraph] = useState('Humidity')
   const [hasSetListener, setHasSetListener] = useState(false);
   const [firebaseItems, setFirebaseItems] = useState({});
   const ref = firebase.database()
@@ -38,8 +39,9 @@ const History = (props) => {
             subject:name,
             id:idx,
             unixTime: Date.parse(data[idx].date),
-            date:new Date(Date.parse(data[idx].date)), 
-            description: `${name}: ${data[idx].data} ${data[idx].unit!==''?`(${data[idx].unit})`:''}`
+            date:new Date(Date.parse(data[idx].date)),
+            description: `${name}: ${data[idx].data} ${data[idx].unit!==''?`(${data[idx].unit})`:''}`,
+            data_value: data[idx].data
           }))}))
         }
       })
@@ -48,6 +50,17 @@ const History = (props) => {
 
   // combine all firebaseItems into one array for rendering (yes, it's bad, but still)
   let fullHistory = [];
+  let temp_data = [];
+  let temp_time = [];
+  let humid_data = [];
+  let humid_time = [];
+  let light_data = [];
+  let light_time = [];
+  let moist_data = [];
+  let moist_time = [];
+  let graph_data = [];
+  let graph_time = [];
+
   for (const idx in firebaseItems)
   {
     fullHistory = fullHistory.concat(firebaseItems[idx])
@@ -69,6 +82,10 @@ const History = (props) => {
     setFilteredLatestItems(selectedLatestItems);
   }
 
+  const graphfilterChangeHandler = (selectedGraph) => {
+    setFilteredGraph(selectedGraph);
+  };
+
   // filter before rendering
   let filteredHistory = fullHistory;
 
@@ -88,7 +105,73 @@ const History = (props) => {
     });
   }
 
+  for (var i = 0; i < filteredHistory.length; i++) {
+    switch(filteredHistory[i].subject) {
+      case "Humidity":
+        {
+          humid_data = humid_data.concat(filteredHistory[i].data_value);
+          humid_time = humid_time.concat(filteredHistory[i].date.toISOString().replace("T","-").replace(/....Z/i,""));
+          break;
+        }
+      case "Temperature":
+        {
+          temp_data = temp_data.concat(filteredHistory[i].data_value);
+          temp_time = temp_time.concat(filteredHistory[i].date.toISOString().replace("T","-").replace(/....Z/i,""));
+          break;
+        }
+      case "Light":
+        {
+          light_data = light_data.concat(filteredHistory[i].data_value);
+          light_time = light_time.concat(filteredHistory[i].date.toISOString().replace("T","-").replace(/....Z/i,""));
+          break;
+        }
+      case "Moisture":
+        {
+          moist_data = moist_data.concat(filteredHistory[i].data_value);
+          moist_time = moist_time.concat(filteredHistory[i].date.toISOString().replace("T","-").replace(/....Z/i,""));
+          break;
+        }
+      default:
+        break;
+    }
+  }
 
+  switch(filteredGraph) {
+    case "Humidity":
+      {
+        graph_data = humid_data;
+        graph_time = humid_time;
+        break;
+      }
+    case "Temperature":
+      {
+        graph_data = temp_data;
+        graph_time = temp_time;
+        break;
+      }
+    case "Light":
+      {
+        graph_data = light_data;
+        graph_time = light_time;
+        break;
+      }
+    case "Moisture":
+      {
+        graph_data = moist_data;
+        graph_time = moist_time;
+        break;
+      }
+    default:
+      break;
+  }
+  const defs = (
+    <defs>
+      <linearGradient id="0">
+        <stop offset="0%" stopColor="#17EAD9" />
+        <stop offset="100%" stopColor="#6078EA" />
+      </linearGradient>
+    </defs>
+  )
   return (
     <div>
       <Card className='history'>
@@ -104,12 +187,47 @@ const History = (props) => {
         />
 
         <HistoryFilterSubject
-          filterName={'Filter by lastest'}
+          filterName={'Filter by latest'}
           selected={filteredLatestItems}
           onChangeFilter={latestItemsFilterChangeHandler}
           values={[1,5,10,20,50].map((item)=>(`${item} items`))}
         />
 
+        <HistoryFilterGraph
+          filterName={'Filter graph by'}
+          selected={filteredGraph}
+          onChangeFilter={graphfilterChangeHandler}
+          values={['Humidity',
+          'Light',
+          'Moisture',
+          'Temperature',]}
+        />
+        <Card className='graph-item'>
+          <div className="bg-black">
+          <Line
+            data= {{
+                labels: graph_time,
+                datasets: [
+                    {
+                        label: filteredGraph,
+                        data: graph_data,
+                        backgroundColor: 'rgb(97, 207, 139)',
+                        borderColor: 'rgb(97, 207, 139)',
+                    },
+                ],
+            }}
+            height = {2}
+            width = {5}
+            options= {{
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+            }}
+          />
+        </div>
+      </Card>
         <HistoryList items={filteredHistory} />
       </Card>
     </div>
