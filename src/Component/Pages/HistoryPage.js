@@ -38,7 +38,7 @@ const History = (props) => {
         id:idx,
         unixTime: Date.parse(data[idx].date),
         date:new Date(Date.parse(data[idx].date)), 
-        description: `${name}: ${data[idx].data} ${data[idx].unit!==''?`(${data[idx].unit})`:''}`
+        description: `${name}: ${data[idx].data} ${data[idx].unit!==''?`(${data[idx].unit})`:''}`,
         data_value: data[idx].data
         }))}))
       }
