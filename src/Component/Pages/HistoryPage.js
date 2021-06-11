@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from '../Card'
 import {Line} from "react-chartjs-2"
 import firebase from 'firebase/app';
 
-import HistoryFilter from './HistoryFilter';
 import HistoryList from './HistoryList'
 import HistoryFilterSubject from './HistoryFilterSubject';
-
+import SelectHistory from "./selectHistory"
 import './HistoryPage.css';
 
 const DB_ENV_NAMES = [
@@ -14,6 +13,9 @@ const DB_ENV_NAMES = [
   'Light',
   'Moisture',
   'Temperature',
+]
+const ABBR_MONTHS = [
+  'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'
 ]
 
 const History = (props) => {
@@ -24,27 +26,39 @@ const History = (props) => {
   const [hasSetListener, setHasSetListener] = useState(false);
   const [firebaseItems, setFirebaseItems] = useState({});
   const ref = firebase.database()
-
-  if (!hasSetListener)
-  {
-    setHasSetListener(true);
-    for(const name of DB_ENV_NAMES) {
-      ref.ref(name).on('value', (snapshot) => {
-        if (snapshot.exists())  
-        {
-          let data = snapshot.val(); 
-          setFirebaseItems((state) => ({...state, [name]:Object.keys(data).map((idx) => ({
-            subject:name,
-            id:idx,
-            unixTime: Date.parse(data[idx].date),
-            date:new Date(Date.parse(data[idx].date)),
-            description: `${name}: ${data[idx].data} ${data[idx].unit!==''?`(${data[idx].unit})`:''}`,
-            data_value: data[idx].data
-          }))}))
-        }
-      })
-    }
+  // console.log('hasSetListener',hasSetListener);
+      
+  const onValueChange = (name) => (snapshot) => {
+  if (snapshot.exists())  
+    {
+      let data = snapshot.val(); 
+      console.log('change', name);
+      setFirebaseItems((state) => ({...state, [name]:Object.keys(data).map((idx) => ({
+        subject:name,
+        id:idx,
+        unixTime: Date.parse(data[idx].date),
+        date:new Date(Date.parse(data[idx].date)), 
+        description: `${name}: ${data[idx].data} ${data[idx].unit!==''?`(${data[idx].unit})`:''}`
+        data_value: data[idx].data
+        }))}))
+      }
   }
+
+  useEffect(() => {
+    if (!hasSetListener)
+    {
+      setHasSetListener(true);
+      for(const name of DB_ENV_NAMES) {
+        ref.ref(name).on('value', onValueChange(name));
+      }
+    }
+
+    return () => {
+      for(const name of DB_ENV_NAMES) {
+          ref.ref(name).off('value', onValueChange(name));
+      }
+    }
+  })
 
   // combine all firebaseItems into one array for rendering (yes, it's bad, but still)
   let fullHistory = [];
@@ -162,23 +176,26 @@ const History = (props) => {
 
   return (
     <div>
+      <SelectHistory/>
       <Card className='history'>
-        <HistoryFilter
+        <HistoryFilterSubject
+          filterName={'Month'}
           selected={filteredMonth}
           onChangeFilter={filterChangeHandler}
+          values={ABBR_MONTHS}
         />
         <HistoryFilterSubject
-          filterName={'Filter by subject'}
+          filterName={'Subject'}
           selected={filteredSubject}
           onChangeFilter={subjectFilterChangeHandler}
           values={DB_ENV_NAMES}
         />
 
         <HistoryFilterSubject
-          filterName={'Filter by latest'}
+          filterName={'Latest record(s)'}
           selected={filteredLatestItems}
           onChangeFilter={latestItemsFilterChangeHandler}
-          values={[1,5,10,20,50].map((item)=>(`${item} items`))}
+          values={[1,5,10,20,50].map((item)=>(`${item} item${item===1?'':'s'}`))}
         />
 
         {filteredSubject!=="All"?
