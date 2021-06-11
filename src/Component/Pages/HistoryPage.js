@@ -6,7 +6,6 @@ import firebase from 'firebase/app';
 import HistoryFilter from './HistoryFilter';
 import HistoryList from './HistoryList'
 import HistoryFilterSubject from './HistoryFilterSubject';
-import HistoryFilterGraph from './HistoryFilterGraph';
 
 import './HistoryPage.css';
 
@@ -22,7 +21,6 @@ const History = (props) => {
   const [filteredMonth, setFilteredMonth] = useState('All');
   const [filteredSubject, setFilteredSubject] = useState('All');
   const [filteredLatestItems, setFilteredLatestItems] = useState('All');
-  const [filteredGraph, setFilteredGraph] = useState('Humidity')
   const [hasSetListener, setHasSetListener] = useState(false);
   const [firebaseItems, setFirebaseItems] = useState({});
   const ref = firebase.database()
@@ -82,9 +80,6 @@ const History = (props) => {
     setFilteredLatestItems(selectedLatestItems);
   }
 
-  const graphfilterChangeHandler = (selectedGraph) => {
-    setFilteredGraph(selectedGraph);
-  };
 
   // filter before rendering
   let filteredHistory = fullHistory;
@@ -136,7 +131,7 @@ const History = (props) => {
     }
   }
 
-  switch(filteredGraph) {
+  switch(filteredSubject) {
     case "Humidity":
       {
         graph_data = humid_data;
@@ -164,14 +159,7 @@ const History = (props) => {
     default:
       break;
   }
-  const defs = (
-    <defs>
-      <linearGradient id="0">
-        <stop offset="0%" stopColor="#17EAD9" />
-        <stop offset="100%" stopColor="#6078EA" />
-      </linearGradient>
-    </defs>
-  )
+
   return (
     <div>
       <Card className='history'>
@@ -193,15 +181,8 @@ const History = (props) => {
           values={[1,5,10,20,50].map((item)=>(`${item} items`))}
         />
 
-        <HistoryFilterGraph
-          filterName={'Filter graph by'}
-          selected={filteredGraph}
-          onChangeFilter={graphfilterChangeHandler}
-          values={['Humidity',
-          'Light',
-          'Moisture',
-          'Temperature',]}
-        />
+        {filteredSubject!=="All"?
+        <>
         <Card className='graph-item'>
           <div className="bg-black">
           <Line
@@ -209,7 +190,7 @@ const History = (props) => {
                 labels: graph_time,
                 datasets: [
                     {
-                        label: filteredGraph,
+                        label: filteredSubject,
                         data: graph_data,
                         backgroundColor: 'rgb(97, 207, 139)',
                         borderColor: 'rgb(97, 207, 139)',
@@ -221,13 +202,16 @@ const History = (props) => {
             options= {{
                 scales: {
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        stacked: true
                     }
                 },
             }}
           />
-        </div>
-      </Card>
+          </div>
+          </Card>
+        </>
+        :null}
         <HistoryList items={filteredHistory} />
       </Card>
     </div>
