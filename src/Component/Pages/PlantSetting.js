@@ -272,10 +272,10 @@ export default class PlantSetting extends Component {
                     </div>
                     <div style={{justifyContent:'left', flexGrow:1}}>
                         <Input
-                            // className={this.classes.input}
+                            
+                            disableUnderline={true}
                             style={styles.inputBox}
                             value={this.state.water_amount}
-                            // margin="dense"
                             onChange={this.handleWaterAmountInputChange}
                             onBlur={this.handleWaterAmountBlur}
 

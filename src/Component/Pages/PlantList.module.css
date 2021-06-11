@@ -8,11 +8,12 @@
     margin-left:2rem;
     flex: 20%;
     height:654px;
-    background-color: #E9FFE1;
+    /* background-color: #E9FFE1; */
+    background-color:hsl(155, 100%, 90%);
     margin-right:50px;
   }
   .columnSetting{
       flex: 80%;
-      /* background-color: #FBFFF8; */
-      background-color: #f5fffb; /* *hsl(156, 100, 98) */
+      background-color: #f5fffb; 
+      
   }

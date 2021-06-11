@@ -33,6 +33,7 @@ export default class MinMaxInputSlider extends React.Component {
 
                     <div style={{display:'flex', justifyContent:'left', flexGrow:0.8}}>
                         <Input
+                            disableUnderline={true}
                             style={this.styles.inputBox}
                             value={this.props.values[0]}
                             onChange={this.props.handleInput0}
@@ -40,6 +41,7 @@ export default class MinMaxInputSlider extends React.Component {
                             
                         />
                         <Input
+                            disableUnderline={true}
                             style={this.styles.inputBox}
                             value={this.props.values[1]}
                             onChange={this.props.handleInput1}
