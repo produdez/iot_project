@@ -201,7 +201,7 @@ const History = (props) => {
         {filteredSubject!=="All"?
         <>
         <Card className='graph-item'>
-          <div className="bg-black">
+          <div>
           <Line
             data= {{
                 labels: graph_time,

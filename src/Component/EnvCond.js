@@ -1,7 +1,12 @@
 import React, { useRef, useState, useEffect } from "react"
-import style from './Header.module.css';
+import style from './EnvCond.module.css';
 import {Card} from "react-bootstrap"
 import firebase from "firebase/app"
+import temp_icon from "./Pics/temp-icon.png"
+import humidity_icon from "./Pics/humidity-icon.jpg"
+import light_icon from "./Pics/light-icon.png"
+import moisture_icon from "./Pics/moisture-icon.jpg"
+
 
 const LOG_ENV_COND = false;
 
@@ -32,7 +37,6 @@ const LOG_ENV_COND = false;
             this.light_ref =  firebase.database().ref('Light')
                 .orderByChild("plant_id").equalTo(this.plant_id.toString())
                 .limitToLast(1);
-            
 
         }
 
@@ -88,7 +92,7 @@ const LOG_ENV_COND = false;
                         last_update_temp : null
                     })
                 }
-                
+
             },{context : this});
             this.light_ref.on("child_added", function (snapshot) {
                 let val = snapshot.val()
@@ -96,7 +100,7 @@ const LOG_ENV_COND = false;
                     console.log('Received Light data from fb:')
                     console.log(val)
                 }
-                
+
                 if (val !== null){
                     this.setState({
                         light_value: val.data,
@@ -133,7 +137,7 @@ const LOG_ENV_COND = false;
                     console.log('Received Moisture data from fb:')
                     console.log(val)
                 }
-                
+
                 if (val !== null){
                     this.setState({
                         moisture_value: val.data,
@@ -161,37 +165,41 @@ const LOG_ENV_COND = false;
         render() {
             return(
                 <div className={style.row}>
-                    <Card className="text-center" >
-                        <center>Temperature</center>
+
+                    <Card className={style.column}>
                         <Card.Body className="d-flex align-items-center justify-content-center">
                         <div >
-                            <p className={style.description}>{this.state.temp_value?this.state.temp_value+' Celsius':'No data'}</p>
-                            <p className={style.date__year}>{this.state.last_update_temp ? this.state.last_update_temp:''}</p>
+                            <center className={style.title}><img src={temp_icon} alt="" width={20} height={"auto"}/> Temperature</center>
+                            <p className={style.description}>{this.state.temp_value?<>{this.state.temp_value}<>&deg;C</></>:'No data'}</p>
+                            <p className={style.date__year}> {this.state.last_update_temp ? "Last update: "+this.state.last_update_temp.replace("T","-").replace(/....Z/i,""):''}</p>
                         </div>
                         </Card.Body>
                     </Card>
-                    <Card className="text-center">
-                        <center>Air Humidity</center>
+
+                    <Card className={style.column}>
                         <Card.Body className="d-flex align-items-center justify-content-center">
-                        <div className={style.column}>
+                        <div >
+                            <center className={style.title}><img src={humidity_icon} alt="" width={50} height={"auto"}/> Humidity</center>
                             <p className={style.description}>{this.state.humid_value?this.state.humid_value+' %':'No data'}</p>
-                            <p className={style.date__year}>{this.state.humid_value?this.state.last_update_humid:''}</p>
+                            <p className={style.date__year}>{this.state.humid_value?"Last update: "+this.state.last_update_humid.replace("T","-").replace(/....Z/i,""):''}</p>
                         </div>
                         </Card.Body>
                     </Card>
-                    <Card className="text-center">
-                        <center>Brightness</center>
+
+                    <Card className={style.column}>
                         <Card.Body className="d-flex align-items-center justify-content-center">
-                        <div className={style.column}>
+                        <div>
+                            <center className={style.title}><img src={light_icon} alt="" width={50} height={"auto"}/> Brightness</center>
                             <p className={style.description}>{this.state.light_value?this.state.light_value:'No data'}</p>
                             <p className={style.date__year}>{this.state.light_value?this.state.last_update_light:''}</p>
                         </div>
                         </Card.Body>
                     </Card>
-                    <Card className="text-center">
-                        <center>Soil's Moisture</center>
+
+                    <Card className={style.column}>
                         <Card.Body className="d-flex align-items-center justify-content-center">
-                        <div className={style.column}>
+                        <div>
+                            <center className={style.title}><img src={moisture_icon} alt="" width={50} height={"auto"}/> Soil Moisture</center>
                             <p className={style.description}>{this.state.humid_value?this.state.moisture_value+' %':'No data'}</p>
                             <p className={style.date__year}>{this.state.humid_value?this.state.last_update_moisture:''}</p>
                         </div>
