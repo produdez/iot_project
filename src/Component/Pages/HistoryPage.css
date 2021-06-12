@@ -1,6 +1,12 @@
 .history {
     padding: 1rem;
-    background-color: rgb(31, 31, 31);
+    /* background-color: rgb(31, 31, 31); */
+    background-color: #F2FFF7;
+    /* #5EED97,#75EFA5,#8CF2B4,#A3F4C3,#BAF7D2,#D1F9E1,#E7FCF0 add white*/
+    /* #5EED97,#50CB81,#43A96B,#358756,#286540,#1A432B,#0D2115 add black*/
+    /* #5EEDCA,#5EEDB9,#5EEDA8,   #5EED97,  #5EED85,#5EED74,#5EED63 hue */
+
+    /* #F2FFF7,#B3FFD1,#73FFAA */
     margin: 2rem auto;
     width: 100rem;
     max-width: 95%;

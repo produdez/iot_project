@@ -4,8 +4,8 @@
     align-items: center;
     padding: 0.5rem;
     margin: 1rem 0;
-    background-color: #4b4b4b;
-    /* background-color: hsl(155, 20%, 30%); */
+    /* background-color: #4b4b4b; */
+    background-color: #B3FFD1;
   }
   
   .history-item__description {
@@ -19,19 +19,23 @@
   }
   
   .history-item h2 {
-    color: #3a3a3a;
     font-size: 1rem;
     flex: 1;
     margin: 0 1rem;
-    color: white;
+    /* color: white; */
+    color: black;
   }
   
   .history-item__time {
     font-size: 1rem;
     font-weight: bold;
-    color: white;
-    background-color: #bbb7bd8f;
-    border: 1px solid white;
+    /* color: white; */
+    /* background-color: #bbb7bd8f; */
+    /* border: 1px solid white; */
+    color: black;
+    border: 1px solid black;
+    background-color: #F2FFF7;
+
     padding: 0.5rem;
     border-radius: 12px;
   }
