@@ -170,7 +170,7 @@ const LOG_ENV_COND = false;
                         <Card.Body className="d-flex align-items-center justify-content-center">
                         <div >
                             <center className={style.title}><img src={temp_icon} alt="" width={20} height={"auto"}/> Temperature</center>
-                            <p className={style.description}>{this.state.temp_value?<>{this.state.temp_value}<>&deg;C</></>:'No data'}</p>
+                            <p className={style.description}>{this.state.temp_value?<>{this.state.temp_value} <>&deg;C</></>:'No data'}</p>
                             <p className={style.date__year}> {this.state.last_update_temp ? "Last update: "+this.state.last_update_temp.replace("T","-").replace(/....Z/i,""):''}</p>
                         </div>
                         </Card.Body>
@@ -191,17 +191,17 @@ const LOG_ENV_COND = false;
                         <div>
                             <center className={style.title}><img src={light_icon} alt="" width={50} height={"auto"}/> Brightness</center>
                             <p className={style.description}>{this.state.light_value?this.state.light_value:'No data'}</p>
-                            <p className={style.date__year}>{this.state.light_value?this.state.last_update_light:''}</p>
+                            <p className={style.date__year}>{this.state.light_value?"Last update: "+this.state.last_update_light.replace("T","-").replace(/....Z/i,""):''}</p>
                         </div>
                         </Card.Body>
                     </Card>
 
-                    <Card className={style.column}>
+                    <Card className={style.column_right}>
                         <Card.Body className="d-flex align-items-center justify-content-center">
                         <div>
                             <center className={style.title}><img src={moisture_icon} alt="" width={50} height={"auto"}/> Soil Moisture</center>
-                            <p className={style.description}>{this.state.humid_value?this.state.moisture_value+' %':'No data'}</p>
-                            <p className={style.date__year}>{this.state.humid_value?this.state.last_update_moisture:''}</p>
+                            <p className={style.description}>{this.state.moisture_value?this.state.moisture_value+' %':'No data'}</p>
+                            <p className={style.date__year}>{this.state.moisture_value?"Last update: "+this.state.last_update_moisture.replace("T","-").replace(/....Z/,""):''}</p>
                         </div>
                         </Card.Body>
                     </Card>

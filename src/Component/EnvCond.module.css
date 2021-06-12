@@ -11,8 +11,19 @@ max-height: 10rem;
 max-width: 20rem;
 display: flex;
 width: fit-content;
-margin-left: 40px;
+margin-left: auto;
 }
+
+.column_right {
+  flex: 50%;
+  text-align: center;
+  max-height: 10rem;
+  max-width: 20rem;
+  display: flex;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  }
 
 .title{
 font-size: 34px;

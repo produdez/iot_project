@@ -148,26 +148,26 @@ const History = (props) => {
   switch(filteredSubject) {
     case "Humidity":
       {
-        graph_data = humid_data;
-        graph_time = humid_time;
+        graph_data = humid_data.reverse();
+        graph_time = humid_time.reverse();
         break;
       }
     case "Temperature":
       {
-        graph_data = temp_data;
-        graph_time = temp_time;
+        graph_data = temp_data.reverse();
+        graph_time = temp_time.reverse();
         break;
       }
     case "Light":
       {
-        graph_data = light_data;
-        graph_time = light_time;
+        graph_data = light_data.reverse();
+        graph_time = light_time.reverse();
         break;
       }
     case "Moisture":
       {
-        graph_data = moist_data;
-        graph_time = moist_time;
+        graph_data = moist_data.reverse();
+        graph_time = moist_time.reverse();
         break;
       }
     default:
