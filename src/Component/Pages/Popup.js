@@ -8,7 +8,7 @@ export default class PlantSetting extends Component {
     constructor(props){
         super(props)
         this.state = {
-            imgSrc: [Moisture, Temperature, Light, Hudmidity],
+            imgSrc: [Moisture, Temperature, Hudmidity, Light],
         }
     }
    
