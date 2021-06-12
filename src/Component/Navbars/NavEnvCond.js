@@ -7,10 +7,9 @@ import humidity_icon from "../Pics/humidity-icon.jpg"
 import light_icon from "../Pics/light-icon.png"
 import moisture_icon from "../Pics/moisture-icon.jpg"
 
-
 const LOG_ENV_COND = false;
 
-class NavEnvCond extends React.Component{
+    class EnvCond extends React.Component{
         constructor(props) {
             super(props);
             this.plant_id = this.props.plant.id
@@ -24,6 +23,10 @@ class NavEnvCond extends React.Component{
                 last_update_humid : null,
                 last_update_light : null,
                 last_update_moisture : null,
+                style1: style.column,
+                style2: style.column,
+                style3: style.column,
+                style4: style.column,
             }
             this.temp_ref =  firebase.database().ref('Temperature')
                 .orderByChild("plant_id").equalTo(this.plant_id.toString())
@@ -66,6 +69,33 @@ class NavEnvCond extends React.Component{
         //         }
         //     }
         // }
+
+        update1(){
+            this.setState({style1: style.update})
+            setTimeout(function(){
+                this.setState({style1: style.column})
+              }.bind(this), 1000);
+        }
+        update2(){
+            this.setState({style2: style.update})
+            setTimeout(function(){
+                this.setState({style2: style.column})
+              }.bind(this), 1000);
+        }
+        update3(){
+            this.setState({style3: style.update})
+            setTimeout(function(){
+                this.setState({style3: style.column})
+              }.bind(this), 1000);
+        }
+        update4(){
+            this.setState({style4: style.update})
+            setTimeout(function(){
+                this.setState({style4: style.column})
+              }.bind(this), 1000);
+        }
+
+
         componentDidMount(){
             // this.hydrateStateWithLocalStorage();
             // //
@@ -86,6 +116,7 @@ class NavEnvCond extends React.Component{
                         temp_value: val.data,
                         last_update_temp : new Date(Date.parse(val.date)).toISOString()
                     })
+                    this.update1()
                 }else{
                     this.setState({
                         temp_value: null,
@@ -106,6 +137,7 @@ class NavEnvCond extends React.Component{
                         light_value: val.data,
                         last_update_light : new Date(Date.parse(val.date)).toISOString()
                     })
+                    this.update2()
                 }else{
                     this.setState({
                         light_value: null,
@@ -124,6 +156,7 @@ class NavEnvCond extends React.Component{
                         humid_value: val.data,
                         last_update_humid : new Date(Date.parse(val.date)).toISOString()
                     })
+                    this.update3()
                 }else{
                     this.setState({
                         humid_value: null,
@@ -143,6 +176,7 @@ class NavEnvCond extends React.Component{
                         moisture_value: val.data,
                         last_update_moisture : new Date(Date.parse(val.date)).toISOString()
                     })
+                    this.update4()
                 }else{
                     this.setState({
                         moisture_value: null,
@@ -166,7 +200,7 @@ class NavEnvCond extends React.Component{
             return(
                 <div className={style.row}>
 
-                    <Card className={style.column}>
+                    <Card className={this.state.style1}>
                         <Card.Body className="d-flex align-items-center justify-content-center">
                         <div >
                             <center className={style.title}><img src={temp_icon} alt="" width={20} height={"auto"}/> Temperature</center>
@@ -176,7 +210,7 @@ class NavEnvCond extends React.Component{
                         </Card.Body>
                     </Card>
 
-                    <Card className={style.column}>
+                    <Card className={this.state.style2}>
                         <Card.Body className="d-flex align-items-center justify-content-center">
                         <div >
                             <center className={style.title}><img src={humidity_icon} alt="" width={50} height={"auto"}/> Humidity</center>
@@ -186,7 +220,7 @@ class NavEnvCond extends React.Component{
                         </Card.Body>
                     </Card>
 
-                    <Card className={style.column}>
+                    <Card className={this.state.style3}>
                         <Card.Body className="d-flex align-items-center justify-content-center">
                         <div>
                             <center className={style.title}><img src={light_icon} alt="" width={50} height={"auto"}/> Brightness</center>
@@ -196,7 +230,7 @@ class NavEnvCond extends React.Component{
                         </Card.Body>
                     </Card>
 
-                    <Card className={style.column}>
+                    <Card className={this.state.style4}>
                         <Card.Body className="d-flex align-items-center justify-content-center">
                         <div>
                             <center className={style.title}><img src={moisture_icon} alt="" width={50} height={"auto"}/> Soil Moisture</center>
@@ -210,4 +244,4 @@ class NavEnvCond extends React.Component{
             }
     }
 
-export default NavEnvCond
+export default EnvCond

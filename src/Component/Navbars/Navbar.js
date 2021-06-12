@@ -17,6 +17,7 @@ import SelectHistory from "../Pages/selectHistory"
 import WateringHistory from "../Pages/WateringHistory"
 import WaterIcon from "./WaterIcon"
 import NavEnvCond from "./NavEnvCond";
+import ChangeHighlight from "react-change-highlight";
 
 const DUMMY_PLANT_DICT = {
     '1' : {id:1 ,name: 'Plant 1', waterMode:true, waterAmount:10, minimumMoisture: 50, timeInterval: '1 day', operational: true},
@@ -31,7 +32,7 @@ export default function Navbar(){
     const [dropDownValue, setDropDownValue] = useState("Plant 1")
     const [plantDict, setPlantDict] = useState(DUMMY_PLANT_DICT)
     const [currentPlant, setCurrentPlant] = useState(plantDict['1']);
-    const [currentPath, setCurrentPath] = useState('envcond')
+    const [currentPath, setCurrentPath] = useState('/envcond')
     const history = useHistory();
 
     async function handleLogout() {
@@ -74,10 +75,13 @@ export default function Navbar(){
         })
     }, []) // <-- empty dependency array
     
-
+    const [count, setCount] = useState(1)
     return(
         <>
         <header className={styles.header}>
+        <ChangeHighlight  highlightStyle="highlight">
+                <div ref={React.createRef()} onClick = {() => setCount(count + 1)}>{count}</div>
+            </ChangeHighlight>
             <nav className={styles.nav}>
             <Link to="/" style={{ textDecoration: 'none', color:'black' }}>
                 {currentUser ? null : <div className={styles.nav__logo}>Irrigation System</div>}
@@ -155,11 +159,13 @@ export default function Navbar(){
                 </ul>
             </nav>
             {
+                
                 (currentUser)?(currentPath === '/envcond')?null:
                 <nav className={styles.nav2}>
                 <NavEnvCond key = {currentPlant.id} plant = {currentPlant} />
                 </nav> : null
             }
+            
             
         </header>
         <Switch>

@@ -5,6 +5,7 @@
   }
 
 .column {
+  animation: in 1s;
 flex: 50%;
 text-align: center;
 max-height: 10rem;
@@ -12,7 +13,28 @@ max-width: 20rem;
 display: flex;
 width: fit-content;
 margin-left: 40px;
+}@keyframes in{
+  0%   {opacity: 0}
+  100%   {opacity: 1}
 }
+
+.update{
+  animation: inout 1s;
+  flex: 50%;
+  text-align: center;
+  max-height: 10rem;
+  max-width: 20rem;
+  display: flex;
+  width: fit-content;
+  margin-left: 40px;
+  background-color: rgb(156, 235, 156) !important;
+}@keyframes inout {
+  0%   {opacity: 0; }
+  /* 40%  {opacity: 1;} */
+  90% {opacity: 1;}
+  100% {opacity: 0.5;}
+}
+
 
 .title{
 font-size: 34px;

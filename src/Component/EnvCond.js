@@ -24,6 +24,10 @@ const LOG_ENV_COND = false;
                 last_update_humid : null,
                 last_update_light : null,
                 last_update_moisture : null,
+                style1: style.column,
+                style2: style.column,
+                style3: style.column,
+                style4: style.column,
             }
             this.temp_ref =  firebase.database().ref('Temperature')
                 .orderByChild("plant_id").equalTo(this.plant_id.toString())
@@ -66,6 +70,33 @@ const LOG_ENV_COND = false;
         //         }
         //     }
         // }
+
+        update1(){
+            this.setState({style1: style.update})
+            setTimeout(function(){
+                this.setState({style1: style.column})
+              }.bind(this), 1000);
+        }
+        update2(){
+            this.setState({style2: style.update})
+            setTimeout(function(){
+                this.setState({style2: style.column})
+              }.bind(this), 1000);
+        }
+        update3(){
+            this.setState({style3: style.update})
+            setTimeout(function(){
+                this.setState({style3: style.column})
+              }.bind(this), 1000);
+        }
+        update4(){
+            this.setState({style4: style.update})
+            setTimeout(function(){
+                this.setState({style4: style.column})
+              }.bind(this), 1000);
+        }
+
+
         componentDidMount(){
             // this.hydrateStateWithLocalStorage();
             // //
@@ -86,6 +117,7 @@ const LOG_ENV_COND = false;
                         temp_value: val.data,
                         last_update_temp : new Date(Date.parse(val.date)).toISOString()
                     })
+                    this.update1()
                 }else{
                     this.setState({
                         temp_value: null,
@@ -106,6 +138,7 @@ const LOG_ENV_COND = false;
                         light_value: val.data,
                         last_update_light : new Date(Date.parse(val.date)).toISOString()
                     })
+                    this.update2()
                 }else{
                     this.setState({
                         light_value: null,
@@ -124,6 +157,7 @@ const LOG_ENV_COND = false;
                         humid_value: val.data,
                         last_update_humid : new Date(Date.parse(val.date)).toISOString()
                     })
+                    this.update3()
                 }else{
                     this.setState({
                         humid_value: null,
@@ -143,6 +177,7 @@ const LOG_ENV_COND = false;
                         moisture_value: val.data,
                         last_update_moisture : new Date(Date.parse(val.date)).toISOString()
                     })
+                    this.update4()
                 }else{
                     this.setState({
                         moisture_value: null,
@@ -166,7 +201,7 @@ const LOG_ENV_COND = false;
             return(
                 <div className={style.row}>
 
-                    <Card className={style.column}>
+                    <Card className={this.state.style1}>
                         <Card.Body className="d-flex align-items-center justify-content-center">
                         <div >
                             <center className={style.title}><img src={temp_icon} alt="" width={20} height={"auto"}/> Temperature</center>
@@ -176,7 +211,7 @@ const LOG_ENV_COND = false;
                         </Card.Body>
                     </Card>
 
-                    <Card className={style.column}>
+                    <Card className={this.state.style2}>
                         <Card.Body className="d-flex align-items-center justify-content-center">
                         <div >
                             <center className={style.title}><img src={humidity_icon} alt="" width={50} height={"auto"}/> Humidity</center>
@@ -186,7 +221,7 @@ const LOG_ENV_COND = false;
                         </Card.Body>
                     </Card>
 
-                    <Card className={style.column}>
+                    <Card className={this.state.style3}>
                         <Card.Body className="d-flex align-items-center justify-content-center">
                         <div>
                             <center className={style.title}><img src={light_icon} alt="" width={50} height={"auto"}/> Brightness</center>
@@ -196,7 +231,7 @@ const LOG_ENV_COND = false;
                         </Card.Body>
                     </Card>
 
-                    <Card className={style.column}>
+                    <Card className={this.state.style4}>
                         <Card.Body className="d-flex align-items-center justify-content-center">
                         <div>
                             <center className={style.title}><img src={moisture_icon} alt="" width={50} height={"auto"}/> Soil Moisture</center>
