@@ -15,13 +15,14 @@ import Notification from "../Notification"
 import firebase from "firebase/app"
 import SelectHistory from "../Pages/selectHistory"
 import WateringHistory from "../Pages/WateringHistory"
+import WaterIcon from "./WaterIcon"
+import NavEnvCond from "./NavEnvCond";
 
 const DUMMY_PLANT_DICT = {
     '1' : {id:1 ,name: 'Plant 1', waterMode:true, waterAmount:10, minimumMoisture: 50, timeInterval: '1 day', operational: true},
 };
 
 const ref = firebase.database().ref('Plant').orderByChild('plant_id').limitToLast(10);
-
 export default function Navbar(){
     // console.log(localStorage.getItem('user-info'));
     const { currentUser } = useAuth();
@@ -30,6 +31,7 @@ export default function Navbar(){
     const [dropDownValue, setDropDownValue] = useState("Plant 1")
     const [plantDict, setPlantDict] = useState(DUMMY_PLANT_DICT)
     const [currentPlant, setCurrentPlant] = useState(plantDict['1']);
+    const [currentPath, setCurrentPath] = useState('envcond')
     const history = useHistory();
 
     async function handleLogout() {
@@ -54,7 +56,12 @@ export default function Navbar(){
         console.log(currentPlant)
     }
 
+
     useEffect(()=>{
+        history.listen((location, action) => {
+            console.log(`The current URL is ${location.pathname}${location.search}${location.hash}`)
+            setCurrentPath(location.pathname)
+        })
         ref.on('value', function (snapshot) {
             let json = snapshot.val()
             // console.log('Plant List from fb: ')
@@ -68,7 +75,6 @@ export default function Navbar(){
     }, []) // <-- empty dependency array
     
 
-
     return(
         <>
         <header className={styles.header}>
@@ -79,6 +85,9 @@ export default function Navbar(){
                 <ul className={styles.nav__links}>
                     {
                         (currentUser)?
+                            <>
+                            <WaterIcon></WaterIcon>
+                            
                             <NavDropdown className={styles.nav_drop} title={
                                     <span className="color-dark my-auto" style={{color:'black' }}>{dropDownValue}</span>
                                 }>
@@ -92,6 +101,7 @@ export default function Navbar(){
                                 <NavDropdown.Item ><div onClick={(e)=>setDropDownValue(e.target.textContent)}>Plant 2</div></NavDropdown.Item>
                                 <NavDropdown.Item disabled>Plant 3</NavDropdown.Item> */}
                             </NavDropdown>
+                            </>
                             :
                             null
                     }
@@ -144,6 +154,13 @@ export default function Navbar(){
 
                 </ul>
             </nav>
+            {
+                (currentUser)?(currentPath === '/envcond')?null:
+                <nav className={styles.nav2}>
+                <NavEnvCond key = {currentPlant.id} plant = {currentPlant} />
+                </nav> : null
+            }
+            
         </header>
         <Switch>
         <PrivateRoute path ="/plant_settings" component={() => <PlantSetting key = {currentPlant.id} plant = {currentPlant} />}/>
