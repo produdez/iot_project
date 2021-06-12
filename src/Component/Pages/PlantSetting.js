@@ -2,12 +2,13 @@ import React, {Component} from 'react';
 import firebase from "firebase/app"
 
 import classes from './PlantSetting.module.css'
-
+import HelpIcon from '@material-ui/icons/Help';
 import Switch from '@material-ui/core/Switch';
 import Slider from '@material-ui/core/Slider';
 import Input from '@material-ui/core/Input';
 import MinMaxInputSlider from '../Sliders/MinMaxInputSlider';
 import { withStyles } from '@material-ui/core/styles';
+import Popup from './Popup'
 
 const EMPTY = 0;
 const DEFAULT_SETTINGS = {
@@ -62,6 +63,9 @@ export default class PlantSetting extends Component {
             water_mode: this.props.plant.waterMode,
             setAdaListener: false,
             setFirebaseListener: false,
+            isTutorialPress: false,
+            popUpType: "",
+            imgSrc: "",
             }
         this.ref = firebase.database().ref(DB_NAME).child(this.state.plant_id);
         this.relay_ref = firebase.database().ref('Relay').orderByChild('plant_id')
@@ -195,6 +199,7 @@ export default class PlantSetting extends Component {
     handleLightBlur = () => {
 
     }
+   
 
     componentDidMount() {
         //onfunction
@@ -232,6 +237,10 @@ export default class PlantSetting extends Component {
         //         }, {context : this})
         //     window.onRelayIsSetup = true;
         // }
+    }
+    displayPopUp = (type, value, Src) => {
+        console.log('clicked');
+        this.setState((state) => ({...state, isTutorialPress: value, popUpType: type, imgSrc: Src}));
     }
 
     componentWillUnmount(){
@@ -291,7 +300,7 @@ export default class PlantSetting extends Component {
                 </div>
 
                 {/* Moisture part */}
-                <label> Moisture </label>
+                <label> Moisture <HelpIcon onClick={ () => this.displayPopUp('Moisture',true,0)}/></label>
                 <MinMaxInputSlider
                     values={[this.state.min_moist, this.state.max_moist]}
                     leftLabel='0%'
@@ -303,7 +312,7 @@ export default class PlantSetting extends Component {
                 />    
 
                 {/* Temperature part */}
-                <label> Temperature </label>
+                <label> Temperature <HelpIcon onClick={ () => this.displayPopUp('Temperature',true,1)}/></label>
                 <MinMaxInputSlider
                     values={[this.state.min_temp, this.state.max_temp]}
                     leftLabel={'0\u2103'}
@@ -315,7 +324,7 @@ export default class PlantSetting extends Component {
                 />    
 
                 {/* Humidity part */}
-                <label> Humidity </label>
+                <label> Humidity <HelpIcon onClick={ () => this.displayPopUp('Humidity',true,2)}/></label>
                 <MinMaxInputSlider
                     values={[this.state.min_humi, this.state.max_humi]}
                     leftLabel='0%'
@@ -326,7 +335,7 @@ export default class PlantSetting extends Component {
                     handleBlur={this.handleHumiBlur}
                 />    
 
-                <label> Lighting </label>
+                <label> Lighting <HelpIcon onClick={ () => this.displayPopUp('Lighting',true,3)}/></label>
                 <MinMaxInputSlider
                     values={[this.state.min_light, this.state.max_light]}
                     leftLabel='0%'
@@ -342,6 +351,7 @@ export default class PlantSetting extends Component {
                 <button className={classes.btn} onClick={this.saveHandler}>Save</button>
                 
                 </div>
+                <Popup val={this.state.imgSrc} type={this.state.popUpType} displaying={this.state.isTutorialPress} tutorialPopupDisplayingState_setter={this.displayPopUp}/>
             </div>
         );
     }
