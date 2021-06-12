@@ -16,8 +16,18 @@
     align-items: center;
     height: 9rem;
     width: 100%;
-    padding: 0 6rem;
+    /* padding: 0 6rem;   */
     z-index: 100;
+  }
+
+.nav2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 8rem;
+    /* width: 100%; */
+    /* padding: 0 200rem;   */
+    /* z-index: 1000; */
   }
   
   /* nav and stickly class at the same time */

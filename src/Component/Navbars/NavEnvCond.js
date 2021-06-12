@@ -1,17 +1,15 @@
 import React, { useRef, useState, useEffect } from "react"
-import style from './EnvCond.module.css';
+import style from './NavEnvCond.module.css';
 import {Card} from "react-bootstrap"
 import firebase from "firebase/app"
-import temp_icon from "./Pics/temp-icon.png"
-import humidity_icon from "./Pics/humidity-icon.jpg"
-import light_icon from "./Pics/light-icon.png"
-import moisture_icon from "./Pics/moisture-icon.jpg"
-
-
+import temp_icon from "../Pics/temp-icon.png"
+import humidity_icon from "../Pics/humidity-icon.jpg"
+import light_icon from "../Pics/light-icon.png"
+import moisture_icon from "../Pics/moisture-icon.jpg"
 
 const LOG_ENV_COND = false;
 
-    class EnvCond extends React.Component{
+    class NavEnvCond extends React.Component{
         constructor(props) {
             super(props);
             this.plant_id = this.props.plant.id
@@ -249,4 +247,4 @@ const LOG_ENV_COND = false;
             }
     }
 
-export default EnvCond
+export default NavEnvCond
