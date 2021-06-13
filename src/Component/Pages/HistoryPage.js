@@ -17,16 +17,12 @@ const DB_ENV_NAMES = [
 const ABBR_MONTHS = [
   'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'
 ] 
-const DISPLAY_TYPES = [
-  'Item', 'Graph'
-]
 
 const History = (props) => {
 
   const [filteredMonth, setFilteredMonth] = useState('All');
   const [filteredSubject, setFilteredSubject] = useState('All');
   const [filteredLatestItems, setFilteredLatestItems] = useState('All');
-  const [displayType, setFilteredDisplayType] = useState(DISPLAY_TYPES[0]);
   const [hasSetListener, setHasSetListener] = useState(false);
   const [firebaseItems, setFirebaseItems] = useState({});
   const ref = firebase.database()
@@ -97,11 +93,6 @@ const History = (props) => {
   const latestItemsFilterChangeHandler = (selectedLatestItems) => {
     setFilteredLatestItems(selectedLatestItems);
   }
-
-  const displayTypeChangeHandler = (selectedDisplayType) => {
-    setFilteredDisplayType(selectedDisplayType);
-  }
-
 
   // filter before rendering
   let filteredHistory = fullHistory;
