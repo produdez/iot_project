@@ -25,10 +25,10 @@ const LOG_ENV_COND = false;
                 last_update_humid : null,
                 last_update_light : null,
                 last_update_moisture : null,
-                style1: style.column,
-                style2: style.column,
-                style3: style.column,
-                style4: style.column_right,
+                style1: style.init_column,
+                style2: style.init_column,
+                style3: style.init_column,
+                style4: style.init_column_right,
                 ready: false,
             }
             this.temp_ref =  firebase.database().ref('Temperature')

@@ -4,6 +4,15 @@
     display: flex;
   }
 
+.init_column {
+    flex: 50%;
+    text-align: center;
+    max-height: 10rem;
+    max-width: 20rem;
+    display: flex;
+    width: fit-content;
+    margin-left: auto;
+}
 .column {
 animation: in 1s;
 flex: 50%;
@@ -32,6 +41,17 @@ margin-left: auto;
   /* 40%  {opacity: 1;} */
   90% {opacity: 1;}
   100% {opacity: 0.5;}
+}
+
+.init_column_right {
+  flex: 50%;
+  text-align: center;
+  max-height: 10rem;
+  max-width: 20rem;
+  display: flex;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .column_right {
