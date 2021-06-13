@@ -16,7 +16,7 @@ const DB_ENV_NAMES = [
 ]
 const ABBR_MONTHS = [
   'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'
-]
+] 
 
 const History = (props) => {
 
@@ -93,7 +93,6 @@ const History = (props) => {
   const latestItemsFilterChangeHandler = (selectedLatestItems) => {
     setFilteredLatestItems(selectedLatestItems);
   }
-
 
   // filter before rendering
   let filteredHistory = fullHistory;
