@@ -7,10 +7,10 @@
 .init_column {
     flex: 50%;
     text-align: center;
-    max-height: 10rem;
+    max-height: 8rem;
     max-width: 20rem;
     display: flex;
-    width: fit-content;
+    width: 15rem;
     margin-left: auto;
 }
 
@@ -18,10 +18,10 @@
 animation: in 1s;
 flex: 50%;
 text-align: center;
-max-height: 10rem;
+max-height: 8rem;
 max-width: 20rem;
 display: flex;
-width: fit-content;
+width: 15rem;
 margin-left: auto;
 }@keyframes in{
   0%   {opacity: 0}
@@ -31,10 +31,10 @@ margin-left: auto;
   animation: inout 1s;
   flex: 50%;
   text-align: center;
-  max-height: 10rem;
+  max-height: 8rem;
   max-width: 20rem;
   display: flex;
-  width: fit-content;
+  width: 15rem;
   margin-left: auto;
   background-color: rgb(156, 235, 156) !important;
 }@keyframes inout {
@@ -47,10 +47,10 @@ margin-left: auto;
 .init_column_right {
   flex: 50%;
   text-align: center;
-  max-height: 10rem;
+  max-height: 8rem;
   max-width: 20rem;
   display: flex;
-  width: fit-content;
+  width: 15rem;
   margin-left: auto;
   margin-right: auto;
 }
@@ -59,10 +59,10 @@ margin-left: auto;
   animation: inr 1s;
   flex: 50%;
   text-align: center;
-  max-height: 10rem;
+  max-height: 8rem;
   max-width: 20rem;
   display: flex;
-  width: fit-content;
+  width: 15rem;
   margin-left: auto;
   margin-right: auto;
 }@keyframes inr{
@@ -74,10 +74,10 @@ margin-left: auto;
   animation: inoutr 1s;
   flex: 50%;
   text-align: center;
-  max-height: 10rem;
+  max-height: 8rem;
   max-width: 20rem;
   display: flex;
-  width: fit-content;
+  width: 15rem;
   margin-left: auto;
   margin-right: auto;
   background-color: rgb(156, 235, 156) !important;

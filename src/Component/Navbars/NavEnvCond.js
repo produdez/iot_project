@@ -214,7 +214,7 @@ const LOG_ENV_COND = false;
                     <Card className={this.state.style2}>
                         <Card.Body className="d-flex align-items-center justify-content-center">
                         <div >
-                            <center className={style.title}><img src={humidity_icon} alt="" width={50} height={"auto"}/> {this.state.humid_value?this.state.humid_value+'%':'No data'}</center>
+                            <center className={style.title}><img src={humidity_icon} alt="" width={35} height={"auto"}/> {this.state.humid_value?this.state.humid_value+'%':'No data'}</center>
                         </div>
                         </Card.Body>
                     </Card>
@@ -230,7 +230,7 @@ const LOG_ENV_COND = false;
                     <Card className={this.state.style4}>
                         <Card.Body className="d-flex align-items-center justify-content-center">
                         <div>
-                            <center className={style.title}><img src={moisture_icon} alt="" width={50} height={"auto"}/> {this.state.moisture_value?this.state.moisture_value+' %':'No data'}</center>
+                            <center className={style.title}><img src={moisture_icon} alt="" width={50} height={"auto"}/> {this.state.moisture_value?this.state.moisture_value+'%':'No data'}</center>
                         </div>
                         </Card.Body>
                     </Card>

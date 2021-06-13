@@ -8,7 +8,6 @@ import styles from './Notification.module.css'
 import firebase from "firebase/app"
 
 
-
 export default class Notification extends React.Component { 
     constructor(props) {
         super(props);
@@ -37,7 +36,8 @@ export default class Notification extends React.Component {
         return(
             <div>
                 <Card>
-                    <h2> Notifications </h2>
+                    {/* <h2> Notifications </h2> */}
+                    <Link to = '/notification' onClick = {() => this.delete_noti_data()} style={{ margin: 'auto' }}> Clear Notifications </Link>
                     {this.state.loading && <div>Loading ...</div>}
                     {!this.state.loading && this.notificationSection()}
                 </Card>
@@ -67,9 +67,17 @@ export default class Notification extends React.Component {
         );
     }
 
+    
     delete_noti_data(){
+        const noti_ref = firebase.database().ref('Notification');
         console.log('Active delete_noti_data!');
-        // this.state.ref.remove()
+        this.state.ref.once('value', snapshot => {
+            var updates = {};
+            snapshot.forEach(function(child) {
+                updates["/"+child.key] = null;
+            });
+            noti_ref.update(updates);
+        });
     }
 
 

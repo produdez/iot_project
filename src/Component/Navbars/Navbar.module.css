@@ -12,17 +12,19 @@
 /* NAVIGATION */
 .nav {
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     align-items: center;
-    height: 9rem;
+    height: 7rem;
     width: 100%;
-    /* padding: 0 6rem;   */
+    /* padding: 2 6rem;   */
+    padding-top: 50px;
+    padding-bottom: 30px;
     z-index: 100;
   }
 
 .nav2 {
-    display: flex;
-    justify-content: space-between;
+    /* display: flex; */
+    /* justify-content: space-between; */
     align-items: center;
     height: 8rem;
     /* width: 100%; */
