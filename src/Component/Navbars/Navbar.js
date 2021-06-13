@@ -168,47 +168,9 @@ export default function Navbar(){
         <PrivateRoute path ="/plant_settings" component={() => <PlantSetting key = {currentPlant.id} plant = {currentPlant} />}/>
         <PrivateRoute path="/notification" component={() => <Notification key = {currentPlant.id} plant = {currentPlant} />} />
         <PrivateRoute path="/envcond" component={() => <EnvCond key = {currentPlant.id} plant = {currentPlant} />} />
-        <PrivateRoute path="/envhistory"><History items={historyData}/></PrivateRoute>
-        <PrivateRoute path="/wathistory"><WateringHistory items={wateringData}/></PrivateRoute>
+        <PrivateRoute path="/envhistory" component={() => <History key = {currentPlant.id} plant = {currentPlant} />}></PrivateRoute>
+        <PrivateRoute path="/wathistory" component={() => <WateringHistory key = {currentPlant.id} plant = {currentPlant} />}></PrivateRoute>
         <PrivateRoute path="/sehistory"><SelectHistory/></PrivateRoute>
         </Switch>
         </>)
 }
-
-
-const historyData = [
-    {
-      id: 'e1',
-      description:'TEXT(Environment condition)',
-      date: new Date(2020, 7, 14),
-    },
-    { id: 'e2', description: 'TEXT(Environment condition)', date: new Date(2021, 2, 12) },
-    {
-      id: 'e3',
-      description:'TEXT(Environment condition)',
-      date: new Date(2021, 2, 28),
-    },
-    {
-      id: 'e4',
-      description:'TEXT(Environment condition)',
-      date: new Date(2021, 5, 12),
-    },
-  ];
-  const wateringData = [
-    {
-      id: 'e1',
-      description:'Description',
-      date: new Date(2020, 7, 14),
-    },
-    { id: 'e2', description: 'Description', date: new Date(2021, 2, 12) },
-    {
-      id: 'e3',
-      description:'Description',
-      date: new Date(2021, 2, 28),
-    },
-    {
-      id: 'e4',
-      description:'Description',
-      date: new Date(2021, 5, 12),
-    },
-  ];
