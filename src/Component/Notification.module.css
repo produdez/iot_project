@@ -1,6 +1,6 @@
 .notification {
     padding: 1rem;
-    background-color: rgb(31, 31, 31);
+    background-color: #F2FFF7;
     margin: 2rem auto;
     width: 100rem;
     max-width: 95%;
@@ -11,7 +11,7 @@
     align-items: center;
     padding: 0.5rem;
     margin: 1rem 0;
-    background-color: #4b4b4b;
+    background-color: #B3FFD1;
   }
 
   .notificationDescription {
@@ -28,17 +28,17 @@
     font-size: 1rem;
     flex: 1;
     margin: 0 1rem;
-    color: white;
+    color: rgb(0, 0, 0);
     cursor: pointer;
   }
   .notificationMessage:hover{
-    color:white;
+    color:rgb(0, 0, 0);
   }
 
 .notificationItem__delete {
     font-size: 1rem;
     font-weight: bold;
-    color: rgba(255, 255, 255, 0.836);
+    color: rgba(0, 0, 0, 0.836);
     background-color: #bbb7bd6b;
     border: 1px solid white;
     padding: 0.5rem;

@@ -16,10 +16,10 @@ const DB_ENV_NAMES = [
 ]
 const ABBR_MONTHS = [
   'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'
-]
+] 
 
 const History = (props) => {
-
+  const [plantID, setPlantID] = useState(props.plant.id)
   const [filteredMonth, setFilteredMonth] = useState('All');
   const [filteredSubject, setFilteredSubject] = useState('All');
   const [filteredLatestItems, setFilteredLatestItems] = useState('All');
@@ -49,13 +49,13 @@ const History = (props) => {
     {
       setHasSetListener(true);
       for(const name of DB_ENV_NAMES) {
-        ref.ref(name).on('value', onValueChange(name));
+        ref.ref(name).orderByChild("plant_id").equalTo(plantID.toString()).on('value', onValueChange(name));
       }
     }
 
     return () => {
       for(const name of DB_ENV_NAMES) {
-          ref.ref(name).off('value', onValueChange(name));
+          ref.ref(name).orderByChild("plant_id").equalTo(plantID.toString()).off('value', onValueChange(name));
       }
     }
   })
@@ -93,7 +93,6 @@ const History = (props) => {
   const latestItemsFilterChangeHandler = (selectedLatestItems) => {
     setFilteredLatestItems(selectedLatestItems);
   }
-
 
   // filter before rendering
   let filteredHistory = fullHistory;
@@ -148,26 +147,26 @@ const History = (props) => {
   switch(filteredSubject) {
     case "Humidity":
       {
-        graph_data = humid_data;
-        graph_time = humid_time;
+        graph_data = humid_data.reverse();
+        graph_time = humid_time.reverse();
         break;
       }
     case "Temperature":
       {
-        graph_data = temp_data;
-        graph_time = temp_time;
+        graph_data = temp_data.reverse();
+        graph_time = temp_time.reverse();
         break;
       }
     case "Light":
       {
-        graph_data = light_data;
-        graph_time = light_time;
+        graph_data = light_data.reverse();
+        graph_time = light_time.reverse();
         break;
       }
     case "Moisture":
       {
-        graph_data = moist_data;
-        graph_time = moist_time;
+        graph_data = moist_data.reverse();
+        graph_time = moist_time.reverse();
         break;
       }
     default:

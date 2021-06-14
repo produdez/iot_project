@@ -1,17 +1,15 @@
 import React, { useRef, useState, useEffect } from "react"
-import style from './EnvCond.module.css';
+import style from './NavEnvCond.module.css';
 import {Card} from "react-bootstrap"
 import firebase from "firebase/app"
-import temp_icon from "./Pics/temp-icon.png"
-import humidity_icon from "./Pics/humidity-icon.jpg"
-import light_icon from "./Pics/light-icon.png"
-import moisture_icon from "./Pics/moisture-icon.jpg"
-
-
+import temp_icon from "../Pics/temp-icon.png"
+import humidity_icon from "../Pics/humidity-icon.jpg"
+import light_icon from "../Pics/light-icon.png"
+import moisture_icon from "../Pics/moisture-icon.jpg"
 
 const LOG_ENV_COND = false;
 
-    class EnvCond extends React.Component{
+    class NavEnvCond extends React.Component{
         constructor(props) {
             super(props);
             this.plant_id = this.props.plant.id
@@ -208,9 +206,7 @@ const LOG_ENV_COND = false;
                     <Card className={this.state.style1}>
                         <Card.Body className="d-flex align-items-center justify-content-center">
                         <div >
-                            <center className={style.title}><img src={temp_icon} alt="" width={20} height={"auto"}/> Temperature</center>
-                            <p className={style.description}>{this.state.temp_value?<>{this.state.temp_value} <>&deg;C</></>:'No data'}</p>
-                            <p className={style.date__year}> {this.state.last_update_temp ? "Last update: "+this.state.last_update_temp.replace("T","-").replace(/....Z/i,""):''}</p>
+                            <center className={style.title}><img src={temp_icon} alt="" width={20} height={"auto"}/> {this.state.temp_value?<>{this.state.temp_value}<>&deg;C</></>:'No data'}</center>
                         </div>
                         </Card.Body>
                     </Card>
@@ -218,9 +214,7 @@ const LOG_ENV_COND = false;
                     <Card className={this.state.style2}>
                         <Card.Body className="d-flex align-items-center justify-content-center">
                         <div >
-                            <center className={style.title}><img src={humidity_icon} alt="" width={50} height={"auto"}/> Humidity</center>
-                            <p className={style.description}>{this.state.humid_value?this.state.humid_value+' %':'No data'}</p>
-                            <p className={style.date__year}>{this.state.humid_value?"Last update: "+this.state.last_update_humid.replace("T","-").replace(/....Z/i,""):''}</p>
+                            <center className={style.title}><img src={humidity_icon} alt="" width={35} height={"auto"}/> {this.state.humid_value?this.state.humid_value+'%':'No data'}</center>
                         </div>
                         </Card.Body>
                     </Card>
@@ -228,9 +222,7 @@ const LOG_ENV_COND = false;
                     <Card className={this.state.style3}>
                         <Card.Body className="d-flex align-items-center justify-content-center">
                         <div>
-                            <center className={style.title}><img src={light_icon} alt="" width={50} height={"auto"}/> Brightness</center>
-                            <p className={style.description}>{this.state.light_value?this.state.light_value:'No data'}</p>
-                            <p className={style.date__year}>{this.state.light_value?"Last update: "+this.state.last_update_light.replace("T","-").replace(/....Z/i,""):''}</p>
+                            <center className={style.title}><img src={light_icon} alt="" width={50} height={"auto"}/> {this.state.light_value?this.state.light_value:'No data'}</center>
                         </div>
                         </Card.Body>
                     </Card>
@@ -238,9 +230,7 @@ const LOG_ENV_COND = false;
                     <Card className={this.state.style4}>
                         <Card.Body className="d-flex align-items-center justify-content-center">
                         <div>
-                            <center className={style.title}><img src={moisture_icon} alt="" width={50} height={"auto"}/> Soil Moisture</center>
-                            <p className={style.description}>{this.state.moisture_value?this.state.moisture_value+' %':'No data'}</p>
-                            <p className={style.date__year}>{this.state.moisture_value?"Last update: "+this.state.last_update_moisture.replace("T","-").replace(/....Z/,""):''}</p>
+                            <center className={style.title}><img src={moisture_icon} alt="" width={50} height={"auto"}/> {this.state.moisture_value?this.state.moisture_value+'%':'No data'}</center>
                         </div>
                         </Card.Body>
                     </Card>
@@ -249,4 +239,4 @@ const LOG_ENV_COND = false;
             }
     }
 
-export default EnvCond
+export default NavEnvCond

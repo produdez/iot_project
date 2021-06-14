@@ -33,7 +33,7 @@ const validateTimeInterval = (intervalString) => {
 }
 
 const History = (props) => {
-
+  const [plantID, setPlantID] = useState(props.plant.id)
   const [filteredMonth, setFilteredMonth] = useState('All');
   const [filteredLatestItems, setFilteredLatestItems] = useState('All');
 
@@ -62,13 +62,13 @@ const History = (props) => {
     {
       setHasSetListener(true);
       for(const name of DB_ENV_NAMES) {
-        ref.ref(name).on('value', onValueChange(name));
+        ref.ref(name).orderByChild("plant_id").equalTo(plantID.toString()).on('value', onValueChange(name));
       }
     }
 
     return () => {
       for(const name of DB_ENV_NAMES) {
-          ref.ref(name).off('value', onValueChange(name));
+          ref.ref(name).orderByChild("plant_id").equalTo(plantID.toString()).off('value', onValueChange(name));
       }
     }
   })
