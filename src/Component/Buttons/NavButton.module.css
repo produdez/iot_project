@@ -20,7 +20,11 @@
   .bump {
     animation: bump 300ms ease-out;
   }
-  
+  .button:focus {
+    background-color:#B3FFD1;
+  }
+
+
   @keyframes bump {
     0% {
       transform: scale(1);
@@ -38,3 +42,5 @@
       transform: scale(1);
     }
   }
+
+  

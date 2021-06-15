@@ -252,7 +252,7 @@ export default class PlantSetting extends Component {
                 {/* <h2 className={classes.modal__header} >{this.props.plant.name}</h2> */}
                 <div className={classes.modal__form}>
                 
-                <label>Water mode</label>
+                <label>Water mode <HelpIcon onClick={ () => this.displayPopUp('Humidity',true,2)}/></label>
                 <div style={{display: 'flex', justifyContent: 'left'}}>
                     <div>
                         <label style={{position: 'relative', top:'6px'}}> Manual </label>
@@ -267,7 +267,7 @@ export default class PlantSetting extends Component {
                     </button>
                 </div>             
 
-                <label>Water amount </label>
+                <label>Water amount <HelpIcon onClick={ () => this.displayPopUp('Humidity',true,2)}/></label>
                 <div style={{display:'flex', justifyContent:'left'}}>
                     <div style={{display:'flex',flexDirection:'row', flexGrow:1}}>
                         <label style={{width:'2.5rem'}}> 0ml </label>
