@@ -18,11 +18,51 @@ const ABBR_MONTHS = [
   'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'
 ] 
 
+const ITEM_AMOUNT = [
+  1, 5, 10, 20, 50, 100, 200,
+]
+
+const TIME_INTERVALS = {
+  ONE_MIN: {
+    text:' 1 min',
+    seconds: 60,
+  },
+  TEN_MIN: {
+    text:'10 mins',
+    seconds: 600,
+  },
+  ONE_HOUR: {
+    text: '1 hour',
+    seconds: 3600,
+  },
+  TEN_HOUR: {
+    text: '10 hours',
+    seconds: 36000,
+  },
+  ONE_DAY: {
+    text: '1 day',
+    seconds: 86400,
+  },
+  ONE_WEEK: {
+    text:'1 week',
+    seconds: 604800, 
+  },
+  TWO_WEEK: {
+    text:'2 weeks',
+    seconds: 1209600,
+  },
+  ONE_MONTH: {
+    text: '1 month',
+    seconds: 2419200,
+  },
+}
+
 const History = (props) => {
   const [plantID, setPlantID] = useState(props.plant.id)
   const [filteredMonth, setFilteredMonth] = useState('All');
   const [filteredSubject, setFilteredSubject] = useState('All');
   const [filteredLatestItems, setFilteredLatestItems] = useState('All');
+  const [filteredNearestTime, setFilteredNearestTime] = useState('All');
   const [hasSetListener, setHasSetListener] = useState(false);
   const [firebaseItems, setFirebaseItems] = useState({});
   const ref = firebase.database()
@@ -62,14 +102,6 @@ const History = (props) => {
 
   // combine all firebaseItems into one array for rendering (yes, it's bad, but still)
   let fullHistory = [];
-  let temp_data = [];
-  let temp_time = [];
-  let humid_data = [];
-  let humid_time = [];
-  let light_data = [];
-  let light_time = [];
-  let moist_data = [];
-  let moist_time = [];
   let graph_data = [];
   let graph_time = [];
 
@@ -80,11 +112,9 @@ const History = (props) => {
   fullHistory = fullHistory.sort((a,b) => (b.unixTime-a.unixTime));
   // console.log(fullHistory);
 
-  // console.log(props.items[0].date.toLocaleString('en-US', { month: 'long' }));
   const filterChangeHandler = (selectedMonth) => {
     setFilteredMonth(selectedMonth);
   };
-  // console.log(filteredMonth);
 
   const subjectFilterChangeHandler = (selectedSubject) => {
     setFilteredSubject(selectedSubject);
@@ -92,6 +122,10 @@ const History = (props) => {
 
   const latestItemsFilterChangeHandler = (selectedLatestItems) => {
     setFilteredLatestItems(selectedLatestItems);
+  }
+
+  const nearestTimeFilterChangeHandler = (selectedNearestTime) => {
+    setFilteredNearestTime(selectedNearestTime);
   }
 
   // filter before rendering
@@ -112,67 +146,30 @@ const History = (props) => {
       return index < filteredLatestItems.substr(0, filteredLatestItems.indexOf(' '));
     });
   }
-
-  for (var i = 0; i < filteredHistory.length; i++) {
-    switch(filteredHistory[i].subject) {
-      case "Humidity":
-        {
-          humid_data = humid_data.concat(filteredHistory[i].data_value);
-          humid_time = humid_time.concat(filteredHistory[i].date.toISOString().replace("T","-").replace(/....Z/i,""));
-          break;
-        }
-      case "Temperature":
-        {
-          temp_data = temp_data.concat(filteredHistory[i].data_value);
-          temp_time = temp_time.concat(filteredHistory[i].date.toISOString().replace("T","-").replace(/....Z/i,""));
-          break;
-        }
-      case "Light":
-        {
-          light_data = light_data.concat(filteredHistory[i].data_value);
-          light_time = light_time.concat(filteredHistory[i].date.toISOString().replace("T","-").replace(/....Z/i,""));
-          break;
-        }
-      case "Moisture":
-        {
-          moist_data = moist_data.concat(filteredHistory[i].data_value);
-          moist_time = moist_time.concat(filteredHistory[i].date.toISOString().replace("T","-").replace(/....Z/i,""));
-          break;
-        }
-      default:
-        break;
+  if (filteredNearestTime !== 'All') {
+    let now = Date.now() // for consitency among items
+    let timeInterval = Object.values(TIME_INTERVALS).filter((item) => (item.text===filteredNearestTime));
+    if (timeInterval.length === 1)
+    {
+      filteredHistory = filteredHistory.filter((history) => {
+          return now - history.date < timeInterval[0].seconds*1000;
+      });
     }
   }
 
-  switch(filteredSubject) {
-    case "Humidity":
+  // prepare graph data
+  // console.time('prepare graph')
+  if (filteredSubject !== 'All') {
+    filteredHistory.forEach((item) => {
+      if (item.subject === filteredSubject)
       {
-        graph_data = humid_data.reverse();
-        graph_time = humid_time.reverse();
-        break;
+        graph_data = [item.data_value, ...graph_data];
+        graph_time = [item.date.toISOString().replace("T","-").replace(/....Z/i,""), ...graph_time];
       }
-    case "Temperature":
-      {
-        graph_data = temp_data.reverse();
-        graph_time = temp_time.reverse();
-        break;
-      }
-    case "Light":
-      {
-        graph_data = light_data.reverse();
-        graph_time = light_time.reverse();
-        break;
-      }
-    case "Moisture":
-      {
-        graph_data = moist_data.reverse();
-        graph_time = moist_time.reverse();
-        break;
-      }
-    default:
-      break;
+    })
   }
-
+  // console.timeEnd('prepare graph')
+  
   return (
     <div>
       <SelectHistory/>
@@ -194,9 +191,17 @@ const History = (props) => {
           filterName={'Latest record(s)'}
           selected={filteredLatestItems}
           onChangeFilter={latestItemsFilterChangeHandler}
-          values={[1,5,10,20,50].map((item)=>(`${item} item${item===1?'':'s'}`))}
+          values={ITEM_AMOUNT.map((item)=>(`${item} item${item===1?'':'s'}`))}
         />
+        
 
+        <HistoryFilterSubject
+          filterName={'Recent'}
+          selected={filteredNearestTime}
+          onChangeFilter={nearestTimeFilterChangeHandler}
+          values={Object.values(TIME_INTERVALS).map(({text}) => (text))}
+        />
+        
         {filteredSubject!=="All"?
         <>
         <Card className='graph-item'>
