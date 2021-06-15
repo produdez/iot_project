@@ -1,8 +1,12 @@
-import React, {Component} from 'react'
-import classes from './NavButton.module.css'
+import React, {useState} from 'react'
+import './NavButton.css'
 
-const NavButton = props => {
-    return <button className={classes.button} onClick={props.onClick}>{props.children}</button>
+const NavButton = (props) => {
+    let className = 'button';
+    if(props.isActive){
+        className += ' button--active';
+    }
+    return <button className={className} onClick={props.onClick}>{props.children}</button>
 }
 
 export default NavButton

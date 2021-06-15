@@ -20,7 +20,7 @@
   .bump {
     animation: bump 300ms ease-out;
   }
-  .button:focus {
+  .button--active {
     background-color:#B3FFD1;
   }
 

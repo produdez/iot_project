@@ -33,7 +33,7 @@ export default function Navbar(){
     const [currentPlant, setCurrentPlant] = useState(plantDict['1']);
     const [currentPath, setCurrentPath] = useState('/envcond')
     const history = useHistory();
-
+    const [isActive, setActive] = useState({plantSetting:false,envCond:false,noti:false,history:false});
     async function handleLogout() {
         // setValue({});
         setError("")
@@ -46,6 +46,19 @@ export default function Navbar(){
         } catch {
           setError("Failed to log out")
         }
+    }
+
+    const activeButtonHandler1 = () => {
+        setActive({...isActive,plantSetting:true,envCond:false,noti:false,history:false});
+    }
+    const activeButtonHandler2 = () => {
+        setActive({...isActive,plantSetting:false,envCond:true,noti:false,history:false});
+    }
+    const activeButtonHandler3 = () => {
+        setActive({...isActive,plantSetting:false,envCond:false,noti:true,history:false});
+    }
+    const activeButtonHandler4 = () => {
+        setActive({...isActive,plantSetting:false,envCond:false,noti:false,history:true});
     }
 
     function choosePlant(plantID){
@@ -119,23 +132,23 @@ export default function Navbar(){
                         
                         <li className={styles.nav__item}>
                         <Link to="/plant_settings" style={{ textDecoration: 'none' }}>
-                            <NavButton >Plant Settings</NavButton>
+                            <NavButton isActive={isActive.plantSetting} onClick={() => activeButtonHandler1()}>Plant Settings</NavButton>
                         </Link>
                         </li>
                         <li className={styles.nav__item}>
-                            <Link to="/envcond" style={{ textDecoration: 'none' }}><NavButton >Environment Condition</NavButton>
+                            <Link to="/envcond" style={{ textDecoration: 'none' }}><NavButton isActive={isActive.envCond} onClick={() => activeButtonHandler2()}>Environment Condition</NavButton>
                             </Link>
                         </li>
 
                         <li className={styles.nav__item}>
-                            <Link to="/notification" style={{ textDecoration: 'none' }}><NavButton >Notifications</NavButton></Link> 
+                            <Link to="/notification" style={{ textDecoration: 'none' }}><NavButton isActive={isActive.noti} onClick={() => activeButtonHandler3()}>Notifications</NavButton></Link> 
                         </li>
                         <li className={styles.nav__item}>
-                            <Link to="/envhistory" style={{ textDecoration: 'none' }}><NavButton >History</NavButton>
+                            <Link to="/envhistory" style={{ textDecoration: 'none' }}><NavButton isActive={isActive.history} onClick={() => activeButtonHandler4()}>History</NavButton>
                             </Link>
                         </li>
                         <li className={styles.nav__item}>
-                            <div onClick={handleLogout} style={{ textDecoration: 'none' }}><NavButton > Logout </NavButton></div>
+                            <div onClick={handleLogout} style={{ textDecoration: 'none' }}><NavButton> Logout </NavButton></div>
                         </li>
                         </>
                         :
@@ -147,7 +160,7 @@ export default function Navbar(){
                             </li>
 
                             <li className={styles.nav__item}>
-                                <Link to="/signup" style={{ textDecoration: 'none' }}><NavButton >Register</NavButton></Link> 
+                                <Link to="/signup" style={{ textDecoration: 'none' }}><NavButton>Register</NavButton></Link> 
                             </li>
                         </>
                     }
