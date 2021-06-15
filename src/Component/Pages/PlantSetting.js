@@ -35,6 +35,33 @@ const styles = {
         color:'#5eed97',
     }, 
 }
+const ENVCOND_VAR_NAMES = {
+  MOISTURE: {
+    text: 'Moisture',
+    minVar: 'min_moist',
+    maxVar: 'max_moist',
+    unit: '%'
+  },
+  TEMPERATURE: {
+    text: 'Temperature',
+    minVar: 'min_temp',
+    maxVar: 'max_temp',
+    unit: '\u2103',
+  },
+  HUMIDITY: {
+    text: 'Humidity',
+    minVar: 'min_humi',
+    maxVar: 'max_humi',
+    unit: '%',
+  },
+  LIGHTING: {
+    text: 'Lighting',
+    minVar: 'min_light',
+    maxVar: 'max_light',
+    unit: '%',
+  },
+
+}
 
 const GreenSwitch = withStyles({
     switchBase: {
@@ -127,79 +154,49 @@ export default class PlantSetting extends Component {
         this.setState((state) => ({...state, waterOn: !state.waterOn}))
     }
 
-
-    handleWaterSliderChange = (event, newValue) => {
-        this.setState((state) => ({...state, water_amount:newValue}));
+    handleWaterAmountSliderChange = (event, newValue) => {
+      this.setState((state) => ({...state, water_amount:newValue}));
     }
     handleWaterAmountInputChange = (event) => {
-        let newVal = event.target.value===''?0:Number(event.target.value);
-        if (newVal <= 100)
-            this.setState((state)=>({...state, water_amount:event.target.value===''?'':Number(event.target.value)}))
-        // this.handleWaterSliderChange(null,this.state.water_amount)
+      this.setState((state)=>({...state, water_amount:event.target.value===''?'':Number(event.target.value)}));
     }
-    handleWaterAmountBlur = () => {
-        if (this.state.water_amount < 0) {
-            this.setState((state)=>({...state, water_amount:0}))
+    handleWaterAmountBlur = (bounds, defaultValue) => (event) => {
+      let value = event.target.value;
+      if (value < bounds[0] || isNaN(value)) {
+        this.setState((state)=>({...state, water_amount:bounds[0]}));
+      } 
+      else if (value > bounds[1]) {
+        this.setState((state)=>({...state, water_amount:bounds[1]}));
+      }
+    }
+
+    // new handler
+    handleSliderChange = (varNameMin, varNameMax) => (event, newValue) => {
+      this.setState((state) => ({...state, [varNameMin]:newValue[0], [varNameMax]:newValue[1]}));
+    }
+    handleInputChange = (varName) => (event) => {
+      this.setState((state)=>({...state, [varName]:event.target.value===''?'':Number(event.target.value)}));
+    }
+    handleBlur = (varNameMin, varNameMax, isMax, bounds, defaultValue) => (event) => {
+      let value = event.target.value;
+      if (isMax) {
+        if (value < this.state[varNameMin]
+          || value < bounds[0] || value > bounds[1]
+          || isNaN(value))
+          {
+            this.setState((state)=>({...state, [varNameMax]:defaultValue}));
+          }
         }
-        if (this.state.water_amount > 100) {
-            this.setState((state)=>({...state, water_amount:100}))
-        }
+        else {
+          if (value > this.state[varNameMax] 
+              || value < bounds[0] || value > bounds[1]
+              || isNaN(value))
+          {
+            this.setState((state)=>({...state, [varNameMin]:defaultValue}));
+          }
+      }
+      
     }
-
-    handleMoistSliderChange = (event, newValue) => {
-        this.setState((state) => ({...state, min_moist:newValue[0], max_moist:newValue[1]}));
-    }
-    handleMinMoistInputChange = (event) => {
-        
-        this.setState((state)=>({...state, min_moist:event.target.value===''?'':Number(event.target.value)}))
-    }
-    handleMaxMoistInputChange = (event) => {
-        this.setState((state)=>({...state, max_moist:event.target.value===''?'':Number(event.target.value)}))
-    }
-    handleMoistBlur = () => {
-
-    }
-
-
-    handleTempSliderChange = (event, newValue) => {
-        this.setState((state) => ({...state, min_temp:newValue[0], max_temp:newValue[1]}));
-    }
-    handleMinTempInputChange = (event) => {
-        this.setState((state)=>({...state, min_temp:event.target.value===''?'':Number(event.target.value)}))
-    }
-    handleMaxTempInputChange = (event) => {
-        this.setState((state)=>({...state, max_temp:event.target.value===''?'':Number(event.target.value)}))
-    }
-    handleTempBlur = () => {
-
-    }
-
-    handleHumiSliderChange = (event, newValue) => {
-        this.setState((state) => ({...state, min_humi:newValue[0], max_humi:newValue[1]}));
-    }
-    handleMinHumiInputChange = (event) => {
-        this.setState((state)=>({...state, min_humi:event.target.value===''?'':Number(event.target.value)}))
-    }
-    handleMaxHumiInputChange = (event) => {
-        this.setState((state)=>({...state, max_humi:event.target.value===''?'':Number(event.target.value)}))
-    }
-    handleHumiBlur = () => {
-
-    }
-
-    handleLightSliderChange = (event, newValue) => {
-        this.setState((state) => ({...state, min_light:newValue[0], max_light:newValue[1]}));
-    }
-    handleMinLightInputChange = (event) => {
-        this.setState((state)=>({...state, min_light:event.target.value===''?'':Number(event.target.value)}))
-    }
-    handleMaxLightInputChange = (event) => {
-        this.setState((state)=>({...state, max_light:event.target.value===''?'':Number(event.target.value)}))
-    }
-    handleLightBlur = () => {
-
-    }
-   
 
     componentDidMount() {
         //onfunction
@@ -274,7 +271,7 @@ export default class PlantSetting extends Component {
                         <Slider 
                             style={styles.slider}
                             value={this.state.water_amount}
-                            onChange={this.handleWaterSliderChange}
+                            onChange={this.handleWaterAmountSliderChange}
                             aria-labelledby="input-slider"
                         />
                         <label style={{paddingLeft:'15px'}}> 100ml </label>
@@ -286,7 +283,7 @@ export default class PlantSetting extends Component {
                             style={styles.inputBox}
                             value={this.state.water_amount}
                             onChange={this.handleWaterAmountInputChange}
-                            onBlur={this.handleWaterAmountBlur}
+                            onBlur={this.handleWaterAmountBlur([0, 100], 0)}
 
                             inputProps={{
                                 // step: 10,
@@ -299,53 +296,27 @@ export default class PlantSetting extends Component {
                     </div>
                 </div>
 
-                {/* Moisture part */}
-                <label> Moisture <HelpIcon onClick={ () => this.displayPopUp('Moisture',true,0)}/></label>
-                <MinMaxInputSlider
-                    values={[this.state.min_moist, this.state.max_moist]}
-                    leftLabel='0%'
-                    rightLabel='100%'
-                    handleSlider={this.handleMoistSliderChange}
-                    handleInput0={this.handleMinMoistInputChange}
-                    handleInput1={this.handleMaxMoistInputChange}
-                    handleBlur={this.handleMoistBlur}
-                />    
-
-                {/* Temperature part */}
-                <label> Temperature <HelpIcon onClick={ () => this.displayPopUp('Temperature',true,1)}/></label>
-                <MinMaxInputSlider
-                    values={[this.state.min_temp, this.state.max_temp]}
-                    leftLabel={'0\u2103'}
-                    rightLabel={'100\u2103'}
-                    handleSlider={this.handleTempSliderChange}
-                    handleInput0={this.handleMinTempInputChange}
-                    handleInput1={this.handleMaxTempInputChange}
-                    handleBlur={this.handleTempBlur}
-                />    
-
-                {/* Humidity part */}
-                <label> Humidity <HelpIcon onClick={ () => this.displayPopUp('Humidity',true,2)}/></label>
-                <MinMaxInputSlider
-                    values={[this.state.min_humi, this.state.max_humi]}
-                    leftLabel='0%'
-                    rightLabel='100%'
-                    handleSlider={this.handleHumiSliderChange}
-                    handleInput0={this.handleMinHumiInputChange}
-                    handleInput1={this.handleMaxHumiInputChange}
-                    handleBlur={this.handleHumiBlur}
-                />    
-
-                <label> Lighting <HelpIcon onClick={ () => this.displayPopUp('Lighting',true,3)}/></label>
-                <MinMaxInputSlider
-                    values={[this.state.min_light, this.state.max_light]}
-                    leftLabel='0%'
-                    rightLabel='100%'
-                    handleSlider={this.handleLightSliderChange}
-                    handleInput0={this.handleMinLightInputChange}
-                    handleInput1={this.handleMaxLightInputChange}
-                    handleBlur={this.handleLightBlur}
-                />    
-                
+                {
+                  // please do not hunt me down, thanks
+                  Object.values(ENVCOND_VAR_NAMES).map((obj, idx) => {
+                    const { text, minVar, maxVar, unit } = obj;
+                    return (
+                      <>
+                        <label key={`${text}-label`}> {text} <HelpIcon onClick={ () => this.displayPopUp(text, true, idx)}/></label>
+                        <MinMaxInputSlider
+                          key={`${text}-slider-and-input`}
+                          values={[this.state[minVar], this.state[maxVar]]}
+                          leftLabel={`0${unit}`}
+                          rightLabel={`100${unit}`}
+                          handleSlider={this.handleSliderChange(minVar, maxVar)}
+                          handleInput={[this.handleInputChange(minVar), this.handleInputChange(maxVar)]}
+                          handleBlur={[this.handleBlur(minVar, maxVar, false, [0, 100], 0), this.handleBlur(minVar, maxVar, true, [0, 100], 100)]}
+                        />    
+                      </>
+                    );
+                  })
+                }
+  
                 {/* <div>Current Settings</div>
                 <div> {JSON.stringify(this.state,null,'\n')}</div> */}
                 <button className={classes.btn} onClick={this.saveHandler}>Save</button>

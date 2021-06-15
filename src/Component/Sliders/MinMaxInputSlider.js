@@ -32,21 +32,15 @@ export default class MinMaxInputSlider extends React.Component {
                     </div>
 
                     <div style={{display:'flex', justifyContent:'left', flexGrow:0.8}}>
-                        <Input
+                        {[0,1].map((idx) => (
+                          <Input
+                            key={idx}
                             disableUnderline={true}
                             style={this.styles.inputBox}
-                            value={this.props.values[0]}
-                            onChange={this.props.handleInput0}
-                            onBlur={this.props.handleBlur}
-                            
-                        />
-                        <Input
-                            disableUnderline={true}
-                            style={this.styles.inputBox}
-                            value={this.props.values[1]}
-                            onChange={this.props.handleInput1}
-                            onBlur={this.props.handleBlur}
-                        />
+                            value={this.props.values[idx]}
+                            onChange={this.props.handleInput[idx]}
+                            onBlur={this.props.handleBlur[idx]}
+                          />))}
                     </div>
                     
                 </div>
