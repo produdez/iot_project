@@ -6,6 +6,7 @@ import HelpIcon from '@material-ui/icons/Help';
 import Switch from '@material-ui/core/Switch';
 import Slider from '@material-ui/core/Slider';
 import Input from '@material-ui/core/Input';
+import Tooltip from '@material-ui/core/Tooltip';
 import MinMaxInputSlider from '../Sliders/MinMaxInputSlider';
 import { withStyles } from '@material-ui/core/styles';
 import Popup from './Popup'
@@ -40,25 +41,29 @@ const ENVCOND_VAR_NAMES = {
     text: 'Moisture',
     minVar: 'min_moist',
     maxVar: 'max_moist',
-    unit: '%'
+    unit: '%',
+    tooltip:'The good range of moisture for this plant',
   },
   TEMPERATURE: {
     text: 'Temperature',
     minVar: 'min_temp',
     maxVar: 'max_temp',
     unit: '\u2103',
+    tooltip:'The good range of temperature for this plant',
   },
   HUMIDITY: {
     text: 'Humidity',
     minVar: 'min_humi',
     maxVar: 'max_humi',
     unit: '%',
+    tooltip:'The good range of humidity for this plant',
   },
   LIGHTING: {
     text: 'Lighting',
     minVar: 'min_light',
     maxVar: 'max_light',
     unit: '%',
+    tooltip:'The good range of lighting for this plant',
   },
 
 }
@@ -76,6 +81,28 @@ const GreenSwitch = withStyles({
     checked: {},
     track: {},
   })(Switch);
+
+const NiceTooltip = withStyles((theme) => ({
+  tooltip: {
+    // backgroundColor: 'white',
+    // color: 'red',
+    fontSize: 13,
+    maxWidth: 220,
+  }
+}))(Tooltip);
+
+function PlantTooltip(props) {
+  return (
+    <NiceTooltip 
+      placement='right'
+      title={
+        <span style={{whiteSpace:'pre-line'}}>{props.title}</span> 
+      }
+    >
+      <HelpIcon style={{fontSize: 18}}/>
+    </NiceTooltip>
+  );
+}
 
 export default class PlantSetting extends Component {
     constructor(props){
@@ -249,7 +276,13 @@ export default class PlantSetting extends Component {
                 {/* <h2 className={classes.modal__header} >{this.props.plant.name}</h2> */}
                 <div className={classes.modal__form}>
                 
-                <label>Water mode <HelpIcon onClick={ () => this.displayPopUp('Humidity',true,2)}/></label>
+                <label>Water mode 
+                <PlantTooltip
+                  title={'Set to manual mode for controlling the pump manually. \n\n'+
+                          'Set to auto mode to automatically keep your plant under set conditions'}
+                />
+                {/* <HelpIcon onClick={ () => this.displayPopUp('Humidity',true,2)}/> */}
+                </label>
                 <div style={{display: 'flex', justifyContent: 'left'}}>
                     <div>
                         <label style={{position: 'relative', top:'6px'}}> Manual </label>
@@ -264,7 +297,12 @@ export default class PlantSetting extends Component {
                     </button>
                 </div>             
 
-                <label>Water amount <HelpIcon onClick={ () => this.displayPopUp('Humidity',true,2)}/></label>
+                <label>Water amount 
+                <PlantTooltip
+                  title={'The amount of water pumped each time the moisture goes too low'}
+                />
+                {/* <HelpIcon onClick={ () => this.displayPopUp('Humidity',true,2)}/> */}
+                </label>
                 <div style={{display:'flex', justifyContent:'left'}}>
                     <div style={{display:'flex',flexDirection:'row', flexGrow:1}}>
                         <label style={{width:'2.5rem'}}> 0ml </label>
@@ -299,10 +337,16 @@ export default class PlantSetting extends Component {
                 {
                   // please do not hunt me down, thanks
                   Object.values(ENVCOND_VAR_NAMES).map((obj, idx) => {
-                    const { text, minVar, maxVar, unit } = obj;
+                    const { text, minVar, maxVar, unit, tooltip } = obj;
                     return (
                       <>
-                        <label key={`${text}-label`}> {text} <HelpIcon onClick={ () => this.displayPopUp(text, true, idx)}/></label>
+                        <label key={`${text}-label`}> {text} 
+                        <PlantTooltip
+                          title={tooltip}
+                        />
+                        {/* <HelpIcon onClick={ () => this.displayPopUp(text, true, idx)}/> */}
+                        </label>
+
                         <MinMaxInputSlider
                           key={`${text}-slider-and-input`}
                           values={[this.state[minVar], this.state[maxVar]]}
