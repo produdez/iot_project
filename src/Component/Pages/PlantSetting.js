@@ -9,7 +9,6 @@ import Input from '@material-ui/core/Input';
 import Tooltip from '@material-ui/core/Tooltip';
 import MinMaxInputSlider from '../Sliders/MinMaxInputSlider';
 import { withStyles } from '@material-ui/core/styles';
-import Popup from './Popup'
 
 const EMPTY = 0;
 const DEFAULT_SETTINGS = {
@@ -84,8 +83,6 @@ const GreenSwitch = withStyles({
 
 const NiceTooltip = withStyles((theme) => ({
   tooltip: {
-    // backgroundColor: 'white',
-    // color: 'red',
     fontSize: 13,
     maxWidth: 220,
   }
@@ -117,9 +114,6 @@ export default class PlantSetting extends Component {
             water_mode: this.props.plant.waterMode,
             setAdaListener: false,
             setFirebaseListener: false,
-            isTutorialPress: false,
-            popUpType: "",
-            imgSrc: "",
             }
         this.ref = firebase.database().ref(DB_NAME).child(this.state.plant_id);
         this.relay_ref = firebase.database().ref('Relay').orderByChild('plant_id')
@@ -262,10 +256,6 @@ export default class PlantSetting extends Component {
         //     window.onRelayIsSetup = true;
         // }
     }
-    displayPopUp = (type, value, Src) => {
-        console.log('clicked');
-        this.setState((state) => ({...state, isTutorialPress: value, popUpType: type, imgSrc: Src}));
-    }
 
     componentWillUnmount(){
         this.ref.off()
@@ -273,7 +263,6 @@ export default class PlantSetting extends Component {
     }
     render(){
         return(<div>
-                {/* <h2 className={classes.modal__header} >{this.props.plant.name}</h2> */}
                 <div className={classes.modal__form}>
                 
                 <label>Water mode 
@@ -281,7 +270,6 @@ export default class PlantSetting extends Component {
                   title={'Set to manual mode for controlling the pump manually. \n\n'+
                           'Set to auto mode to automatically keep your plant under set conditions'}
                 />
-                {/* <HelpIcon onClick={ () => this.displayPopUp('Humidity',true,2)}/> */}
                 </label>
                 <div style={{display: 'flex', justifyContent: 'left'}}>
                     <div>
@@ -301,7 +289,6 @@ export default class PlantSetting extends Component {
                 <PlantTooltip
                   title={'The amount of water pumped each time the moisture goes too low'}
                 />
-                {/* <HelpIcon onClick={ () => this.displayPopUp('Humidity',true,2)}/> */}
                 </label>
                 <div style={{display:'flex', justifyContent:'left'}}>
                     <div style={{display:'flex',flexDirection:'row', flexGrow:1}}>
@@ -324,10 +311,6 @@ export default class PlantSetting extends Component {
                             onBlur={this.handleWaterAmountBlur([0, 100], 0)}
 
                             inputProps={{
-                                // step: 10,
-                                // min: 0,
-                                // max: 100,
-                                // type: 'number',
                                 'aria-labelledby': 'input-slider',
                             }}
                         />
@@ -344,9 +327,7 @@ export default class PlantSetting extends Component {
                         <PlantTooltip
                           title={tooltip}
                         />
-                        {/* <HelpIcon onClick={ () => this.displayPopUp(text, true, idx)}/> */}
                         </label>
-
                         <MinMaxInputSlider
                           key={`${text}-slider-and-input`}
                           values={[this.state[minVar], this.state[maxVar]]}
@@ -366,7 +347,6 @@ export default class PlantSetting extends Component {
                 <button className={classes.btn} onClick={this.saveHandler}>Save</button>
                 
                 </div>
-                <Popup val={this.state.imgSrc} type={this.state.popUpType} displaying={this.state.isTutorialPress} tutorialPopupDisplayingState_setter={this.displayPopUp}/>
             </div>
         );
     }
