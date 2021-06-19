@@ -99,7 +99,7 @@ export default function Navbar(){
                     {
                         (currentUser)?
                             <>
-                            <WaterIcon></WaterIcon>
+                            <WaterIcon key = {currentPlant.id} plant = {currentPlant} ></WaterIcon>
                             
                             <NavDropdown className={styles.nav_drop} title={
                                     <span className="color-dark my-auto" style={{color:'black' }}>{dropDownValue}</span>

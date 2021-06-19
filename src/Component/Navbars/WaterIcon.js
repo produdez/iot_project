@@ -7,10 +7,15 @@ import styles from './WaterIcon.module.css'
 
 const relay_ref = firebase.database().ref('Relay').orderByChild('plant_id').limitToLast(1);
 
-export default  function WaterIcon(){
+export default  function WaterIcon(props){
     const [watering, setWatering] = useState(false)
+    const operational = props.plant.operational
     
     const  manualPumpHandler = () => {
+        if (!operational){
+            window.alert("Hardware has not been setup for this operation!");
+            return
+        }
         let relay_value = watering?0:1; // if water is on: turn off, else turn on
         console.log('Clicked Watering')
         const publish_json = {
