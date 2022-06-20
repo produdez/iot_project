@@ -1,79 +1,93 @@
-# Getting Started with Create React App
+<!-- icons  -->
+[1.1]: https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white
+[2.1]: https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
+[3.1]: https://img.shields.io/badge/Medium-12100E?style=for-the-badge&logo=medium&logoColor=white
+[4.1]: https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<!-- links to your social media accounts -->
+[1]: https://github.com/produdez
+[2]: https://www.linkedin.com/in/produdez/
+[3]: https://medium.com/@produde
+[4]: https://twitter.com/_Produde_
 
-## Available Scripts
+# Smart Irrigation System
 
-To use this app, you will need some installing:
-### 'npm install all'
-### 'npm install react-scripts --save'
-###  'npm i bootstrap react-bootstrap'
-### 'npm install firebase'
-### 'npm install --save react-chartjs-2 chart.js'
+"Best of rain"
 
-*If you can't install these package, try deleting ./package-lock.json file.
+<p align="center">
+    <img src="./doc/logo.jpg" alt="Icon" width="100">
+</p>
 
-In the project directory, you can run:
+**Description:**
 
-### `npm start`
+Plant monitoring and watering system. A web-app backed by IOT through MQTT interface. (FRONTEND)
 
-Runs the app in the development mode.\
-Open [http://localhosnt:3000](http://localhost:3000) to view it in the browser.
+![Homepage](./doc/homepage.png)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+This repo is the front-end of this project. Backend is [Here](https://github.com/produdez/iot-project-nodejs)
 
-### `npm test`
+Project's report can be found [Here](https://www.overleaf.com/read/wbcgwwwmqryj)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## General Information
 
-### `npm run build`
+- Solution for busy people with their plants
+- Support monitoring of lighting, humidity, soil moisture and temperature
+- Manually trigger watering
+- Or set threshold for automatic watering
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Technologies Used
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Firebase Auth
+- Firebase Database
+- React
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Features
 
-### `npm run eject`
+1. Show current environment conditions
+   ![Screenshot-1](./doc/p1.png)
+2. Show history and graphing of past environment variables
+    ![Screenshot-2](./doc/p2.png)
+3. Setup watering condition and water amount
+   ![Screenshot-3](./doc/p3.png)
+## Setup
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Requirements and Installations:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. git, node
+2. Clone repository
+3. Install dependencies
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+    ```[bash]
+    # Install dependencies
+    $ npm install
+    ```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Usage
 
-## Learn More
+1. Run
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+    ```[bash]
+        # Run the app
+        $ npm start
+    ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+2. Access website at `localhost:3000`
 
-### Code Splitting
+## Future improvements
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+1. Support multiple plants
+2. Better pump controls
+3. Smarter watering behavior (example could be to stop watering for 5-10 minutes after an activation)
+4. Better UI
+5. Better notification insights
+6. More detailed history graphs
+7. ...
 
-### Analyzing the Bundle Size
+## Contact
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Created by [@produdez](https://github.com/produdez) - feel free to contact me or follow my blog on medium ❤️!
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<!-- [![alt text][1.1]][1] -->
+[![alt text][2.1]][2]
+[![alt text][3.1]][3]
+[![alt text][4.1]][4]
